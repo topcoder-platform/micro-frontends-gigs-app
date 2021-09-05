@@ -50,4 +50,7 @@ module.exports = {
     "txt",
   ],
   MAX_ALLOWED_FILE_SIZE_MB: process.env.MAX_ALLOWED_FILE_SIZE_MB || 10,
+  MFE_CONFIG: {
+    '@topcoder/micro-frontends-component-poc': 'https://platform.topcoder-dev.com/component-poc/topcoder-micro-frontends-component-poc.js',
+  }
 };

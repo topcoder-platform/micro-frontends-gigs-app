@@ -9,4 +9,7 @@ module.exports = {
     PLATFORM_WEBSITE_URL: "https://platform.topcoder.com",
   },
   RECRUIT_API: "https://www.topcoder.com",
+  MFE_CONFIG: {
+    '@topcoder/micro-frontends-component-poc': 'https://platform.topcoder.com/component-poc/topcoder-micro-frontends-component-poc.js',
+  }
 };

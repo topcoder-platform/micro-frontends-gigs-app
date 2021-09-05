@@ -13,6 +13,8 @@ import * as constants from "../../constants";
 import UpdateGigProfile from "./modals/UpdateGigProfile";
 import UpdateSuccess from "./modals/UpdateSuccess";
 
+import Parcel from "single-spa-react/parcel";
+
 import "./styles.scss";
 
 const MyGigs = ({
@@ -154,6 +156,12 @@ const MyGigs = ({
         {(checkingGigs || (loadingMyGigs && !currentGigs.myGigs)) && (
           <Loading />
         )}
+        <Parcel
+          path="*"
+          config={() =>
+            System.import("@topcoder/micro-frontends-component-poc")
+          }
+        />
       </div>
       <Modal open={openUpdateProfile}>
         <UpdateGigProfile
