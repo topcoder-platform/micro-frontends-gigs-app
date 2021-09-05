@@ -1,0 +1,26 @@
+@import "variables";
+@import "mixins";
+@import "reset";
+@import "utils";
+
+:global {
+  html,
+  body {
+    text-rendering: geometricPrecision;
+  }
+
+  body {
+    @include roboto-regular;
+    font-size: $font-size-base;
+    color: $body-color;
+    line-height: 1;
+  }
+
+  html {
+    display: flex;
+  }
+
+  body {
+    flex: 1;
+  }
+} // end :global

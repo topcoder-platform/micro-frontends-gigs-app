@@ -1,4 +1,6 @@
-# Topcoder React Microapp Example
+# micro-frontends-gigs-app
+
+# Topcoder Gigs App
 
 This is a [single-spa](https://single-spa.js.org/) example React microapp.
 
@@ -14,23 +16,26 @@ This is a [single-spa](https://single-spa.js.org/) example React microapp.
 | Command               | Description                                                       |
 | --------------------- | ----------------------------------------------------------------- |
 | `npm start`           | Run server which serves production ready build from `dist` folder |
-| `npm run dev`         | Run app in the development mode                                   |
-| `npm run dev-https`   | Run app in the development mode using HTTPS protocol              |
-| `npm run build`       | Build app for production and puts files to the `dist` folder      |
+| `npm run dev`         | Run app in the `development` mode and `dev` config  |
+| `npm run dev-https`   | Run app in the `development` mode and `dev` config using HTTPS protocol |
+| `npm run local`       | Run app in the `development` mode and `local-dev` config   |
+| `npm run prod`        | Run app in the `development` mode and `prod` config  |
+| `npm run build`       | Build app for production and puts files to the `dist` folder, default to `development` mode and `local-dev` config |
 | `npm run analyze`     | Analyze dependencies sizes and opens report in the browser        |
 | `npm run lint`        | Check code for lint errors                                        |
 | `npm run format`      | Format code using prettier                                        |
 | `npm run test`        | Run unit tests                                                    |
 | `npm run watch-tests` | Watch for file changes and run unit tests on changes              |
 | `npm run coverage`    | Generate test code coverage report                                |
+| `npm run mock-api`    | Start the mock api which mocks Recruit api                        |
 
 ## Local Deployment
 
 Inside the project folder run:
-
+- `nvm use 10.22.1;` - to use npm version: 10.22.1
 - `npm i` - install dependencies
-- `npm run dev` - run app in development mode
-- As this app can be loaded only inside a frame single-spa, you have to run a `micro-frontends-frame` frame app and configure it to use the URL `http://localhost:8500/topcoder-micro-frontends-gigs-app.js`.
+- `npm run local` - run app in `development` mode and `local-dev` config
+- This app will be loaded as a normal MFE app, its url is `http://localhost:8010/gigs-app/topcoder-micro-frontends-gigs-app.js` and is configurated in the config file of Earn App
 
 ## Deployment to Production
 
@@ -43,9 +48,32 @@ Inside the project folder run:
 Make sure you have [Heroky CLI](https://devcenter.heroku.com/articles/heroku-cli) installed and you have a Heroku account. And then inside the project folder run the next commands:
 
 - If there is not Git repository inited yet, create a repo and commit all the files:
+
   - `git init`
   - `git add .`
   - `git commit -m'inital commit'`
+
 - `heroku apps:create` - create Heroku app
+
 - `git push heroku master` - push changes to Heroku and trigger deploying
-- Now you have to configure frame app to use the URL provided by Heroku like `https://<APP-NAME>.herokuapp.com/topcoder-micro-frontends-gigs-app.js` to load this microapp.
+
+- Now you have to configure frame app to use the URL provided by Heroku like `https://<APP-NAME>.herokuapp.com/gigs-app/topcoder-micro-frontends-gigs-app.js` to load this microapp.
+
+### Aggregator API
+
+Please refer to [Swagger Doc](./src/api/docs/swagger.yaml) for Aggregator API endpoints
+
+#### Aggregator API Configuration
+
+In the `micro-frontends-earn-app` root directory create `.env` file with the next environment variables.
+
+  ```bash
+  # Auth0 config
+  AUTH_SECRET=
+  AUTH0_URL=
+  AUTH0_AUDIENCE=
+  AUTH0_CLIENT_ID=
+  AUTH0_CLIENT_SECRET=
+  VALID_ISSUERS=
+  ```
+Once the earn app is started, the aggregator api will work as well
