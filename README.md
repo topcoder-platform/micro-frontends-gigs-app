@@ -18,9 +18,9 @@ This is a [single-spa](https://single-spa.js.org/) example React microapp.
 | `npm start`           | Run server which serves production ready build from `dist` folder |
 | `npm run dev`         | Run app in the `development` mode and `dev` config  |
 | `npm run dev-https`   | Run app in the `development` mode and `dev` config using HTTPS protocol |
-| `npm run local`       | Run app in the `development` mode and `local-dev` config   |
+| `npm run local`       | Run app in the `development` mode and `dev` config   |
 | `npm run prod`        | Run app in the `development` mode and `prod` config  |
-| `npm run build`       | Build app for production and puts files to the `dist` folder, default to `development` mode and `local-dev` config |
+| `npm run build`       | Build app for production and puts files to the `dist` folder, default to `development` mode and `dev` config |
 | `npm run analyze`     | Analyze dependencies sizes and opens report in the browser        |
 | `npm run lint`        | Check code for lint errors                                        |
 | `npm run format`      | Format code using prettier                                        |
@@ -34,7 +34,7 @@ This is a [single-spa](https://single-spa.js.org/) example React microapp.
 Inside the project folder run:
 - `nvm use 10.22.1;` - to use npm version: 10.22.1
 - `npm i` - install dependencies
-- `npm run local` - run app in `development` mode and `local-dev` config
+- `npm run local` - run app in `development` mode and `dev` config
 - This app will be loaded as a normal MFE app, its url is `http://localhost:8010/gigs-app/topcoder-micro-frontends-gigs-app.js` and is configurated in the config file of Earn App
 
 ## Deployment to Production
