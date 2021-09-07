@@ -65,7 +65,7 @@ Please refer to [Swagger Doc](./src/api/docs/swagger.yaml) for Aggregator API en
 
 #### Aggregator API Configuration
 
-In the `micro-frontends-earn-app` root directory create `.env` file with the next environment variables.
+In the `micro-frontends-gigs-app` root directory create `.env` file with the next environment variables.
 
   ```bash
   # Auth0 config
