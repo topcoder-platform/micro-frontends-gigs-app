@@ -27,6 +27,10 @@ ENV AUTH0_PROXY_SERVER_URL=$AUTH0_PROXY_SERVER_URL
 ENV M2M_AUDIT_USER_ID=$M2M_AUDIT_USER_ID
 ENV M2M_AUDIT_HANDLE=$M2M_AUDIT_HANDLE
 
+RUN echo "Env Set :: "
+RUN echo $APPMODE
+RUN echo $APPENV
+
 # Copy the current directory into the Docker image
 COPY . /micro-frontends-gigs-app
 
