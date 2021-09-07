@@ -6,7 +6,7 @@
     "dev-https": "cross-env APPENV=dev webpack-dev-server --https",
     "local": "cross-env APPENV=local-dev webpack-dev-server",
     "prod": "cross-env APPENV=prod webpack-dev-server",
-    "build": "cross-env APPENV=${APPENV:-local-dev} APPMODE=${APPMODE:-development} webpack --mode=${APPMODE:-development}",
+    "build": "cross-env APPENV=${APPENV:-dev} APPMODE=${APPMODE:-development} webpack --mode=${APPMODE:-development}",
     "analyze": "cross-env APPMODE=production webpack --mode=production --env.analyze=true",
     "lint": "eslint src --ext js,jsx --fix",
     "format": "prettier --write \"./**\"",
