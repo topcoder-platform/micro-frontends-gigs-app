@@ -68,7 +68,6 @@ workflows:
           filters:
             branches:
               only:
-                - dev
                 - earn-restructure
 
       # Production builds are exectuted only on tagged commits to the
