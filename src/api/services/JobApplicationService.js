@@ -78,6 +78,7 @@ async function getMyJobApplications(currentUser, criteria) {
   // apply desired structure
   const jobApplications = _.map(jcResult, (jobCandidate) => {
     const job = _.find(jobs, ["id", jobCandidate.jobId]);
+    if (!job) return null;
     return {
       title: job.title,
       paymentTotal: jobCandidate.paymentTotal,
@@ -107,7 +108,7 @@ async function getMyJobApplications(currentUser, criteria) {
     total: jobCandidates.total,
     page: jobCandidates.page,
     perPage: jobCandidates.perPage,
-    result: jobApplications,
+    result: _.filter(jobApplications, (item) => item != null),
   };
 }
 
