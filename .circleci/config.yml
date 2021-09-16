@@ -77,7 +77,6 @@ workflows:
             branches:
               only:
                 - dev
-                - hot-fix-filter-invalidjob
 
       # Production builds are exectuted only on tagged commits to the
       # master branch.
