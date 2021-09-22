@@ -8,14 +8,11 @@ import App from "./App";
 // History for location provider
 const history = createHistory(window);
 
-export default function Root() {
+export default function Root({ view = "gigs" }) {
   return (
     <LocationProvider history={history}>
       <Provider store={store}>
-        <>
-          <App />
-          {process.env.NODE_ENV === "test" && <span hidden>Gigs App</span>}
-        </>
+        <App view={view} />
       </Provider>
     </LocationProvider>
   );

@@ -3,18 +3,21 @@
  */
 import React, { useState, useRef, useEffect } from "react";
 import PT from "prop-types";
+import cn from "classnames";
 import _ from "lodash";
 import ReactSelect from "react-select";
 import "./styles.scss";
 import iconDown from "assets/icons/dropdown-arrow.png";
 
 function Dropdown({
+  className,
   options,
   label,
   required,
   placeholder,
   onChange,
   errorMsg,
+  searchable,
   size,
 }) {
   const [internalOptions, setInternalOptions] = useState(options);
@@ -31,7 +34,7 @@ function Dropdown({
     <div
       onFocusCapture={() => setFocused(true)}
       onBlurCapture={() => setFocused(false)}
-      className="dropdownContainer"
+      className={cn("dropdownContainer", className)}
       styleName={`container ${sizeStyle} ${selectedOption ? "haveValue" : ""} ${
         errorMsg ? "haveError" : ""
       } ${focused ? "isFocused" : ""}`}
@@ -40,6 +43,7 @@ function Dropdown({
         <ReactSelect
           autosize={false}
           autoBlur
+          searchable={searchable}
           options={internalOptions.map((o) => ({
             value: o.label,
             label: o.label,
@@ -50,6 +54,7 @@ function Dropdown({
               const newOptions = internalOptions.map((o) => ({
                 selected: value.label === o.label,
                 label: o.label,
+                value: o.value,
               }));
               setInternalOptions(newOptions);
               delayedOnChange(_.cloneDeep(newOptions), onChange);
@@ -87,6 +92,7 @@ Dropdown.defaultProps = {
   required: false,
   onChange: () => {},
   errorMsg: "",
+  searchable: true,
   size: "lg",
 };
 

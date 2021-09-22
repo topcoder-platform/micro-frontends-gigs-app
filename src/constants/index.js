@@ -310,3 +310,6 @@ export const MY_GIGS_STATUS_REMARK_TEXT = {
 export const CHECKING_GIG_TIMES = 3;
 
 export const DELAY_CHECK_GIG_TIME = 2000;
+
+export const DEBOUNCE_ON_CHANGE_TIME =
+  +process?.env?.GUIKIT?.DEBOUNCE_ON_CHANGE_TIME || 300;

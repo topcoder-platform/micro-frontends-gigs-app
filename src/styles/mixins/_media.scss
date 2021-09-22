@@ -97,3 +97,38 @@ $screen-lg: 1280px !default;
     @content;
   }
 }
+
+// Enables styles for phone screens only.
+@mixin phone-only() {
+  @media screen and (max-width: #{$screen-sm - 1px}) {
+    @content;
+  }
+}
+
+// Enables styles for tablet and larger screens.
+@mixin tablet() {
+  @media screen and (min-width: $screen-sm) {
+    @content;
+  }
+}
+
+// Enables styles for large tablets and larger screens.
+@mixin tablet-lg() {
+  @media screen and (min-width: $screen-md) {
+    @content;
+  }
+}
+
+// Enables styles for tablet screens only.
+@mixin tablet-only() {
+  @media screen and (min-width: $screen-sm) and (max-width: #{$screen-lg - 1px}) {
+    @content;
+  }
+}
+
+// Enables styles for desktop and larger screens.
+@mixin desktop() {
+  @media screen and (min-width: $screen-lg) {
+    @content;
+  }
+}

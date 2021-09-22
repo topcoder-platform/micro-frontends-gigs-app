@@ -131,6 +131,12 @@
           }
         }
       }
+
+      &:not(.is-searchable) {
+        .Select-input {
+          display: none !important;
+        }
+      }
     }
 
     .Select-menu-outer {
@@ -141,6 +147,7 @@
       z-index: 7;
 
       .Select-menu {
+        padding: 9px 0;
         max-height: 269px;
 
         .Select-option {
@@ -155,7 +162,7 @@
             font-weight: bold !important;
           }
 
-          &:hover {
+          &.is-focused {
             background-color: #229173 !important;
             color: $tc-white !important;
           }
