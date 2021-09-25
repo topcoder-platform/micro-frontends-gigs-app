@@ -20,4 +20,10 @@ module.exports = {
       scopes: [constants.Scopes.READ_JOB],
     },
   },
+  "/jobs": {
+    get: {
+      controller: "JobApplicationController",
+      method: "getJobs",
+    },
+  },
 };
