@@ -2,6 +2,7 @@
   "name": "@topcoder/micro-frontends-gigs-app",
   "scripts": {
     "start": "node server.js",
+    "dev-server": "nodemon server.js",
     "dev": "cross-env APPENV=dev webpack-dev-server",
     "dev-https": "cross-env APPENV=dev webpack-dev-server --https",
     "local": "cross-env APPENV=dev webpack-dev-server",
@@ -58,7 +59,8 @@
     "webpack-cli": "^3.3.10",
     "webpack-config-single-spa-react": "^1.0.3",
     "webpack-dev-server": "^3.9.0",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^4.2.2",
+    "nodemon": "^2.0.4"
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",

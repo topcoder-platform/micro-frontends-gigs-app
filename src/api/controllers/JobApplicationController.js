@@ -1,6 +1,7 @@
 /**
  * Controller for JobApplication endpoints
  */
+const _ = require("lodash");
 const service = require("../services/JobApplicationService");
 const helper = require("../common/helper");
 
@@ -20,7 +21,14 @@ async function getJob(req, res) {
   res.send(result);
 }
 
+async function getJobs(req, res) {
+  const query = { ...req.query, bodySkills: _.get(req, "body.bodySkills", []) };
+  const result = await service.getJobs(query);
+  res.send(result);
+}
+
 module.exports = {
   getMyJobApplications,
   getJob,
+  getJobs,
 };

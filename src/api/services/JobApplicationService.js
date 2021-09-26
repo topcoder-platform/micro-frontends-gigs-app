@@ -78,6 +78,7 @@ async function getMyJobApplications(currentUser, criteria) {
   // apply desired structure
   const jobApplications = _.map(jcResult, (jobCandidate) => {
     const job = _.find(jobs, ["id", jobCandidate.jobId]);
+    if (!job) return null;
     return {
       title: job.title,
       paymentTotal: jobCandidate.paymentTotal,
@@ -107,7 +108,7 @@ async function getMyJobApplications(currentUser, criteria) {
     total: jobCandidates.total,
     page: jobCandidates.page,
     perPage: jobCandidates.perPage,
-    result: jobApplications,
+    result: _.filter(jobApplications, (item) => item != null),
   };
 }
 
@@ -175,7 +176,66 @@ getJob.schema = Joi.object()
   })
   .required();
 
+async function getJobs(criteria = {}) {
+  const page = criteria.page || 0;
+  const perPage = criteria.perPage || 0;
+  const emptyResult = {
+    total: 0,
+    page,
+    perPage,
+    result: [],
+  };
+  const jobsRes = await helper.getJobs(criteria);
+  if (jobsRes.result.length === 0) {
+    return emptyResult;
+  }
+  const jobs = jobsRes.result;
+  // apply desired structure
+  const res = _.map(jobs, (job) => {
+    return {
+      title: job.title,
+      payment: {
+        min: job.minSalary,
+        max: job.maxSalary,
+        frequency: job.rateType,
+        // currency: job.currency,
+        currency: "$",
+      },
+      skills: job.skills,
+      location: job.jobLocation,
+      duration: job.duration,
+    };
+  });
+  return {
+    total: jobsRes.total,
+    page: jobsRes.page,
+    perPage: jobsRes.perPage,
+    result: res,
+  };
+}
+
+getJobs.schema = Joi.object()
+  .keys({
+    criteria: Joi.object()
+      .keys({
+        page: Joi.page(),
+        perPage: Joi.perPage(),
+        sortBy: Joi.string()
+          .valid("createdAt", "updatedAt")
+          .default("createdAt"),
+        sortOrder: Joi.string().valid("desc", "asc").default("desc"),
+        jobLocation: Joi.string(),
+        minSalary: Joi.number().integer(),
+        maxSalary: Joi.number().integer(),
+        title: Joi.string(),
+        bodySkills: Joi.array().items(Joi.string().uuid()),
+      })
+      .required(),
+  })
+  .required();
+
 module.exports = {
   getMyJobApplications,
   getJob,
+  getJobs,
 };

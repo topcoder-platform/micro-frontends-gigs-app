@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2e63b877-2392-4487-a330-cbdad46c784b",
+		"_postman_id": "48a4ceda-f3e0-460d-bac4-b78c19b30685",
 		"name": "micro-frontends-gigs-app",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1794,6 +1794,95 @@
 							],
 							"path": [
 								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Jobs",
+			"item": [
+				{
+					"name": "get jobs successfully",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token_user}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bodySkills\": [\n        \"23e00d92-207a-4b5b-b3c9-4c5662644941\",\n        \"cbac57a3-7180-4316-8769-73af64893158\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/jobs?page=1&perPage=10&sortBy=createdAt&sortOrder=desc&maxSalary=199&title=Dummy",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "perPage",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt"
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc"
+								},
+								{
+									"key": "jobLocation",
+									"value": "any",
+									"disabled": true
+								},
+								{
+									"key": "minSalary",
+									"value": "100",
+									"disabled": true
+								},
+								{
+									"key": "maxSalary",
+									"value": "199"
+								},
+								{
+									"key": "title",
+									"value": "Dummy"
+								}
 							]
 						}
 					},

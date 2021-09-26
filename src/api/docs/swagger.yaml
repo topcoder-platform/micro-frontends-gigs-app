@@ -148,6 +148,83 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /jobs:
+    get:
+      tags:
+        - Jobs
+      description: |
+        Load the jobs based on criteria.
+      parameters:
+        - in: query
+          name: jobLocation
+          required: false
+          schema:
+            type: string
+          description: The Job Location
+        - in: query
+          name: minSalary
+          required: false
+          schema:
+            type: integer
+          description: The Job min salary
+        - in: query
+          name: maxSalary
+          required: false
+          schema:
+            type: integer
+          description: The Job max salary
+        - in: query
+          name: title
+          required: false
+          schema:
+            type: string
+          description: The Job title
+        - in: body
+          name: bodySkills
+          required: false
+          schema:
+            type: array
+            item:
+              type: string
+              format: uuid
+          description: The skills to filter the jobs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /profile:
     get:
       tags:
@@ -255,6 +332,35 @@ components:
           type: boolean
           description: "Whether the job application has been synced"
           example: true
+    Job:
+      required:
+        - title
+        - payment
+        - skills
+        - location
+        - duration
+      properties:
+        title:
+          type: string
+          example: "Dummy title"
+          description: "The title."
+          maxLength: 64
+        payment:
+          $ref: "#/components/schemas/Payment"
+        skills:
+          type: array
+          description: "The skills to filter the jobs"
+          items:
+            type: string
+            format: uuid
+        location:
+          type: string
+          example: "Any location"
+          description: "the location of job"
+        duration:
+          type: integer
+          example: 1
+          description: "The duration in weeks"
     JobApplication:
       required:
         - title
