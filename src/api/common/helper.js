@@ -417,9 +417,14 @@ async function getWorkingPeriods(jobCandidates, userHandle, resourceBookings) {
  */
 async function getJobs(criteria) {
   let jobIds = [];
+  let bodySkills = [];
   if (criteria.jobIds) {
     jobIds = criteria.jobIds;
     criteria = _.omit(criteria, "jobIds");
+  }
+  if (criteria.bodySkills) {
+    bodySkills = criteria.bodySkills;
+    criteria = _.omit(criteria, 'bodySkills');
   }
   const token = await getM2MToken();
   const url = `${config.API.V5}/jobs`;
@@ -428,7 +433,7 @@ async function getJobs(criteria) {
     .query(criteria)
     .set("Authorization", `Bearer ${token}`)
     .set("Accept", "application/json")
-    .send({ jobIds });
+    .send({ jobIds, bodySkills });
   localLogger.debug({
     context: "getJobs",
     message: `response body: ${JSON.stringify(res.body)}`,
