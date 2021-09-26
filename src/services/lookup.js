@@ -11,6 +11,12 @@ async function getPaginatedCountries(page = 1, perPage = 100) {
   return await api.get(url);
 }
 
+async function getPaginatedSkills(page = 1, perPage = 100) {
+  const url = `/skills?page=${page}&perPage=${perPage}`;
+  return await api.get(url);
+}
+
 export default {
   getPaginatedCountries,
+  getPaginatedSkills,
 };

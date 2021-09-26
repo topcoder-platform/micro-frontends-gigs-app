@@ -424,7 +424,7 @@ async function getJobs(criteria) {
   }
   if (criteria.bodySkills) {
     bodySkills = criteria.bodySkills;
-    criteria = _.omit(criteria, 'bodySkills');
+    criteria = _.omit(criteria, "bodySkills");
   }
   const token = await getM2MToken();
   const url = `${config.API.V5}/jobs`;

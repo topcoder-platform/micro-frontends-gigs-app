@@ -122,7 +122,7 @@ const onLoadSkillsError = (state, { payload: skillsError }) => ({
 const onLoadSkillsSuccess = (state, { payload: skillsAll }) => {
   const skillsByCode = {};
   for (let skill of skillsAll) {
-    skillsByCode[skill.code] = skill;
+    skillsByCode[skill.id] = skill;
   }
   return {
     ...state,
@@ -212,7 +212,7 @@ const onSetPaymentMinValue = (state, { payload: paymentMin }) => ({
 const onSetSkills = (state, { payload: skills }) => {
   const skillsByCode = {};
   for (let skill of skills) {
-    skillsByCode[skill.code] = skill;
+    skillsByCode[skill.id] = skill;
   }
   return {
     ...state,

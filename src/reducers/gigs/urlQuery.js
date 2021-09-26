@@ -22,7 +22,7 @@ export function makeQueryFromState(state) {
   const { sortBy, sortOrder } = sorting;
   const skillCodes = [];
   for (let skill of skills) {
-    skillCodes.push(skill.code);
+    skillCodes.push(skill.id);
   }
   const params = {
     location: location.toLowerCase(),
@@ -83,7 +83,7 @@ export function updateStateFromQuery(state, queryStr) {
       let skill = skillsByCode[skillCode];
       if (skill) {
         querySkills.push(skill);
-        querySkillsByCode[skill.code] = skill;
+        querySkillsByCode[skill.id] = skill;
         if (!(skillCode in filtersSkillsByCode)) {
           hasSameSkills = false;
         }

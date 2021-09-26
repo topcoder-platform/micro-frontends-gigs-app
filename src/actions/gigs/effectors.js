@@ -1,6 +1,7 @@
 import actions from "./creators";
 import * as selectors from "reducers/gigs/selectors";
 import * as services from "services/gigs";
+import service from "../../services/lookup";
 import { isAbort } from "../../utils/fetch";
 import { makeQueryFromState } from "reducers/gigs/urlQuery";
 import { SORT_BY, SORT_ORDER } from "constants/gigs";
@@ -95,9 +96,43 @@ export const loadGigPromos = async ({ dispatch }) => {
  */
 export const loadSkills = async ({ dispatch }) => {
   let skills = null;
-  const promise = services.fetchSkills();
+  /**
+  // fetch the first page to see how many more fetches are necessary to get all
+  const countries = await service.getPaginatedCountries();
+  const {
+    meta: { totalPages },
+  } = countries;
+
+  const pagesMissing = totalPages - 1;
+
+  // fetch the other pages.
+  const allPageResults = await Promise.all(
+    [...Array(pagesMissing > 0 ? pagesMissing : 0)].map((_, index) => {
+      const newPage = index + 2;
+
+      return service.getPaginatedCountries(newPage);
+    })
+  );
+
+  const newCountries = allPageResults.map((data) => data).flat();
+  return [...countries, ...newCountries];
+   */
   try {
-    skills = await promise;
+    const skillsRes = await service.getPaginatedSkills();
+    const {
+      meta: { totalPages },
+    } = skillsRes;
+
+    const pagesMissing = totalPages - 1;
+    // fetch the other pages.
+    const allPageResults = await Promise.all(
+      [...Array(pagesMissing > 0 ? pagesMissing : 0)].map((_, index) => {
+        const newPage = index + 2;
+        return service.getPaginatedSkills(newPage);
+      })
+    );
+    const newSkills = allPageResults.map((data) => data).flat();
+    skills = [...skillsRes, ...newSkills];
   } catch (error) {
     dispatch(actions.loadSkillsError(error.toString()));
     return;
