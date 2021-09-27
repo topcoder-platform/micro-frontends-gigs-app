@@ -204,6 +204,8 @@ async function getJobs(criteria = {}) {
       skills: job.skills,
       location: job.jobLocation,
       duration: job.duration,
+      createdAt: job.createdAt,
+      updatedAt: job.updatedAt,
     };
   });
   return {

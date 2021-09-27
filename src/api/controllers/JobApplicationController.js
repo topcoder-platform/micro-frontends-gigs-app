@@ -24,7 +24,8 @@ async function getJob(req, res) {
 async function getJobs(req, res) {
   const query = { ...req.query, bodySkills: _.get(req, "body.bodySkills", []) };
   const result = await service.getJobs(query);
-  res.send(result);
+  helper.setResHeaders(req, res, result);
+  res.send(result.result);
 }
 
 module.exports = {
