@@ -77,7 +77,6 @@ workflows:
             branches:
               only:
                 - dev
-                - job-aggregator-api
 
       # Production builds are exectuted only on tagged commits to the
       # master branch.
