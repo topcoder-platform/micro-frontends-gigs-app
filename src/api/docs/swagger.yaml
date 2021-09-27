@@ -361,6 +361,14 @@ components:
           type: integer
           example: 1
           description: "The duration in weeks"
+        createdAt:
+          type: string
+          example: "2021-09-27T10:31:46.995Z"
+          description: "The job creation time"
+        updatedAt:
+          type: string
+          example: "2021-09-27T10:51:29.474Z"
+          description: "The job update time"
     JobApplication:
       required:
         - title
