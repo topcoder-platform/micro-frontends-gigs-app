@@ -191,7 +191,7 @@ async function getJobs(criteria = {}) {
   }
   const jobs = jobsRes.result;
   // apply desired structure
-  const res = _.map(jobs, (job) => {
+  let res = _.map(jobs, (job) => {
     return {
       id: job.id,
       title: job.title,
@@ -207,8 +207,33 @@ async function getJobs(criteria = {}) {
       duration: job.duration,
       createdAt: job.createdAt,
       updatedAt: job.updatedAt,
+      featured: job.featured,
+      showInHotList: job.showInHotList,
+      hotListExcerpt: job.hotListExcerpt,
+      jobTag: job.jobTag,
     };
   });
+  // Filter the special jobs
+  if (criteria.specialJob) {
+    let count = 0;
+    const hotlistJobs = res.filter((item) => {
+      if (count < 3 && item.showInHotList === true) {
+        count++;
+        return true;
+      }
+      return false;
+    });
+    const featuredJobs = res.filter((item) => {
+      if (
+        item.featured === true &&
+        !hotlistJobs.find((hotJob) => hotJob.id === item.id)
+      ) {
+        return true;
+      }
+      return false;
+    });
+    res = [...hotlistJobs, ...featuredJobs];
+  }
   return {
     total: jobsRes.total,
     page: jobsRes.page,
@@ -231,6 +256,7 @@ getJobs.schema = Joi.object()
         minSalary: Joi.number().integer(),
         maxSalary: Joi.number().integer(),
         title: Joi.string(),
+        specialJob: Joi.boolean(),
         bodySkills: Joi.array().items(Joi.string().uuid()),
       })
       .required(),

@@ -179,12 +179,18 @@ paths:
           schema:
             type: string
           description: The Job title
+        - in: query
+          name: specialJob
+          required: false
+          schema:
+            type: boolean
+          description: When passing true, the API will load all featured and showInHotList jobs at once
         - in: body
           name: bodySkills
           required: false
           schema:
             type: array
-            item:
+            items:
               type: string
               format: uuid
           description: The skills to filter the jobs
@@ -334,12 +340,23 @@ components:
           example: true
     Job:
       required:
+        - id
         - title
         - payment
         - skills
         - location
         - duration
+        - createdAt
+        - updatedAt
+        - showInHotList
+        - featured
+        - hotListExcerpt
+        - jobTag
       properties:
+        id:
+          type: string
+          format: uuid
+          description: "The job uuid"
         title:
           type: string
           example: "Dummy title"
@@ -369,6 +386,23 @@ components:
           type: string
           example: "2021-09-27T10:51:29.474Z"
           description: "The job update time"
+        showInHotList:
+          type: boolean
+          default: false
+          description: "Whether the job should display in hot list"
+        featured:
+          type: boolean
+          default: false
+          description: "Whether the job is a featured job"
+        hotListExcerpt:
+          type: string
+          default: ''
+          description: "Content to be displayed for the hotlist job"
+        jobTag:
+          type: string
+          default: ''
+          enum: ["", "New", "$$$", "Hot"]
+          description: "The job tag type"
     JobApplication:
       required:
         - title
