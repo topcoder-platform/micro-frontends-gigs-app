@@ -185,15 +185,90 @@ paths:
           schema:
             type: boolean
           description: When passing true, the API will load all featured and showInHotList jobs at once
-        - in: body
-          name: bodySkills
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags:
+        - Jobs
+      description: |
+        Load the jobs based on criteria.
+      parameters:
+        - in: query
+          name: jobLocation
           required: false
           schema:
-            type: array
-            items:
-              type: string
-              format: uuid
-          description: The skills to filter the jobs
+            type: string
+          description: The Job Location
+        - in: query
+          name: minSalary
+          required: false
+          schema:
+            type: integer
+          description: The Job min salary
+        - in: query
+          name: maxSalary
+          required: false
+          schema:
+            type: integer
+          description: The Job max salary
+        - in: query
+          name: title
+          required: false
+          schema:
+            type: string
+          description: The Job title
+        - in: query
+          name: specialJob
+          required: false
+          schema:
+            type: boolean
+          description: When passing true, the API will load all featured and showInHotList jobs at once
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bodySkills:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
       responses:
         "200":
           description: OK
@@ -352,6 +427,7 @@ components:
         - featured
         - hotListExcerpt
         - jobTag
+        - jobExternalId
       properties:
         id:
           type: string
@@ -403,6 +479,10 @@ components:
           default: ''
           enum: ["", "New", "$$$", "Hot"]
           description: "The job tag type"
+        jobExternalId:
+          type: string
+          example: "51313517"
+          description: "The corresponding gig ID on community app"
     JobApplication:
       required:
         - title

@@ -211,6 +211,7 @@ async function getJobs(criteria = {}) {
       showInHotList: job.showInHotList,
       hotListExcerpt: job.hotListExcerpt,
       jobTag: job.jobTag,
+      jobExternalId: job.externalId,
     };
   });
   // Filter the special jobs

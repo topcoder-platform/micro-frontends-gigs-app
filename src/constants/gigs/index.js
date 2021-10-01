@@ -5,7 +5,8 @@ import * as SORT_ORDER from "./sortOrder";
 
 export { LOCATION, SORT_BY, SORT_ORDER };
 
-const API_HOST = process.env.URL.PLATFORM_WEBSITE_URL || "http://localhost:8010";
+const API_HOST =
+  process.env.URL.PLATFORM_WEBSITE_URL || "http://localhost:8010";
 export const GIGS_API_URL = `${API_HOST}${process.env.API_BASE_PATH}/jobs`;
 
 export const PAGE_SIZES = [10, 20, 50, 100];
