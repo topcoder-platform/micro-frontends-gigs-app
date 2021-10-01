@@ -18,12 +18,15 @@ export const fetchGigs = (params, controller) => {
   if (!params.pageSize) {
     params.pageSize = 10;
   }
-  const promise = fetch(`${GIGS_API_URL}?${convertToApiQuery(params)}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: convertToApiBody(params),
-    signal: controller.signal,
-  }).then((response) => {
+  const promise = fetch(
+    `${GIGS_API_URL}?${convertToApiQuery(params)}&isApplicationPageActive=true`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: convertToApiBody(params),
+      signal: controller.signal,
+    }
+  ).then((response) => {
     if (response.status !== 200) {
       throw new Error("Failed to fetch gigs.");
     }

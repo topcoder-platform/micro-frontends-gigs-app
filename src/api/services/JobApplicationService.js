@@ -259,6 +259,7 @@ getJobs.schema = Joi.object()
         title: Joi.string(),
         specialJob: Joi.boolean(),
         bodySkills: Joi.array().items(Joi.string().uuid()),
+        isApplicationPageActive: Joi.boolean(),
       })
       .required(),
   })
