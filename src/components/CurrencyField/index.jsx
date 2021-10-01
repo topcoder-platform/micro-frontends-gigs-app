@@ -24,6 +24,7 @@ import { DEBOUNCE_ON_CHANGE_TIME } from "constants/index.js";
  * @param {(v: string) => void} props.onChange function called when input value changes
  * @param {(v: number) => void} props.onCommit function called after some delay
  * when input value changes and it is valid
+ * @param {boolean} [props.required] whether the field required non-empty value
  * @param {*} props.value input value
  * @returns {JSX.Element}
  */
@@ -121,6 +122,7 @@ CurrencyField.propTypes = {
   name: PT.string.isRequired,
   onChange: PT.func.isRequired,
   onCommit: PT.func.isRequired,
+  required: PT.bool,
   value: PT.oneOfType([PT.number, PT.string]).isRequired,
 };
 

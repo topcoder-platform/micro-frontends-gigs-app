@@ -25,5 +25,9 @@ module.exports = {
       controller: "JobApplicationController",
       method: "getJobs",
     },
+    post: {
+      controller: "JobApplicationController",
+      method: "getJobs",
+    },
   },
 };

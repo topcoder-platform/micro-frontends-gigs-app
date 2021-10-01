@@ -1,11 +1,11 @@
 import actions from "./creators";
 import * as selectors from "reducers/gigs/selectors";
 import * as services from "services/gigs";
-import service from "../../services/lookup";
-import { isAbort } from "../../utils/fetch";
+import lookupServices from "services/lookup";
+import { isAbort } from "utils/fetch";
 import { makeQueryFromState } from "reducers/gigs/urlQuery";
-import { SORT_BY, SORT_ORDER } from "constants/gigs";
-import { delay } from "utils/misc";
+import { sortByName } from "utils/misc";
+// import { SORT_BY, SORT_ORDER } from "constants/gigs";
 
 /**
  * Loads the specified gigs' page. If page number is not provided the current
@@ -21,12 +21,11 @@ export const loadGigsPage = async ({ dispatch, getState }) => {
   // namely filters and sorting.
   gigsState.abortController?.abort();
   const { filters, sorting, pagination } = gigsState;
-  const { location, name, paymentMax, paymentMin, skills } = filters;
+  const { location, paymentMax, paymentMin, skills, title } = filters;
   const { pageNumber, pageSize } = pagination;
   const { sortBy, sortOrder } = sorting;
   const [promise, abortController] = services.fetchGigs({
     location,
-    name,
     pageNumber,
     pageSize,
     paymentMax,
@@ -34,20 +33,13 @@ export const loadGigsPage = async ({ dispatch, getState }) => {
     skills,
     sortBy,
     sortOrder,
+    title,
   });
   dispatch(actions.loadPagePending(abortController));
   let gigs, pageCount, totalCount;
   try {
-    await delay(500); // artificial delay to simulate real request time
     const { data, pagination } = await promise;
     gigs = data;
-    // json-server doesn't support filtering by nested array values
-    // so we're filtering by skills ourselves
-    if (skills?.length) {
-      gigs = gigs.filter((gig) =>
-        gig.skills?.some((skill) => skills.some(({ id }) => id === skill.id))
-      );
-    }
     pageCount = pagination.pageCount;
     totalCount = pagination.totalCount;
   } catch (error) {
@@ -65,22 +57,19 @@ export const loadGigsPage = async ({ dispatch, getState }) => {
  * Loads promo (hotlist) gigs.
  *
  * @param {Object} store redux store object
- * @returns {void}
+ * @returns {Promise}
  */
 export const loadGigPromos = async ({ dispatch }) => {
   let gigPromos;
-  const [promosPromise] = services.fetchGigs({
-    pageNumber: 1,
-    pageSize: 1e3,
-    sortBy: SORT_BY.DATE_UPDATED,
-    sortOrder: SORT_ORDER.DESC,
-  });
+  // const [promosPromise] = services.fetchGigs({
+  //   pageNumber: 1,
+  //   pageSize: 1e3,
+  //   sortBy: SORT_BY.DATE_UPDATED,
+  //   sortOrder: SORT_ORDER.DESC,
+  // });
   try {
-    let { data } = await promosPromise;
-    gigPromos = data;
-    // json-server doesn't support filtering by "non-empty" criteria
-    // so we filter promoted (hotlist) gigs ourselves
-    gigPromos = gigPromos.filter((gig) => !!gig.promotedAs);
+    // let { data } = await promosPromise;
+    gigPromos = [];
   } catch (error) {
     dispatch(actions.loadPromosError(error.toString()));
     return;
@@ -92,28 +81,22 @@ export const loadGigPromos = async ({ dispatch }) => {
  * Loads all gigs' skills.
  *
  * @param {Object} store redux store
- * @returns {void}
+ * @returns {Promise}
  */
 export const loadSkills = async ({ dispatch }) => {
+  const pageSize = 1e3;
   let skills = null;
   try {
-    const skillsRes = await service.getPaginatedSkills();
-    const {
-      meta: { totalPages },
-    } = skillsRes;
-
-    const pagesMissing = totalPages - 1;
-    // fetch the other pages.
-    const allPageResults = await Promise.all(
-      [...Array(pagesMissing > 0 ? pagesMissing : 0)].map((_, index) => {
-        const newPage = index + 2;
-        return service.getPaginatedSkills(newPage);
-      })
-    );
-    const newSkills = allPageResults.map((data) => data).flat();
-    skills = [...skillsRes, ...newSkills];
+    const response = await lookupServices.getPaginatedSkills(1, pageSize);
+    const totalPages = +response.meta?.totalPages || 0;
+    const promises = [Promise.resolve(response)];
+    for (let p = 2; p <= totalPages; p++) {
+      promises.push(lookupServices.getPaginatedSkills(p, pageSize));
+    }
+    skills = (await Promise.all(promises)).flat().sort(sortByName);
   } catch (error) {
     dispatch(actions.loadSkillsError(error.toString()));
+    console.error(error);
     return;
   }
   dispatch(actions.loadSkillsSuccess(skills));

@@ -48,9 +48,27 @@ export function isValidNumberString(numberStr) {
  * @returns {string}
  */
 export function formatWeeklyPayment(min, max) {
-  if (!min || !max) {
-    return "-";
+  let str = null;
+  let maxStr = null;
+  let minStr = null;
+  if (max) {
+    maxStr = currencyFormatter.format(max);
   }
-  const maxStr = currencyFormatter.format(max).slice(1);
-  return `${currencyFormatter.format(min)} - ${maxStr}`;
+  if (min) {
+    minStr = currencyFormatter.format(min);
+  }
+  if (minStr) {
+    if (maxStr) {
+      str = `${minStr} - ${maxStr.slice(1)}`;
+    } else {
+      str = minStr + "+";
+    }
+  } else {
+    if (maxStr) {
+      str = maxStr;
+    } else {
+      str = "-";
+    }
+  }
+  return str;
 }

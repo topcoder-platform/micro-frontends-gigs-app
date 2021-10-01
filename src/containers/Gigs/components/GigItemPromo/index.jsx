@@ -4,7 +4,6 @@ import PT from "prop-types";
 import cn from "classnames";
 import IconMark from "assets/icons/icon-location-mark.svg";
 import { currencyFormatter } from "utils/gigs/formatting";
-import { LOCATION_LABELS } from "constants/gigs";
 
 /**
  * Displays gig promo item.
@@ -23,7 +22,7 @@ const GigItemPromo = ({
     >
       <div styleName="location">
         <IconMark className={styles.locationMark} />
-        <span styleName="location-text">{LOCATION_LABELS[location]}</span>
+        <span styleName="location-text">{location}</span>
       </div>
       <div styleName="name">{name}</div>
       <div styleName="payment">

@@ -18,17 +18,19 @@ import { preventDefault } from "utils/misc";
  */
 const GigsFilter = () => {
   const skillsAll = useSelector(selectors.getSkillsAll);
+  const locations = useSelector(selectors.getLocations);
   const { location, skills } = useSelector(selectors.getFilters);
   const { paymentMax, paymentMin } = useSelector(selectors.getValues);
   const dispatch = useDispatch();
 
   const locationOptions = useMemo(
     () =>
-      LOCATION_OPTIONS.map((option) => ({
-        ...option,
-        selected: option.value === location,
+      locations.map((value) => ({
+        value,
+        label: value,
+        selected: value === location,
       })),
-    [location]
+    [location, locations]
   );
 
   const onChangeLocation = useCallback(
@@ -137,11 +139,3 @@ const GigsFilter = () => {
 };
 
 export default GigsFilter;
-
-const LOCATION_OPTIONS = [
-  { value: LOCATION.ALL, label: "All" },
-  { value: LOCATION.ANY_ASIAN_COUNTRY, label: "Any Asian Country" },
-  { value: LOCATION.ANY_LOCATION, label: "Any Location" },
-  { value: LOCATION.INDIA_PREFERRED, label: "Any Location - India preferred" },
-  { value: LOCATION.INDIA_ONLY, label: "India Only" },
-];

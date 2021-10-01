@@ -10,7 +10,6 @@ import actions from "actions/gigs/creators";
 /**
  * Displays gigs' list with promo gigs.
  *
- * @param {Object} props component properties
  * @returns {JSX.Element}
  */
 const GigList = () => {
@@ -20,8 +19,9 @@ const GigList = () => {
 
   const onClickSkill = useCallback(
     (event) => {
-      const dataset = event.target.dataset;
-      dispatch(actions.addSkill({ code: dataset.code, id: dataset.id }));
+      let target = event.target;
+      let dataset = target.dataset;
+      dispatch(actions.addSkill({ id: dataset.id, name: target.textContent }));
     },
     [dispatch]
   );
@@ -32,16 +32,16 @@ const GigList = () => {
 
   return (
     <div styleName="container">
-      {gigs.map((gig, index) =>
-        index === promosIndex && gigPromos?.length ? (
-          <>
+      {gigs.map((gig, gigIndex) =>
+        gigIndex === promosIndex ? (
+          <React.Fragment key={"gig-promos-fragment"}>
             <div key={"gig-promo-list"} styleName="gig-promo-list">
-              {gigPromos.map((gig, index) => (
+              {gigPromos?.map((gig, promoIndex) => (
                 <div styleName="gig-promo">
                   <GigItemPromo
                     key={gig.id}
                     className={styles.gigPromoItem}
-                    index={index}
+                    index={promoIndex}
                     gig={gig}
                   />
                 </div>
@@ -54,7 +54,7 @@ const GigList = () => {
               gig={gig}
               onClickSkill={onClickSkill}
             />
-          </>
+          </React.Fragment>
         ) : (
           <GigItem
             key={gig.id}
@@ -66,10 +66,6 @@ const GigList = () => {
       )}
     </div>
   );
-};
-
-GigList.propTypes = {
-  promosIndex: PT.number.isRequired,
 };
 
 export default GigList;

@@ -60,33 +60,24 @@
   line-height: 22px;
   color: #555555;
 
-  &.any_location,
-  &.india_preferred {
+  &::before {
+    content: "";
+    display: block;
+    margin-right: 5px;
+    width: 14px;
+    height: 16px;
+    // there was no SVG for this icon
+    background-image: url("../../../../assets/icons/icon-mark.png");
+    background-size: 14px 16px;
+    background-repeat: no-repeat;
+  }
+
+  &.global {
     &::before {
-      content: "";
-      display: block;
-      margin-right: 5px;
-      height: 16px;
       width: 16px;
       // there was no SVG for this icon
       background-image: url("../../../../assets/icons/icon-globe.png");
       background-size: 16px 16px;
-      background-repeat: no-repeat;
-    }
-  }
-
-  &.any_asian_country,
-  &.india_only {
-    &::before {
-      content: "";
-      display: block;
-      margin-right: 5px;
-      height: 16px;
-      width: 14px;
-      // there was no SVG for this icon
-      background-image: url("../../../../assets/icons/icon-mark.png");
-      background-size: 14px 16px;
-      background-repeat: no-repeat;
     }
   }
 }
@@ -155,6 +146,7 @@
 
 .payment-label {
   margin-top: 2px;
+  text-transform: capitalize;
 }
 
 .duration-label {

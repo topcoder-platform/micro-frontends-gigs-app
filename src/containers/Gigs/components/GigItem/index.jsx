@@ -6,8 +6,8 @@ import TagList from "components/TagList";
 import IconFlagDollars from "components/icons/FlagDollars";
 import IconFlagHot from "components/icons/FlagHot";
 import IconFlagNew from "components/icons/FlagNew";
-import { LOCATION_LABELS } from "constants/gigs";
 import { formatWeeklyPayment } from "utils/gigs/formatting";
+import { formatPlural } from "utils/formatting";
 
 /**
  * Displays gigs list item.
@@ -17,14 +17,14 @@ import { formatWeeklyPayment } from "utils/gigs/formatting";
  */
 const GigItem = ({ className, gig, onClickSkill }) => {
   const {
-    durationWeeks,
+    duration,
     id,
+    isGlobal,
     location,
-    name,
-    paymentMax,
-    paymentMin,
+    payment,
     promotedAs,
     skills,
+    title,
   } = gig;
 
   return (
@@ -39,10 +39,8 @@ const GigItem = ({ className, gig, onClickSkill }) => {
         <IconFlagNew className={styles.flagIcon} id={id} />
       )}
       <div styleName="name-skills">
-        <div styleName="name">{name}</div>
-        <div styleName={cn("location", location?.toLowerCase())}>
-          {LOCATION_LABELS[location]}
-        </div>
+        <div styleName="name">{title}</div>
+        <div styleName={cn("location", { global: isGlobal })}>{location}</div>
         {!!skills?.length && (
           <div styleName="skills">
             <TagList
@@ -56,12 +54,16 @@ const GigItem = ({ className, gig, onClickSkill }) => {
       </div>
       <div styleName="payment">
         <div styleName="payment-range">
-          {formatWeeklyPayment(paymentMin, paymentMax)}
+          {formatWeeklyPayment(payment?.min, payment?.max)}
         </div>
-        <div styleName="payment-label">Weekly Payment</div>
+        <div styleName="payment-label">
+          {payment?.frequency || "weekly"} payment
+        </div>
       </div>
       <div styleName="duration">
-        <div styleName="duration-weeks">{durationWeeks} Weeks</div>
+        <div styleName="duration-weeks">
+          {duration ? formatPlural(duration, "Week") : "-"}
+        </div>
         <div styleName="duration-label">Duration</div>
       </div>
     </div>
@@ -70,17 +72,33 @@ const GigItem = ({ className, gig, onClickSkill }) => {
 
 GigItem.propType = {
   className: PT.string,
-  gig: PT.object.isRequired,
+  gig: PT.shape({
+    duration: PT.number,
+    id: PT.string.isRequired,
+    isGlobal: PT.bool,
+    location: PT.string.isRequired,
+    payment: PT.shape({
+      frequency: PT.string,
+      max: PT.number,
+      min: PT.number,
+    }),
+    skills: PT.arrayOf(
+      PT.shape({
+        id: PT.string.isRequired,
+        name: PT.string.isRequired,
+      })
+    ),
+    title: PT.string.isRequired,
+  }).isRequired,
   onClickSkill: PT.func.isRequired,
 };
 
 export default GigItem;
 
-const renderTag = ({ className, onClickTag, tag: { code, id, name } }) => (
+const renderTag = ({ className, onClickTag, tag: { id, name } }) => (
   <span
     key={id}
     className={className}
-    data-code={code}
     data-id={id}
     onClick={onClickTag}
     styleName="skill"

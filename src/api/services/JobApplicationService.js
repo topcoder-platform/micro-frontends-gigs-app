@@ -193,6 +193,7 @@ async function getJobs(criteria = {}) {
   // apply desired structure
   const res = _.map(jobs, (job) => {
     return {
+      id: job.id,
       title: job.title,
       payment: {
         min: job.minSalary,

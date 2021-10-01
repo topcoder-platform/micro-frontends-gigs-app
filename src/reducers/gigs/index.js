@@ -3,6 +3,7 @@ import * as ACTION_TYPE from "actions/gigs/types";
 import { LOCATION, SORT_BY_DEFAULT, SORT_ORDER_DEFAULT } from "constants/gigs";
 import { updateStateFromQuery } from "./urlQuery";
 import { integerFormatter } from "utils/gigs/formatting";
+import { sortLocations } from "utils/gigs/misc";
 
 const abortControllerDummy = { abort() {} };
 
@@ -15,12 +16,14 @@ const initPagination = () => ({
 
 const initFilters = () => ({
   location: LOCATION.ALL,
-  name: "",
   paymentMax: 10000,
   paymentMin: 0,
   skills: [],
-  skillsByCode: {},
+  skillsById: {},
+  title: "",
 });
+
+const initLocations = () => [LOCATION.ALL, LOCATION.ANY];
 
 const initSorting = () => ({
   sortBy: SORT_BY_DEFAULT,
@@ -39,21 +42,25 @@ const initialState = {
   gigPromosError: null,
   gigs: [],
   gigsError: null,
+  locations: initLocations(),
+  // locationSet doesn't need to be re-created on state change because
+  // it is not used in any useSelector calls.
+  locationSet: new Set(initLocations()),
   pagination: initPagination(),
   skillsAll: [],
-  skillsByCode: null,
+  skillsById: null,
   skillsError: null,
   sorting: initSorting(),
   values: initValues(),
 };
 
-const onAddSkill = (state, { payload: { code } }) => {
-  const filtersSkillsByCode = state.filters.skillsByCode;
-  if (code in filtersSkillsByCode) {
+const onAddSkill = (state, { payload: { id } }) => {
+  const filtersSkillsById = state.filters.skillsById;
+  if (id in filtersSkillsById) {
     return state;
   }
-  const skillsByCode = state.skillsByCode;
-  const skill = skillsByCode[code];
+  const skillsById = state.skillsById;
+  const skill = skillsById[id];
   if (!skill) {
     return state;
   }
@@ -62,7 +69,7 @@ const onAddSkill = (state, { payload: { code } }) => {
     filters: {
       ...state.filters,
       skills: [...state.filters.skills, skill],
-      skillsByCode: { ...filtersSkillsByCode, [code]: skill },
+      skillsById: { ...filtersSkillsById, [id]: skill },
     },
     pagination: {
       ...state.pagination,
@@ -84,6 +91,19 @@ const onLoadPagePending = (state, { payload: abortController }) => ({
   gigsError: null,
 });
 
+const IGNORED_LOCATION_SET = new Set(
+  [LOCATION.ALL, LOCATION.ANY].map((loc) => loc.toLowerCase())
+);
+
+const GLOBAL_LOCATION_SET = new Set(
+  [
+    LOCATION.ALL,
+    LOCATION.ANY,
+    LOCATION.ANYWHERE,
+    LOCATION.ANY_LOCATION,
+  ].map((loc) => loc.toLowerCase())
+);
+
 const onLoadPageSuccess = (
   state,
   { payload: { gigs, pageCount, totalCount } }
@@ -94,10 +114,42 @@ const onLoadPageSuccess = (
     oldPagination.pageCount !== pageCount
       ? { ...oldPagination, pageCount, totalCount }
       : oldPagination;
+
+  let locations = state.locations;
+  const locationSet = state.locationSet;
+  const oldLocationCount = locationSet.size;
+  const skillsById = state.skillsById;
+  for (let gig of gigs) {
+    if (gig.location) {
+      let lcLocation = gig.location.toLowerCase();
+      if (!IGNORED_LOCATION_SET.has(lcLocation)) {
+        locationSet.add(gig.location);
+      }
+      gig.isGlobal = GLOBAL_LOCATION_SET.has(lcLocation);
+    } else {
+      gig.location = LOCATION.ANYWHERE;
+      gig.isGlobal = true;
+    }
+    if (gig.skills?.length) {
+      let skills = [];
+      for (let skillId of gig.skills) {
+        let skill = skillsById[skillId];
+        if (skill) {
+          skills.push(skill);
+        }
+      }
+      gig.skills = skills;
+    }
+  }
+  if (oldLocationCount !== locationSet.size) {
+    locations = [...locationSet].sort(sortLocations);
+  }
+
   return {
     ...state,
     abortController: null,
     gigs,
+    locations,
     pagination,
   };
 };
@@ -115,19 +167,19 @@ const onLoadPromosSuccess = (state, { payload: gigPromos }) => ({
 
 const onLoadSkillsError = (state, { payload: skillsError }) => ({
   ...state,
-  skillsByCode: {},
+  skillsById: {},
   skillsError,
 });
 
 const onLoadSkillsSuccess = (state, { payload: skillsAll }) => {
-  const skillsByCode = {};
+  const skillsById = {};
   for (let skill of skillsAll) {
-    skillsByCode[skill.id] = skill;
+    skillsById[skill.id] = skill;
   }
   return {
     ...state,
     skillsAll,
-    skillsByCode,
+    skillsById,
   };
 };
 
@@ -147,15 +199,6 @@ const onSetLocation = (state, { payload: location }) =>
     : {
         ...state,
         filters: { ...state.filters, location },
-        pagination: { ...state.pagination, pageNumber: 1 },
-      };
-
-const onSetName = (state, { payload: name }) =>
-  name === state.filters.name
-    ? state
-    : {
-        ...state,
-        filters: { ...state.filters, name },
         pagination: { ...state.pagination, pageNumber: 1 },
       };
 
@@ -210,16 +253,16 @@ const onSetPaymentMinValue = (state, { payload: paymentMin }) => ({
 });
 
 const onSetSkills = (state, { payload: skills }) => {
-  const skillsByCode = {};
+  const skillsById = {};
   for (let skill of skills) {
-    skillsByCode[skill.id] = skill;
+    skillsById[skill.id] = skill;
   }
   return {
     ...state,
     filters: {
       ...state.filters,
       skills,
-      skillsByCode,
+      skillsById,
     },
     pagination: {
       ...state.pagination,
@@ -231,17 +274,32 @@ const onSetSkills = (state, { payload: skills }) => {
 const onSetSorting = (
   state,
   { payload: { sortBy = SORT_BY_DEFAULT, sortOrder = SORT_ORDER_DEFAULT } }
-) => ({
-  ...state,
-  pagination: {
-    ...state.pagination,
-    pageNumber: 1,
-  },
-  sorting: {
-    sortBy,
-    sortOrder,
-  },
-});
+) => {
+  const sorting = state.sorting;
+  if (sorting.sortBy === sortBy && sorting.sortOrder === sortOrder) {
+    return state;
+  }
+  return {
+    ...state,
+    pagination: {
+      ...state.pagination,
+      pageNumber: 1,
+    },
+    sorting: {
+      sortBy,
+      sortOrder,
+    },
+  };
+};
+
+const onSetTitle = (state, { payload: title }) =>
+  title === state.filters.title
+    ? state
+    : {
+        ...state,
+        filters: { ...state.filters, title },
+        pagination: { ...state.pagination, pageNumber: 1 },
+      };
 
 const onUpdateStateFromQuery = (state, { payload: query }) =>
   updateStateFromQuery(state, query);
@@ -258,7 +316,6 @@ export default handleActions(
     [ACTION_TYPE.LOAD_SKILLS_SUCCESS]: onLoadSkillsSuccess,
     [ACTION_TYPE.RESET_FILTERS]: onResetFilters,
     [ACTION_TYPE.SET_LOCATION]: onSetLocation,
-    [ACTION_TYPE.SET_NAME]: onSetName,
     [ACTION_TYPE.SET_PAGE_NUMBER]: onSetPageNumber,
     [ACTION_TYPE.SET_PAGE_SIZE]: onSetPageSize,
     [ACTION_TYPE.SET_PAYMENT_MAX]: onSetPaymentMax,
@@ -267,6 +324,7 @@ export default handleActions(
     [ACTION_TYPE.SET_PAYMENT_MIN_VALUE]: onSetPaymentMinValue,
     [ACTION_TYPE.SET_SKILLS]: onSetSkills,
     [ACTION_TYPE.SET_SORTING]: onSetSorting,
+    [ACTION_TYPE.SET_TITLE]: onSetTitle,
     [ACTION_TYPE.UPDATE_STATE_FROM_QUERY]: onUpdateStateFromQuery,
   },
   initialState,

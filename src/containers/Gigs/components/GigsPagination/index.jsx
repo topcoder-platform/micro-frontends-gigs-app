@@ -31,6 +31,7 @@ const GigsPagination = () => {
 
   return (
     <Pagination
+      id="gigs-pagination"
       className={styles.container}
       label="per page"
       onPageNumberClick={onPageNumberClick}

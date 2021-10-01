@@ -1,5 +1,5 @@
-import { GIGS_API_URL, SKILLS_API_URL } from "constants/gigs";
-import { convertToApiQuery } from "utils/gigs/api";
+import { GIGS_API_URL } from "constants/gigs";
+import { convertToApiBody, convertToApiQuery } from "utils/gigs/api";
 
 /**
  * Fetches gigs from API.
@@ -9,45 +9,33 @@ import { convertToApiQuery } from "utils/gigs/api";
  * @returns {[Promise, AbortController]}
  */
 export const fetchGigs = (params, controller) => {
-  let totalCount = 0;
-  const { pageNumber = 1, pageSize = 1000 } = params;
   if (!controller) {
     controller = new AbortController();
   }
+  if (!params.pageNumber) {
+    params.pageNumber = 1;
+  }
+  if (!params.pageSize) {
+    params.pageSize = 10;
+  }
   const promise = fetch(`${GIGS_API_URL}?${convertToApiQuery(params)}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: convertToApiBody(params),
     signal: controller.signal,
-  })
-    .then((response) => {
-      if (response.status !== 200) {
-        throw new Error("Failed to fetch gigs.");
-      }
-      totalCount = +response.headers.get("X-Total-Count") || 0;
-      return response.json();
-    })
-    .then((data) => {
-      return {
-        data,
-        pagination: {
-          pageCount: Math.ceil(totalCount / pageSize),
-          pageNumber,
-          pageSize,
-          totalCount,
-        },
-      };
-    });
-  return [promise, controller];
-};
-
-/**
- * Fetches skills from API.
- *
- * @returns {Promise}
- */
-export const fetchSkills = () => {
-  return fetch(SKILLS_API_URL).then((response) => {
+  }).then((response) => {
     if (response.status !== 200) {
-      throw new Error("Failed to fetch skills.");
+      throw new Error("Failed to fetch gigs.");
     }
-    return response.json();
+    const headers = response.headers;
+    let pageCount = +headers.get("X-Total-Pages") || 0;
+    let pageNumber = +headers.get("X-Page") || 1;
+    let pageSize = +headers.get("X-Per-Page") || 10;
+    let totalCount = +headers.get("X-Total") || 0;
+    return response.json().then((data) => ({
+      data,
+      pagination: { pageCount, pageNumber, pageSize, totalCount },
+    }));
   });
+  return [promise, controller];
 };

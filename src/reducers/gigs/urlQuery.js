@@ -17,23 +17,18 @@ import { integerFormatter } from "utils/gigs/formatting";
  */
 export function makeQueryFromState(state) {
   const { filters, pagination, sorting } = state;
-  const { location, name, paymentMax, paymentMin, skills } = filters;
+  const { location, paymentMax, paymentMin, title } = filters;
   const { pageNumber, pageSize } = pagination;
   const { sortBy, sortOrder } = sorting;
-  const skillCodes = [];
-  for (let skill of skills) {
-    skillCodes.push(skill.id);
-  }
   const params = {
-    location: location.toLowerCase(),
-    name: encodeURIComponent(name),
+    location: encodeURIComponent(location),
     paymentMax: paymentMax + "",
     paymentMin: paymentMin + "",
     pageNumber,
     pageSize,
-    skills: skillCodes.join(","),
     sortBy: sortBy.toLowerCase(),
     sortOrder,
+    title: encodeURIComponent(title),
   };
   const queryParams = [];
   for (let [stateKey, queryKey] of URL_QUERY_PARAMS_MAP) {
@@ -68,38 +63,7 @@ export function updateStateFromQuery(state, queryStr) {
   let updatePagination = false;
   let updateSorting = false;
   let updateValues = false;
-  const { filters, pagination, skillsByCode, sorting, values } = state;
-
-  // checking skills
-  let hasSameSkills = true;
-  const filtersSkills = filters.skills;
-  const filtersSkillsByCode = filters.skillsByCode;
-  const querySkills = [];
-  const querySkillsByCode = {};
-  const skillsStr = params.skills;
-  if (skillsStr) {
-    // checking if all skills from query are present in current filters' skills
-    for (let skillCode of skillsStr.split(",")) {
-      let skill = skillsByCode[skillCode];
-      if (skill) {
-        querySkills.push(skill);
-        querySkillsByCode[skill.id] = skill;
-        if (!(skillCode in filtersSkillsByCode)) {
-          hasSameSkills = false;
-        }
-      }
-    }
-  }
-  // it may happen that all skills in query are present in filters' skills
-  // but there may be more filters' skills than query's skills
-  if (querySkills.length !== filtersSkills.length) {
-    hasSameSkills = false;
-  }
-  if (!hasSameSkills) {
-    filters.skills = querySkills;
-    filters.skillsByCode = querySkillsByCode;
-    updateFilters = true;
-  }
+  const { filters, pagination, sorting, values } = state;
 
   // checking maximum payment
   const paymentMax = parseFloat(params.paymentMax);
@@ -119,16 +83,15 @@ export function updateStateFromQuery(state, queryStr) {
   }
 
   // chacking location
-  let location = params.location?.toUpperCase();
-  location = location in LOCATION ? location : LOCATION.ALL;
+  const location = params.location || LOCATION.ALL;
   if (location !== filters.location) {
     filters.location = location;
     updateFilters = true;
   }
-  // checking gig name
-  const gigName = params.name?.slice(0, 256) || "";
-  if (gigName !== filters.name) {
-    filters.name = gigName;
+  // checking gig title
+  const title = params.title?.slice(0, 256) || "";
+  if (title !== filters.title) {
+    filters.title = title;
     updateFilters = true;
   }
 

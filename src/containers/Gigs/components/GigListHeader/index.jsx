@@ -14,16 +14,9 @@ import { SORT_BY, SORT_ORDER } from "constants/gigs";
  * @returns {JSX.Element}
  */
 const GigListHeader = () => {
-  const name = useSelector(selectors.getName);
   const sorting = useSelector(selectors.getSorting);
+  const title = useSelector(selectors.getTitle);
   const dispatch = useDispatch();
-
-  const onChangeName = useCallback(
-    (name) => {
-      dispatch(actions.setName(name));
-    },
-    [dispatch]
-  );
 
   const onChangeSorting = useCallback(
     (options) => {
@@ -33,6 +26,13 @@ const GigListHeader = () => {
         let [sortBy, sortOrder] = value.split("--");
         dispatch(actions.setSorting({ sortBy, sortOrder }));
       }
+    },
+    [dispatch]
+  );
+
+  const onChangeTitle = useCallback(
+    (title) => {
+      dispatch(actions.setTitle(title));
     },
     [dispatch]
   );
@@ -54,11 +54,11 @@ const GigListHeader = () => {
     <div styleName="container">
       <SearchField
         className={styles.nameField}
-        id="gig-name"
-        name="gig_name"
-        onChange={onChangeName}
+        id="gig-title"
+        name="gig_title"
+        onChange={onChangeTitle}
         placeholder="Search Gig Listing by Name"
-        value={name}
+        value={title}
       />
       <Dropdown
         className={styles.sortingDropdown}
