@@ -7,7 +7,7 @@ import Loading from "components/Loading";
 import GigList from "./components/GigList";
 import GigListHeader from "./components/GigListHeader";
 import GigsPagination from "./components/GigsPagination";
-import ReferralMessage from "./components/ReferralMessage";
+import ReferralBanner from "./components/ReferralBanner";
 import * as selectors from "reducers/gigs/selectors";
 import * as effectors from "actions/gigs/effectors";
 import { useUpdateEffect } from "utils/hooks";
@@ -69,16 +69,7 @@ const Gigs = () => {
 
   return (
     <div styleName="container">
-      <ReferralMessage
-        buttonText="REFER TO A FRIEND"
-        className={styles.referralMessage}
-      >
-        <span styleName="referral-question">Topcoder Referral Program:</span>{" "}
-        <span styleName="referral-text">
-          Do you know someone who is perfect for a gig? You could earn $500 for
-          referring them!
-        </span>
-      </ReferralMessage>
+      <ReferralBanner className={styles.referralBanner} />
       <div styleName="page-title">Open Gigs</div>
       <div styleName="gigs-list">
         <GigListHeader />
