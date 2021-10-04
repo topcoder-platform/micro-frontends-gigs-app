@@ -1,11 +1,11 @@
 @import "styles/variables";
 @import "styles/mixins";
-@import 'styles/GUIKit/default';
+@import "styles/GUIKit/default";
 
 .button {
   @include roboto-bold;
 
-  padding: 8px 12px;
+  padding: 8px 13px;
   font-size: $font-size-xs;
   color: $green;
   line-height: 1;
@@ -29,11 +29,37 @@
     width: 30px;
     height: 30px;
   }
+
+  &.button-dark {
+    border-color: $darkGreen;
+  }
+
+  &.button-primary {
+    &.button-inverted {
+      border: none;
+      padding: 9px 14px;
+    }
+  }
 }
 
 .button-primary {
   color: $white;
   background-color: $green;
+
+  &.button-inverted {
+    color: $green;
+    background-color: $white;
+  }
+
+  &.button-dark {
+    color: #fafafb;
+    background-color: $darkGreen;
+
+    &.button-inverted {
+      color: $darkGreen;
+      background-color: #fff;
+    }
+  }
 }
 
 .button-text {
@@ -53,5 +79,29 @@
     padding: 0;
     width: 40px;
     height: 40px;
+  }
+
+  &.button-primary {
+    &.button-inverted {
+      padding: 13px 21px;
+    }
+  }
+}
+
+.button-sm {
+  border-radius: 10px;
+  padding: 4px 13px;
+  font-size: 10px;
+
+  &.button-circle {
+    padding: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  &.button-primary {
+    &.button-inverted {
+      padding: 5px 14px;
+    }
   }
 }
