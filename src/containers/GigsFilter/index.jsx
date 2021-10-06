@@ -132,7 +132,7 @@ const GigsFilter = () => {
       </div>
       <div styleName="controls">
         <Button onClick={onClickClearBtn}>CLEAR FILTER</Button>
-        <Button>SAVE FILTER</Button>
+        {/* <Button>SAVE FILTER</Button> */}
       </div>
     </form>
   );
