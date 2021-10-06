@@ -43,23 +43,25 @@ export function isValidNumberString(numberStr) {
 /**
  * Returns a sum range formatted as USD.
  *
- * @param {number} [min] minimum sum
- * @param {number} [max] maximum sum
+ * @param {number} min minimum sum
+ * @param {number} max maximum sum
+ * @param {string} minCurrency currency for minimum amount
+ * @param {string} [maxCurrency] currency for maximum amount
  * @returns {string}
  */
-export function formatWeeklyPayment(min, max) {
+export function formatPaymentAmount(min, max, minCurrency, maxCurrency = "") {
   let str = null;
   let maxStr = null;
   let minStr = null;
   if (max) {
-    maxStr = currencyFormatter.format(max);
+    maxStr = maxCurrency + integerFormatter.format(max);
   }
   if (min) {
-    minStr = currencyFormatter.format(min);
+    minStr = minCurrency + integerFormatter.format(min);
   }
   if (minStr) {
     if (maxStr) {
-      str = `${minStr} - ${maxStr.slice(1)}`;
+      str = `${minStr} - ${maxStr}`;
     } else {
       str = minStr + "+";
     }

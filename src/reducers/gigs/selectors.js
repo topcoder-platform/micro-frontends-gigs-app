@@ -2,22 +2,29 @@
  * Functions that return portions of gigs' redux state slice.
  */
 
-export const getGigPromos = (state) => state.gigs.gigPromos;
-
-export const getGigPromosError = (state) => state.gigs.gigPromosError;
-
 export const getGigs = (state) => state.gigs.gigs;
 
 export const getGigsError = (state) => state.gigs.gigsError;
 
-export const getHasInitialData = (state) =>
-  !!state.gigs.gigPromos && !!state.gigs.skillsById;
+export const getGigsFeatured = (state) => state.gigs.gigsFeatured;
 
-export const getHasGigs = (state) => !!state.gigs.gigs?.length;
+export const getGigsHot = (state) => state.gigs.gigsHot;
+
+export const getGigsSpecial = (state) => state.gigs.gigsSpecial;
+
+export const getGigsSpecialError = (state) => state.gigs.gigsSpecialError;
+
+export const getHasGigs = (state) =>
+  !!state.gigs.gigs?.length ||
+  !!state.gigs.gigsFeatured?.length ||
+  !!state.gigs.gigsHot?.length;
+
+export const getHasInitialData = (state) =>
+  !!state.gigs.gigsSpecial && !!state.gigs.skillsById;
 
 export const getIsLoadingPage = (state) =>
   !!state.gigs.abortController ||
-  !state.gigs.gigPromos ||
+  !state.gigs.gigsSpecial ||
   !state.gigs.skillsById;
 
 export const getFilters = (state) => state.gigs.filters;

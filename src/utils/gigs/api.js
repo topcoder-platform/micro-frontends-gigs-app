@@ -1,8 +1,8 @@
 import qs from "qs";
 import { LOCATION, SORT_BY_TO_API } from "constants/gigs";
 
-// maps state keys to API query parameters
-export const STATE_KEY_TO_API = {
+// maps parameter keys to API query parameters
+export const PARAM_KEY_TO_API = {
   location: "jobLocation",
   pageNumber: "page",
   pageSize: "perPage",
@@ -10,11 +10,12 @@ export const STATE_KEY_TO_API = {
   paymentMin: "minSalary",
   sortBy: "sortBy",
   sortOrder: "sortOrder",
+  special: "specialJob",
   title: "title",
 };
 
 /**
- * Converts state parameters to search query string that can be used for
+ * Converts provided parameters to search query string that can be used for
  * sending GET or POST requests to /jobs API.
  *
  * @param {Object} params
@@ -25,19 +26,17 @@ export function convertToApiQuery(params) {
   if (params.sortBy) {
     params.sortBy = SORT_BY_TO_API[params.sortBy];
   }
-  for (let stateKey in params) {
-    let apiKey = STATE_KEY_TO_API[stateKey];
+  for (let paramKey in params) {
+    let apiKey = PARAM_KEY_TO_API[paramKey];
     if (!apiKey) {
       continue;
     }
-    let value = params[stateKey];
-    if (typeof value !== "number" && !value) {
+    let value = params[paramKey];
+    if (typeof value !== "boolean" && typeof value !== "number" && !value) {
       continue;
     }
-    if (stateKey === "location") {
-      if (value === LOCATION.ALL) {
-        continue;
-      }
+    if (paramKey === "location" && value === LOCATION.ALL) {
+      continue;
     }
     apiParams[apiKey] = value;
   }

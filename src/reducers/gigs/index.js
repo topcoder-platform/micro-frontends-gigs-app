@@ -1,6 +1,11 @@
 import { handleActions } from "redux-actions";
 import * as ACTION_TYPE from "actions/gigs/types";
-import { LOCATION, SORT_BY_DEFAULT, SORT_ORDER_DEFAULT } from "constants/gigs";
+import {
+  GIGS_HOT_COUNT,
+  LOCATION,
+  SORT_BY_DEFAULT,
+  SORT_ORDER_DEFAULT,
+} from "constants/gigs";
 import { updateStateFromQuery } from "./urlQuery";
 import { integerFormatter } from "utils/gigs/formatting";
 import { sortLocations } from "utils/gigs/misc";
@@ -38,10 +43,12 @@ const initValues = () => ({
 const initialState = {
   abortController: abortControllerDummy,
   filters: initFilters(),
-  gigPromos: null,
-  gigPromosError: null,
   gigs: [],
   gigsError: null,
+  gigsFeatured: null,
+  gigsHot: null,
+  gigsSpecial: null,
+  gigsSpecialError: null,
   locations: initLocations(),
   // locationSet doesn't need to be re-created on state change because
   // it is not used in any useSelector calls.
@@ -53,6 +60,19 @@ const initialState = {
   sorting: initSorting(),
   values: initValues(),
 };
+
+const IGNORED_LOCATION_SET = new Set(
+  [LOCATION.ALL, LOCATION.ANY].map((loc) => loc.toLowerCase())
+);
+
+const GLOBAL_LOCATION_SET = new Set(
+  [
+    LOCATION.ALL,
+    LOCATION.ANY,
+    LOCATION.ANYWHERE,
+    LOCATION.ANY_LOCATION,
+  ].map((loc) => loc.toLowerCase())
+);
 
 const onAddSkill = (state, { payload: { id } }) => {
   const filtersSkillsById = state.filters.skillsById;
@@ -78,6 +98,46 @@ const onAddSkill = (state, { payload: { id } }) => {
   };
 };
 
+const onLoadGigsSpecialError = (state, { payload: gigsSpecialError }) => ({
+  ...state,
+  gigsSpecial: [],
+  gigsSpecialError,
+});
+
+const onLoadGigsSpecialSuccess = (state, { payload: gigsSpecial }) => {
+  const skillsById = state.skillsById || {};
+  const gigsFeatured = [];
+  const gigsHot = [];
+  for (let gig of gigsSpecial) {
+    if (!gig.location) {
+      gig.location = LOCATION.ANYWHERE;
+    }
+    gig.isGlobal = GLOBAL_LOCATION_SET.has(gig.location.toLowerCase());
+    if (gig.featured) {
+      gigsFeatured.push(gig);
+    }
+    if (gig.showInHotList) {
+      gigsHot.push(gig);
+    }
+    if (gig.skills?.length) {
+      let skills = [];
+      for (let skillId of gig.skills) {
+        let skill = skillsById[skillId];
+        if (skill) {
+          skills.push(skill);
+        }
+      }
+      gig.skills = skills;
+    }
+  }
+  return {
+    ...state,
+    gigsFeatured,
+    gigsHot: gigsHot.slice(0, GIGS_HOT_COUNT),
+    gigsSpecial,
+  };
+};
+
 const onLoadPageError = (state, { payload: gigsError }) => ({
   ...state,
   abortController: null,
@@ -90,19 +150,6 @@ const onLoadPagePending = (state, { payload: abortController }) => ({
   gigs: [],
   gigsError: null,
 });
-
-const IGNORED_LOCATION_SET = new Set(
-  [LOCATION.ALL, LOCATION.ANY].map((loc) => loc.toLowerCase())
-);
-
-const GLOBAL_LOCATION_SET = new Set(
-  [
-    LOCATION.ALL,
-    LOCATION.ANY,
-    LOCATION.ANYWHERE,
-    LOCATION.ANY_LOCATION,
-  ].map((loc) => loc.toLowerCase())
-);
 
 const onLoadPageSuccess = (
   state,
@@ -153,17 +200,6 @@ const onLoadPageSuccess = (
     pagination,
   };
 };
-
-const onLoadPromosError = (state, { payload: error }) => ({
-  ...state,
-  gigPromos: [],
-  gigPromosError: error,
-});
-
-const onLoadPromosSuccess = (state, { payload: gigPromos }) => ({
-  ...state,
-  gigPromos,
-});
 
 const onLoadSkillsError = (state, { payload: skillsError }) => ({
   ...state,
@@ -307,11 +343,11 @@ const onUpdateStateFromQuery = (state, { payload: query }) =>
 export default handleActions(
   {
     [ACTION_TYPE.ADD_SKILL]: onAddSkill,
+    [ACTION_TYPE.LOAD_GIGS_SPECIAL_ERROR]: onLoadGigsSpecialError,
+    [ACTION_TYPE.LOAD_GIGS_SPECIAL_SUCCESS]: onLoadGigsSpecialSuccess,
     [ACTION_TYPE.LOAD_PAGE_ERROR]: onLoadPageError,
     [ACTION_TYPE.LOAD_PAGE_PENDING]: onLoadPagePending,
     [ACTION_TYPE.LOAD_PAGE_SUCCESS]: onLoadPageSuccess,
-    [ACTION_TYPE.LOAD_PROMOS_ERROR]: onLoadPromosError,
-    [ACTION_TYPE.LOAD_PROMOS_SUCCESS]: onLoadPromosSuccess,
     [ACTION_TYPE.LOAD_SKILLS_ERROR]: onLoadSkillsError,
     [ACTION_TYPE.LOAD_SKILLS_SUCCESS]: onLoadSkillsSuccess,
     [ACTION_TYPE.RESET_FILTERS]: onResetFilters,

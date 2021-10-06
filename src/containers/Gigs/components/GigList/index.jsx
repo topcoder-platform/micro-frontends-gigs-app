@@ -1,11 +1,11 @@
 import styles from "./styles.scss";
 import React, { useCallback } from "react";
-import PT from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import GigItem from "../GigItem";
-import GigItemPromo from "../GigItemPromo";
-import { getGigPromos, getGigs } from "reducers/gigs/selectors";
+import GigHotItem from "../GigHotItem";
+import * as selectors from "reducers/gigs/selectors";
 import actions from "actions/gigs/creators";
+import { GIGS_HOT_INDEX } from "constants/gigs";
 
 /**
  * Displays gigs' list with promo gigs.
@@ -13,12 +13,19 @@ import actions from "actions/gigs/creators";
  * @returns {JSX.Element}
  */
 const GigList = () => {
-  const gigPromos = useSelector(getGigPromos);
-  const gigs = useSelector(getGigs);
+  const gigs = useSelector(selectors.getGigs);
+  let gigsFeatured = useSelector(selectors.getGigsFeatured);
+  const gigsHot = useSelector(selectors.getGigsHot);
   const dispatch = useDispatch();
+
+  if (!gigsFeatured?.length) {
+    gigsFeatured = [null];
+  }
+  const gigsHotIndex = Math.min(gigsFeatured.length - 1, GIGS_HOT_INDEX);
 
   const onClickSkill = useCallback(
     (event) => {
+      event.preventDefault();
       let target = event.target;
       let dataset = target.dataset;
       dispatch(actions.addSkill({ id: dataset.id, name: target.textContent }));
@@ -26,44 +33,52 @@ const GigList = () => {
     [dispatch]
   );
 
-  // it's not defined in the requirements how to compute gig index after which
-  // gig promos should be shown
-  const promosIndex = Math.min(Math.max(gigs.length - 1, 0), 2);
-
   return (
     <div styleName="container">
-      {gigs.map((gig, gigIndex) =>
-        gigIndex === promosIndex ? (
-          <React.Fragment key={"gig-promos-fragment"}>
-            <div key={"gig-promo-list"} styleName="gig-promo-list">
-              {gigPromos?.map((gig, promoIndex) => (
-                <div styleName="gig-promo">
-                  <GigItemPromo
+      {gigsFeatured?.map((gig, gigIndex) =>
+        gigIndex === gigsHotIndex ? (
+          <React.Fragment key={"gig-hotlist-fragment"}>
+            {gig && (
+              <GigItem
+                key={gig.id}
+                className={styles.gigItem}
+                gig={gig}
+                onClickSkill={onClickSkill}
+              />
+            )}
+            <div key={"gig-hotlist"} styleName="gig-hotlist">
+              {gigsHot?.map((gig, gigHotIndex) => (
+                <div styleName="gig-hot">
+                  <GigHotItem
                     key={gig.id}
-                    className={styles.gigPromoItem}
-                    index={promoIndex}
+                    className={styles.gigHotItem}
+                    index={gigHotIndex}
                     gig={gig}
                   />
                 </div>
               ))}
             </div>
             <div key={"row-color-preserver"} styleName="row-color-preserver" />
+          </React.Fragment>
+        ) : (
+          gig && (
             <GigItem
               key={gig.id}
               className={styles.gigItem}
               gig={gig}
               onClickSkill={onClickSkill}
             />
-          </React.Fragment>
-        ) : (
-          <GigItem
-            key={gig.id}
-            className={styles.gigItem}
-            gig={gig}
-            onClickSkill={onClickSkill}
-          />
+          )
         )
       )}
+      {gigs.map((gig) => (
+        <GigItem
+          key={gig.id}
+          className={styles.gigItem}
+          gig={gig}
+          onClickSkill={onClickSkill}
+        />
+      ))}
     </div>
   );
 };

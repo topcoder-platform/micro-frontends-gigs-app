@@ -13,16 +13,13 @@ import * as effectors from "actions/gigs/effectors";
 import { useUpdateEffect } from "utils/hooks";
 
 /**
- * Loads gig promos and skills, updates state from query and normalizes query.
- * Then depending on if state has changed loads gigs page.
+ * Loads featured and hotlist gigs and skills, updates state from query and
+ * normalizes query. Then depending on if state has changed loads gigs page.
  */
 const onMount = async () => {
   const hasInitialData = selectors.getHasInitialData(store.getState());
   if (!hasInitialData) {
-    await Promise.all([
-      effectors.loadGigPromos(store),
-      effectors.loadSkills(store),
-    ]);
+    await effectors.loadInitialData(store);
   }
   const stateOld = store.getState();
   effectors.updateStateAndQuery(store);

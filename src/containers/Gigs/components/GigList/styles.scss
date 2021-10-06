@@ -4,7 +4,7 @@
   display: block;
 }
 
-.gig-promo-list {
+.gig-hotlist {
   display: flex;
   flex-direction: column;
   margin: 5px 0;
@@ -29,7 +29,7 @@
   }
 }
 
-.gig-promo {
+.gig-hot {
   flex: 0 0 auto;
   display: flex;
   padding-top: 5px;
@@ -57,7 +57,7 @@
   }
 }
 
-.gigPromoItem {
+.gigHotItem {
   flex: 1 1 0;
 }
 

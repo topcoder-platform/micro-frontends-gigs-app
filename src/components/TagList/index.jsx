@@ -67,10 +67,14 @@ const TagList = ({
 
   const containerRef = useRef();
 
-  const onClickBtnMore = useCallback(() => {
-    setTagsVisible(tags);
-    setShowAll(true);
-  }, [tags]);
+  const onClickBtnMore = useCallback(
+    (event) => {
+      event.preventDefault();
+      setTagsVisible(tags);
+      setShowAll(true);
+    },
+    [tags]
+  );
 
   useEffect(() => {
     let index = getFirstLineLastElemIndex(containerRef.current);

@@ -6,8 +6,9 @@ import TagList from "components/TagList";
 import IconFlagDollars from "components/icons/FlagDollars";
 import IconFlagHot from "components/icons/FlagHot";
 import IconFlagNew from "components/icons/FlagNew";
-import { formatWeeklyPayment } from "utils/gigs/formatting";
+import { formatPaymentAmount } from "utils/gigs/formatting";
 import { formatPlural } from "utils/formatting";
+import { makeGigExternalUrl } from "utils/url";
 
 /**
  * Displays gigs list item.
@@ -20,24 +21,25 @@ const GigItem = ({ className, gig, onClickSkill }) => {
     duration,
     id,
     isGlobal,
+    jobExternalId,
+    jobTag,
     location,
     payment,
-    promotedAs,
     skills,
     title,
   } = gig;
 
   return (
-    <div className={className} styleName="container">
-      {promotedAs === "high-paid" && (
+    <a
+      className={className}
+      styleName="container"
+      href={makeGigExternalUrl(jobExternalId)}
+    >
+      {jobTag === "$$$" && (
         <IconFlagDollars className={styles.flagIcon} id={id} />
       )}
-      {promotedAs === "hot" && (
-        <IconFlagHot className={styles.flagIcon} id={id} />
-      )}
-      {promotedAs === "new" && (
-        <IconFlagNew className={styles.flagIcon} id={id} />
-      )}
+      {jobTag === "Hot" && <IconFlagHot className={styles.flagIcon} id={id} />}
+      {jobTag === "New" && <IconFlagNew className={styles.flagIcon} id={id} />}
       <div styleName="name-skills">
         <div styleName="name">{title}</div>
         <div styleName={cn("location", { global: isGlobal })}>{location}</div>
@@ -54,7 +56,7 @@ const GigItem = ({ className, gig, onClickSkill }) => {
       </div>
       <div styleName="payment">
         <div styleName="payment-range">
-          {formatWeeklyPayment(payment?.min, payment?.max)}
+          {formatPaymentAmount(payment?.min, payment?.max, payment?.currency)}
         </div>
         <div styleName="payment-label">
           {payment?.frequency || "weekly"} payment
@@ -66,7 +68,7 @@ const GigItem = ({ className, gig, onClickSkill }) => {
         </div>
         <div styleName="duration-label">Duration</div>
       </div>
-    </div>
+    </a>
   );
 };
 

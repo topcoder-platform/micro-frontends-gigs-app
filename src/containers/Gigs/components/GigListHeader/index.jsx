@@ -76,16 +76,8 @@ export default GigListHeader;
 
 const SORTING_OPTIONS = [
   {
-    value: `${SORT_BY.DATE_ADDED}--${SORT_ORDER.ASC}`,
-    label: "Latest Added Ascending",
-  },
-  {
     value: `${SORT_BY.DATE_ADDED}--${SORT_ORDER.DESC}`,
     label: "Latest Added Descending",
-  },
-  {
-    value: `${SORT_BY.DATE_UPDATED}--${SORT_ORDER.ASC}`,
-    label: "Latest Updated Ascending",
   },
   {
     value: `${SORT_BY.DATE_UPDATED}--${SORT_ORDER.DESC}`,

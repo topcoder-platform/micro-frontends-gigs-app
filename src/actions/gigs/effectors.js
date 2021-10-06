@@ -5,7 +5,6 @@ import lookupServices from "services/lookup";
 import { isAbort } from "utils/fetch";
 import { makeQueryFromState } from "reducers/gigs/urlQuery";
 import { sortByName } from "utils/misc";
-// import { SORT_BY, SORT_ORDER } from "constants/gigs";
 
 /**
  * Loads the specified gigs' page. If page number is not provided the current
@@ -59,22 +58,47 @@ export const loadGigsPage = async ({ dispatch, getState }) => {
  * @param {Object} store redux store object
  * @returns {Promise}
  */
-export const loadGigPromos = async ({ dispatch }) => {
-  let gigPromos;
-  // const [promosPromise] = services.fetchGigs({
-  //   pageNumber: 1,
-  //   pageSize: 1e3,
-  //   sortBy: SORT_BY.DATE_UPDATED,
-  //   sortOrder: SORT_ORDER.DESC,
-  // });
+export const loadGigsSpecial = async ({ dispatch }) => {
+  let gigsSpecial = null;
+  const [promise] = services.fetchGigs({
+    pageNumber: 1,
+    special: true,
+  });
   try {
-    // let { data } = await promosPromise;
-    gigPromos = [];
+    let { data } = await promise;
+    gigsSpecial = data;
   } catch (error) {
-    dispatch(actions.loadPromosError(error.toString()));
+    dispatch(actions.loadGigsSpecialError(error.toString()));
+    console.error(error);
     return;
   }
-  dispatch(actions.loadPromosSuccess(gigPromos));
+  dispatch(actions.loadGigsSpecialSuccess(gigsSpecial));
+};
+
+/**
+ * Loads skills and special (featured + hotlist) gigs.
+ *
+ * @param {Object} store redux store object
+ */
+export const loadInitialData = async (store) => {
+  const { dispatch } = store;
+  let skillsPromise = loadSkills(store);
+  let gigsSpecial = null;
+  const [promise] = services.fetchGigs({
+    pageNumber: 1,
+    special: true,
+  });
+  try {
+    let { data } = await promise;
+    gigsSpecial = data;
+  } catch (error) {
+    dispatch(actions.loadGigsSpecialError(error.toString()));
+    console.error(error);
+    return;
+  }
+  // skills must be present in the store before we can process special gigs
+  await skillsPromise;
+  dispatch(actions.loadGigsSpecialSuccess(gigsSpecial));
 };
 
 /**

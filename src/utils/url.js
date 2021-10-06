@@ -40,6 +40,16 @@ export function updateQuery(params) {
 }
 
 /**
+ * Creates an external URL for a gig.
+ *
+ * @param {string} externalId gig external id
+ * @returns {string}
+ */
+export function makeGigExternalUrl(externalId) {
+  return externalId ? `${process.env.URL.BASE}/gigs/${externalId}` : "";
+}
+
+/**
  * Creates a login URL.
  *
  * @param {string} retUrl return URL
