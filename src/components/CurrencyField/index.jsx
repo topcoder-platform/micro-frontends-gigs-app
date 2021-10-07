@@ -9,6 +9,8 @@ import {
   isValidNumberString,
 } from "utils/gigs/formatting";
 import { DEBOUNCE_ON_CHANGE_TIME } from "constants/index.js";
+import { PAYMENT_MAX_VALUE } from "constants/gigs";
+import { isNumber } from "lodash";
 
 /**
  * Displays currency input field.
@@ -33,8 +35,8 @@ const CurrencyField = ({
   currency,
   id,
   label,
-  maxValue = 1e5,
-  minValue = 0,
+  maxValue,
+  minValue,
   name,
   onChange,
   onCommit,
@@ -53,9 +55,21 @@ const CurrencyField = ({
           return;
         }
         let num = convertNumberStringToNumber(value);
+        let min = isNumber(minValue)
+          ? minValue
+          : convertNumberStringToNumber(minValue);
+        let max = isNumber(maxValue)
+          ? maxValue
+          : convertNumberStringToNumber(maxValue);
         if (isValidNumberString(value) && !isNaN(num)) {
-          setError("");
-          onCommit(num);
+          if (num < min) {
+            setError("Num too small");
+          } else if (num > max) {
+            setError("Num too big");
+          } else {
+            setError("");
+            onCommit(num);
+          }
         } else {
           setError("Invalid format");
         }
@@ -112,13 +126,18 @@ const CurrencyField = ({
   );
 };
 
+CurrencyField.defaultProps = {
+  maxValue: PAYMENT_MAX_VALUE,
+  minValue: 0,
+};
+
 CurrencyField.propTypes = {
   className: PT.string,
   currency: PT.string.isRequired,
   id: PT.string.isRequired,
   label: PT.string,
-  maxValue: PT.number,
-  minValue: PT.number,
+  maxValue: PT.oneOfType([PT.number, PT.string]),
+  minValue: PT.oneOfType([PT.number, PT.string]),
   name: PT.string.isRequired,
   onChange: PT.func.isRequired,
   onCommit: PT.func.isRequired,
