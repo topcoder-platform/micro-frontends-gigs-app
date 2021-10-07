@@ -53,11 +53,12 @@ export function formatPaymentAmount(min, max, minCurrency, maxCurrency = "") {
   let str = null;
   let maxStr = null;
   let minStr = null;
-  if (max) {
-    maxStr = maxCurrency + integerFormatter.format(max);
-  }
   if (min) {
     minStr = minCurrency + integerFormatter.format(min);
+  }
+  if (max) {
+    maxStr =
+      (!minStr ? minCurrency : maxCurrency) + integerFormatter.format(max);
   }
   if (minStr) {
     if (maxStr) {
