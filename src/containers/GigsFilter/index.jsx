@@ -7,6 +7,7 @@ import CurrencyField from "components/CurrencyField";
 import Dropdown from "components/Dropdown";
 import MultiSelect from "components/MultiSelect";
 import actions from "actions/gigs/creators";
+import { PAYMENT_MAX_VALUE } from "constants/gigs";
 import { getSelectedDropdownOption } from "utils";
 import { preventDefault } from "utils/misc";
 
@@ -107,7 +108,7 @@ const GigsFilter = () => {
             currency="USD"
             id="filter-weekly-payment-min"
             label="From"
-            maxValue={paymentMax}
+            maxValue={PAYMENT_MAX_VALUE}
             name="payment_min"
             onChange={onChangePaymentMin}
             onCommit={onCommitPaymentMin}
@@ -125,7 +126,7 @@ const GigsFilter = () => {
             onChange={onChangePaymentMax}
             onCommit={onCommitPaymentMax}
             required={true}
-            value={paymentMax}
+            value={PAYMENT_MAX_VALUE}
           />
         </div>
       </div>
