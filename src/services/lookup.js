@@ -18,7 +18,7 @@ async function getPaginatedCountries(page = 1, perPage = 100) {
  * @returns
  */
 async function getPaginatedSkills(page = 1, perPage = 100) {
-  const url = `/skills?page=${page}&perPage=${perPage}`;
+  const url = `/taas-teams/skills?page=${page}&perPage=${perPage}`;
   return await api.get(url);
 }
 
