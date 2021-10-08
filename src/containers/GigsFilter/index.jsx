@@ -1,5 +1,5 @@
 import styles from "./styles.scss";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as selectors from "reducers/gigs/selectors";
 import Button from "components/Button";
@@ -7,7 +7,6 @@ import CurrencyField from "components/CurrencyField";
 import Dropdown from "components/Dropdown";
 import MultiSelect from "components/MultiSelect";
 import actions from "actions/gigs/creators";
-import { PAYMENT_MAX_VALUE } from "constants/gigs";
 import { getSelectedDropdownOption } from "utils";
 import { preventDefault } from "utils/misc";
 
@@ -21,6 +20,7 @@ const GigsFilter = () => {
   const locations = useSelector(selectors.getLocations);
   const { location, skills } = useSelector(selectors.getFilters);
   const { paymentMax, paymentMin } = useSelector(selectors.getValues);
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
 
   const locationOptions = useMemo(
@@ -31,6 +31,13 @@ const GigsFilter = () => {
         selected: value === location,
       })),
     [location, locations]
+  );
+
+  const onPaymentRangeError = useCallback(
+    (msg) => {
+      setError(msg);
+    },
+    [setError]
   );
 
   const onChangeLocation = useCallback(
@@ -77,6 +84,7 @@ const GigsFilter = () => {
   );
 
   const onClickClearBtn = useCallback(() => {
+    setError("");
     dispatch(actions.resetFilters());
   }, [dispatch]);
 
@@ -108,8 +116,10 @@ const GigsFilter = () => {
             currency="USD"
             id="filter-weekly-payment-min"
             label="From"
-            maxValue={PAYMENT_MAX_VALUE}
+            maxValue={paymentMax}
             name="payment_min"
+            rangeError={error}
+            onError={onPaymentRangeError}
             onChange={onChangePaymentMin}
             onCommit={onCommitPaymentMin}
             required={true}
@@ -123,12 +133,15 @@ const GigsFilter = () => {
             label="To"
             minValue={paymentMin}
             name="payment_max"
+            rangeError={error}
+            onError={onPaymentRangeError}
             onChange={onChangePaymentMax}
             onCommit={onCommitPaymentMax}
             required={true}
-            value={PAYMENT_MAX_VALUE}
+            value={paymentMax}
           />
         </div>
+        {error && <div styleName="payment-error">{error}</div>}
       </div>
       <div styleName="controls">
         <Button onClick={onClickClearBtn}>CLEAR FILTER</Button>

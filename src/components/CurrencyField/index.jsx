@@ -9,6 +9,8 @@ import {
   isValidNumberString,
 } from "utils/gigs/formatting";
 import { DEBOUNCE_ON_CHANGE_TIME } from "constants/index.js";
+import { PAYMENT_MAX_VALUE } from "constants/gigs";
+import { isNumber } from "lodash";
 
 /**
  * Displays currency input field.
@@ -33,9 +35,11 @@ const CurrencyField = ({
   currency,
   id,
   label,
-  maxValue = 1e5,
-  minValue = 0,
+  maxValue,
+  minValue,
   name,
+  rangeError,
+  onError,
   onChange,
   onCommit,
   required = false,
@@ -53,10 +57,22 @@ const CurrencyField = ({
           return;
         }
         let num = convertNumberStringToNumber(value);
+        let min = isNumber(minValue)
+          ? minValue
+          : convertNumberStringToNumber(minValue);
+        let max = isNumber(maxValue)
+          ? maxValue
+          : convertNumberStringToNumber(maxValue);
         if (isValidNumberString(value) && !isNaN(num)) {
           setError("");
-          onCommit(num);
+          if (num < min || num > max) {
+            onError("Please put in valid range");
+          } else {
+            onError("");
+            onCommit(num);
+          }
         } else {
+          onError("");
           setError("Invalid format");
         }
       },
@@ -73,19 +89,18 @@ const CurrencyField = ({
       if (value && isValidNumberString(value)) {
         let num = convertNumberStringToNumber(value);
         if (!isNaN(num)) {
-          if (num > maxValue) {
-            num = maxValue;
-          } else if (num < minValue) {
-            num = minValue;
-          }
           value = integerFormatter.format(num);
         }
       }
       onChange(value);
       checkValue(value);
     },
-    [maxValue, minValue, checkValue, onChange]
+    [checkValue, onChange]
   );
+
+  useEffect(() => {
+    checkValue(value);
+  }, [checkValue, value]);
 
   return (
     <div className={className} styleName="container">
@@ -94,7 +109,7 @@ const CurrencyField = ({
           {label}
         </label>
       )}
-      <div styleName={cn("field", { "has-errors": error })}>
+      <div styleName={cn("field", { "has-errors": error || rangeError })}>
         <input
           type="text"
           styleName="input"
@@ -112,14 +127,21 @@ const CurrencyField = ({
   );
 };
 
+CurrencyField.defaultProps = {
+  maxValue: PAYMENT_MAX_VALUE,
+  minValue: 0,
+};
+
 CurrencyField.propTypes = {
   className: PT.string,
   currency: PT.string.isRequired,
   id: PT.string.isRequired,
   label: PT.string,
-  maxValue: PT.number,
-  minValue: PT.number,
+  rangeError: PT.string,
+  maxValue: PT.oneOfType([PT.number, PT.string]),
+  minValue: PT.oneOfType([PT.number, PT.string]),
   name: PT.string.isRequired,
+  onError: PT.func.isRequired,
   onChange: PT.func.isRequired,
   onCommit: PT.func.isRequired,
   required: PT.bool,
