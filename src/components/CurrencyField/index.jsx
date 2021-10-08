@@ -66,7 +66,7 @@ const CurrencyField = ({
         if (isValidNumberString(value) && !isNaN(num)) {
           setError("");
           if (num < min || num > max) {
-            onError("Please put in valid range");
+            onError("Please put in a valid range.");
           } else {
             onError("");
             onCommit(num);
