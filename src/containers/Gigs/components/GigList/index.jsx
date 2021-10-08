@@ -16,6 +16,7 @@ const GigList = () => {
   const gigs = useSelector(selectors.getGigs);
   let gigsFeatured = useSelector(selectors.getGigsFeatured);
   const gigsHot = useSelector(selectors.getGigsHot);
+  const pageNumber = useSelector(selectors.getPageNumber);
   const dispatch = useDispatch();
 
   if (!gigsFeatured?.length) {
@@ -35,42 +36,46 @@ const GigList = () => {
 
   return (
     <div styleName="container">
-      {gigsFeatured?.map((gig, gigIndex) =>
-        gigIndex === gigsHotIndex ? (
-          <React.Fragment key={"gig-hotlist-fragment"}>
-            {gig && (
+      {pageNumber == 1 &&
+        gigsFeatured?.map((gig, gigIndex) =>
+          gigIndex === gigsHotIndex ? (
+            <React.Fragment key={"gig-hotlist-fragment"}>
+              {gig && (
+                <GigItem
+                  key={gig.id}
+                  className={styles.gigItem}
+                  gig={gig}
+                  onClickSkill={onClickSkill}
+                />
+              )}
+              <div key={"gig-hotlist"} styleName="gig-hotlist">
+                {gigsHot?.map((gig, gigHotIndex) => (
+                  <div styleName="gig-hot">
+                    <GigHotItem
+                      key={gig.id}
+                      className={styles.gigHotItem}
+                      index={gigHotIndex}
+                      gig={gig}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div
+                key={"row-color-preserver"}
+                styleName="row-color-preserver"
+              />
+            </React.Fragment>
+          ) : (
+            gig && (
               <GigItem
                 key={gig.id}
                 className={styles.gigItem}
                 gig={gig}
                 onClickSkill={onClickSkill}
               />
-            )}
-            <div key={"gig-hotlist"} styleName="gig-hotlist">
-              {gigsHot?.map((gig, gigHotIndex) => (
-                <div styleName="gig-hot">
-                  <GigHotItem
-                    key={gig.id}
-                    className={styles.gigHotItem}
-                    index={gigHotIndex}
-                    gig={gig}
-                  />
-                </div>
-              ))}
-            </div>
-            <div key={"row-color-preserver"} styleName="row-color-preserver" />
-          </React.Fragment>
-        ) : (
-          gig && (
-            <GigItem
-              key={gig.id}
-              className={styles.gigItem}
-              gig={gig}
-              onClickSkill={onClickSkill}
-            />
+            )
           )
-        )
-      )}
+        )}
       {gigs.map((gig) => (
         <GigItem
           key={gig.id}
