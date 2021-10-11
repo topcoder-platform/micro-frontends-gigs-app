@@ -176,7 +176,97 @@ getJob.schema = Joi.object()
   })
   .required();
 
+async function getJobs(criteria = {}) {
+  const page = criteria.page || 0;
+  const perPage = criteria.perPage || 0;
+  const emptyResult = {
+    total: 0,
+    page,
+    perPage,
+    result: [],
+  };
+  const jobsRes = await helper.getJobs(criteria);
+  if (jobsRes.result.length === 0) {
+    return emptyResult;
+  }
+  const jobs = jobsRes.result;
+  // apply desired structure
+  let res = _.map(jobs, (job) => {
+    return {
+      id: job.id,
+      title: job.title,
+      payment: {
+        min: job.minSalary,
+        max: job.maxSalary,
+        frequency: job.rateType,
+        // currency: job.currency,
+        currency: "$",
+      },
+      skills: job.skills,
+      location: job.jobLocation,
+      duration: job.duration,
+      createdAt: job.createdAt,
+      updatedAt: job.updatedAt,
+      featured: job.featured,
+      showInHotList: job.showInHotList,
+      hotListExcerpt: job.hotListExcerpt,
+      jobTag: job.jobTag,
+      jobExternalId: job.externalId,
+    };
+  });
+  // Filter the special jobs
+  if (criteria.specialJob) {
+    let count = 0;
+    const hotlistJobs = res.filter((item) => {
+      if (count < 3 && item.showInHotList === true) {
+        count++;
+        return true;
+      }
+      return false;
+    });
+    const featuredJobs = res.filter((item) => {
+      if (
+        item.featured === true &&
+        !hotlistJobs.find((hotJob) => hotJob.id === item.id)
+      ) {
+        return true;
+      }
+      return false;
+    });
+    res = [...hotlistJobs, ...featuredJobs];
+  }
+  return {
+    total: jobsRes.total,
+    page: jobsRes.page,
+    perPage: jobsRes.perPage,
+    result: res,
+  };
+}
+
+getJobs.schema = Joi.object()
+  .keys({
+    criteria: Joi.object()
+      .keys({
+        page: Joi.page(),
+        perPage: Joi.perPage(),
+        sortBy: Joi.string()
+          .valid("createdAt", "updatedAt")
+          .default("createdAt"),
+        sortOrder: Joi.string().valid("desc", "asc").default("desc"),
+        jobLocation: Joi.string(),
+        minSalary: Joi.number().integer(),
+        maxSalary: Joi.number().integer(),
+        title: Joi.string(),
+        specialJob: Joi.boolean(),
+        bodySkills: Joi.array().items(Joi.string().uuid()),
+        isApplicationPageActive: Joi.boolean(),
+      })
+      .required(),
+  })
+  .required();
+
 module.exports = {
   getMyJobApplications,
   getJob,
+  getJobs,
 };

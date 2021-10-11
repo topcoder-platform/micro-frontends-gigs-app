@@ -4,9 +4,9 @@ import PT from "prop-types";
 import "./styles.scss";
 
 const Loading = (props) => {
-  const { color, type, height, width } = props;
+  const { bgColor, children, color, type, height, width } = props;
   return (
-    <div styleName="loading-wrapper">
+    <div styleName="loading-wrapper" style={{ backgroundColor: bgColor }}>
       <div styleName="loading-inner">
         <div>
           <ReactLoading
@@ -17,13 +17,14 @@ const Loading = (props) => {
           />
         </div>
         <h6>LOADING</h6>
-        <span>We are processing your gigs data</span>
+        {children && <span>{children}</span>}
       </div>
     </div>
   );
 };
 
 Loading.defaultProps = {
+  bgColor: "rgba(42,42,42, 0.07)",
   color: "#0ab88a",
   type: "spin",
   width: 35,
@@ -31,6 +32,8 @@ Loading.defaultProps = {
 };
 
 Loading.propTypes = {
+  bgColor: PT.string,
+  children: PT.node,
   color: PT.string,
   type: PT.string,
   width: PT.number,

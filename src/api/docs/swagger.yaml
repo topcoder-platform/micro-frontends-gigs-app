@@ -148,6 +148,164 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /jobs:
+    get:
+      tags:
+        - Jobs
+      description: |
+        Load the jobs based on criteria.
+      parameters:
+        - in: query
+          name: jobLocation
+          required: false
+          schema:
+            type: string
+          description: The Job Location
+        - in: query
+          name: minSalary
+          required: false
+          schema:
+            type: integer
+          description: The Job min salary
+        - in: query
+          name: maxSalary
+          required: false
+          schema:
+            type: integer
+          description: The Job max salary
+        - in: query
+          name: title
+          required: false
+          schema:
+            type: string
+          description: The Job title
+        - in: query
+          name: specialJob
+          required: false
+          schema:
+            type: boolean
+          description: When passing true, the API will load all featured and showInHotList jobs at once
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags:
+        - Jobs
+      description: |
+        Load the jobs based on criteria.
+      parameters:
+        - in: query
+          name: jobLocation
+          required: false
+          schema:
+            type: string
+          description: The Job Location
+        - in: query
+          name: minSalary
+          required: false
+          schema:
+            type: integer
+          description: The Job min salary
+        - in: query
+          name: maxSalary
+          required: false
+          schema:
+            type: integer
+          description: The Job max salary
+        - in: query
+          name: title
+          required: false
+          schema:
+            type: string
+          description: The Job title
+        - in: query
+          name: specialJob
+          required: false
+          schema:
+            type: boolean
+          description: When passing true, the API will load all featured and showInHotList jobs at once
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bodySkills:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /profile:
     get:
       tags:
@@ -255,6 +413,76 @@ components:
           type: boolean
           description: "Whether the job application has been synced"
           example: true
+    Job:
+      required:
+        - id
+        - title
+        - payment
+        - skills
+        - location
+        - duration
+        - createdAt
+        - updatedAt
+        - showInHotList
+        - featured
+        - hotListExcerpt
+        - jobTag
+        - jobExternalId
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: "The job uuid"
+        title:
+          type: string
+          example: "Dummy title"
+          description: "The title."
+          maxLength: 64
+        payment:
+          $ref: "#/components/schemas/Payment"
+        skills:
+          type: array
+          description: "The skills to filter the jobs"
+          items:
+            type: string
+            format: uuid
+        location:
+          type: string
+          example: "Any location"
+          description: "the location of job"
+        duration:
+          type: integer
+          example: 1
+          description: "The duration in weeks"
+        createdAt:
+          type: string
+          example: "2021-09-27T10:31:46.995Z"
+          description: "The job creation time"
+        updatedAt:
+          type: string
+          example: "2021-09-27T10:51:29.474Z"
+          description: "The job update time"
+        showInHotList:
+          type: boolean
+          default: false
+          description: "Whether the job should display in hot list"
+        featured:
+          type: boolean
+          default: false
+          description: "Whether the job is a featured job"
+        hotListExcerpt:
+          type: string
+          default: ''
+          description: "Content to be displayed for the hotlist job"
+        jobTag:
+          type: string
+          default: ''
+          enum: ["", "New", "$$$", "Hot"]
+          description: "The job tag type"
+        jobExternalId:
+          type: string
+          example: "51313517"
+          description: "The corresponding gig ID on community app"
     JobApplication:
       required:
         - title
