@@ -1,5 +1,6 @@
 import React from "react";
 import PT from "prop-types";
+import { navigate } from "@reach/router";
 import {
   MY_GIGS_STATUS_EMPTY_TEXT,
   GIGS_FILTER_STATUSES,
@@ -20,7 +21,7 @@ const Empty = ({ gigStatus }) => {
             isPrimary
             size="lg"
             onClick={() => {
-              window.location.href = `${process.env.URL.BASE}/gigs`;
+              navigate("/earn/gigs");
             }}
           >
             VIEW GIGS

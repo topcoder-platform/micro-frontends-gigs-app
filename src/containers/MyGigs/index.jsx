@@ -152,7 +152,7 @@ const MyGigs = ({
             />
           )}
         {(checkingGigs || (loadingMyGigs && !currentGigs.myGigs)) && (
-          <Loading />
+          <Loading>We are processing your gigs data</Loading>
         )}
       </div>
       <Modal open={openUpdateProfile}>

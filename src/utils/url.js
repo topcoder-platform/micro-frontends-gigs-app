@@ -38,3 +38,54 @@ export function updateQuery(params) {
     window.history.pushState(window.history.state, "", query);
   }
 }
+
+/**
+ * Creates an external URL for a gig.
+ *
+ * @param {string} externalId gig external id
+ * @returns {string}
+ */
+export function makeGigExternalUrl(externalId) {
+  return externalId ? `${process.env.URL.BASE}/gigs/${externalId}` : "";
+}
+
+/**
+ * Creates a login URL.
+ *
+ * @param {string} retUrl return URL
+ * @returns {string}
+ */
+export function makeLoginUrl(retUrl) {
+  let [path, query = ""] = retUrl.split("?");
+  // If query parameters are not encoded twice all parameters except the first
+  // are getting lost after returning from authentication flow.
+  retUrl = `${path}?${encodeURIComponent(query)}`;
+  return `${process.env.URL.AUTH}?retUrl=${encodeURIComponent(retUrl)}`;
+}
+
+/**
+ * Creates a referral URL.
+ *
+ * @param {string} referralId referral id
+ * @returns {string}
+ */
+export function makeReferralUrl(referralId) {
+  return `${process.env.URL.BASE}/gigs?referralId=${encodeURIComponent(
+    referralId
+  )}`;
+}
+
+/**
+ * Creates a registration URl.
+ *
+ * @param {string} retUrl return URL
+ * @returns {string}
+ */
+export function makeRegisterUrl(retUrl) {
+  let [path, query = ""] = retUrl.split("?");
+  retUrl = `${path}?${encodeURIComponent(query)}`;
+  return (
+    `${process.env.URL.AUTH}?retUrl=${encodeURIComponent(retUrl)}` +
+    "&mode=signUp&utm_source=gig_listing"
+  );
+}

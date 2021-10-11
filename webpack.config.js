@@ -123,6 +123,7 @@ module.exports = (webpackConfigEnv) => {
         styles: path.resolve(__dirname, "src/styles"),
         assets: path.resolve(__dirname, "src/assets"),
       },
+      modules: [path.resolve(__dirname, "src"), "node_modules"],
     },
     devServer: {
       clientLogLevel: config.LOG_LEVEL,
