@@ -1,42 +1,19 @@
-import { filterString, filterElement, filterRange } from "utils/gigs/misc";
-import { convertNumberStringToNumber } from "utils/gigs/formatting";
 /**
  * Functions that return portions of gigs' redux state slice.
  */
-
-const clientSideFilters = (state, slice) => {
-  let gigsRes = state.gigs[slice];
-  if (state.gigs.filters.title !== "") {
-    gigsRes = filterString(gigsRes, "title", state.gigs.filters.title);
-  }
-  if (state.gigs.filters.location !== "All") {
-    gigsRes = filterString(gigsRes, "jobLocation", state.gigs.filters.location);
-  }
-  if (state.gigs.filters.skills.length > 0) {
-    gigsRes = filterElement(gigsRes, "skills", state.gigs.filters.skills);
-  }
-  const { paymentMax, paymentMin } = state.gigs.values;
-  gigsRes = filterRange(
-    gigsRes,
-    "min",
-    "max",
-    convertNumberStringToNumber(paymentMin),
-    convertNumberStringToNumber(paymentMax)
-  );
-  return gigsRes;
-};
 
 export const getGigs = (state) => state.gigs.gigs;
 
 export const getGigsError = (state) => state.gigs.gigsError;
 
-export const getGigsFeatured = (state) => {
-  return clientSideFilters(state, "gigsFeatured");
-};
+export const getFilteredGigsFeatured = (state) =>
+  state.gigs.filteredGigsFeatured;
 
-export const getGigsHot = (state) => {
-  return clientSideFilters(state, "gigsHot");
-};
+export const getFilteredGigsHot = (state) => state.gigs.filteredGigsHot;
+
+export const getGigsFeatured = (state) => state.gigs.gigsFeatured;
+
+export const getGigsHot = (state) => state.gigs.gigsHot;
 
 export const getGigsSpecial = (state) => state.gigs.gigsSpecial;
 

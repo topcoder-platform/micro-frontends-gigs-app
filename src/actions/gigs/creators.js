@@ -24,6 +24,7 @@ const actions = createActions(
   ACTION_TYPE.SET_SORTING,
   ACTION_TYPE.SET_TITLE,
   ACTION_TYPE.UPDATE_STATE_FROM_QUERY,
+  ACTION_TYPE.UPDATE_FILTERED_SPECIAL_GIGS,
   { prefix: "GIGS", namespace: "--" }
 );
 
