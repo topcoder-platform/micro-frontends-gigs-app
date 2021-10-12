@@ -33,7 +33,7 @@ export const loadGigsPage = async ({ dispatch, getState }) => {
     sortBy,
     sortOrder,
     title,
-    special: false,
+    featured: false,
   });
   dispatch(actions.loadPagePending(abortController));
   let gigs, pageCount, totalCount;

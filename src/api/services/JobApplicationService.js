@@ -261,6 +261,7 @@ getJobs.schema = Joi.object()
         maxSalary: Joi.number().integer(),
         title: Joi.string(),
         specialJob: Joi.boolean(),
+        featured: Joi.boolean(),
         bodySkills: Joi.array().items(Joi.string().uuid()),
         isApplicationPageActive: Joi.boolean(),
       })
