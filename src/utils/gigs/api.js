@@ -12,6 +12,7 @@ export const PARAM_KEY_TO_API = {
   sortOrder: "sortOrder",
   special: "specialJob",
   title: "title",
+  featured: "featured",
 };
 
 /**

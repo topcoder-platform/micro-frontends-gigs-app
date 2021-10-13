@@ -77,7 +77,7 @@ workflows:
             branches:
               only:
                 - dev
-                - gigs-listing-integration-3
+                - gigs-listing-integration-client-filter
 
       # Production builds are exectuted only on tagged commits to the
       # master branch.
