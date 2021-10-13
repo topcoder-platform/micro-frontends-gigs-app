@@ -24,7 +24,7 @@ const clientSideFilters = (state, slice) => {
     gigsRes = filterString(gigsRes, "title", state.filters.title);
   }
   if (state.filters && state.filters.location !== "All") {
-    gigsRes = filterString(gigsRes, "jobLocation", state.filters.location);
+    gigsRes = filterString(gigsRes, "location", state.filters.location);
   }
   if (state.filters && state.filters.skills.length > 0) {
     gigsRes = filterElement(gigsRes, "skills", state.filters.skills);
@@ -140,11 +140,25 @@ const onLoadGigsSpecialSuccess = (state, { payload: gigsSpecial }) => {
   const skillsById = state.skillsById || {};
   const gigsFeatured = [];
   const gigsHot = [];
+  let locations = state.locations;
+  const locationSet = state.locationSet;
+  const oldLocationCount = locationSet.size;
   for (let gig of gigsSpecial) {
-    if (!gig.location) {
+    // if (!gig.location) {
+    //   gig.location = LOCATION.ANYWHERE;
+    // }
+    // gig.isGlobal = GLOBAL_LOCATION_SET.has(gig.location.toLowerCase());
+    // Aggregate speical gig location, too
+    if (gig.location) {
+      let lcLocation = gig.location.toLowerCase();
+      if (!IGNORED_LOCATION_SET.has(lcLocation)) {
+        locationSet.add(gig.location);
+      }
+      gig.isGlobal = GLOBAL_LOCATION_SET.has(lcLocation);
+    } else {
       gig.location = LOCATION.ANYWHERE;
+      gig.isGlobal = true;
     }
-    gig.isGlobal = GLOBAL_LOCATION_SET.has(gig.location.toLowerCase());
     if (gig.featured) {
       gigsFeatured.push(gig);
     }
@@ -161,12 +175,16 @@ const onLoadGigsSpecialSuccess = (state, { payload: gigsSpecial }) => {
       }
       gig.skills = skills;
     }
+    if (oldLocationCount !== locationSet.size) {
+      locations = [...locationSet].sort(sortLocations);
+    }
   }
   return {
     ...state,
     filteredGigsFeatured: gigsFeatured,
     filteredGigsHot: gigsHot.slice(0, GIGS_HOT_COUNT),
     gigsFeatured,
+    locations,
     gigsHot: gigsHot.slice(0, GIGS_HOT_COUNT),
     gigsSpecial,
   };
