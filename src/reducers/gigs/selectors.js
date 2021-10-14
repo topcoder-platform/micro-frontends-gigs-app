@@ -21,8 +21,8 @@ export const getGigsSpecialError = (state) => state.gigs.gigsSpecialError;
 
 export const getHasGigs = (state) =>
   !!state.gigs.gigs?.length ||
-  !!state.gigs.gigsFeatured?.length ||
-  !!state.gigs.gigsHot?.length;
+  !!state.gigs.filteredGigsFeatured?.length ||
+  !!state.gigs.filteredGigsHot?.length;
 
 export const getHasInitialData = (state) =>
   !!state.gigs.gigsSpecial && !!state.gigs.skillsById;
