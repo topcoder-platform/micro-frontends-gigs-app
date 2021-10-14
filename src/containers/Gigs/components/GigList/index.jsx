@@ -14,15 +14,18 @@ import { GIGS_HOT_INDEX } from "constants/gigs";
  */
 const GigList = () => {
   const gigs = useSelector(selectors.getGigs);
-  let gigsFeatured = useSelector(selectors.getGigsFeatured);
-  const gigsHot = useSelector(selectors.getGigsHot);
+  let filteredGigsFeatured = useSelector(selectors.getFilteredGigsFeatured);
+  const filteredGigsHot = useSelector(selectors.getFilteredGigsHot);
   const pageNumber = useSelector(selectors.getPageNumber);
   const dispatch = useDispatch();
 
-  if (!gigsFeatured?.length) {
-    gigsFeatured = [null];
+  if (!filteredGigsFeatured?.length) {
+    filteredGigsFeatured = [null];
   }
-  const gigsHotIndex = Math.min(gigsFeatured.length - 1, GIGS_HOT_INDEX);
+  const gigsHotIndex = Math.min(
+    filteredGigsFeatured.length - 1,
+    GIGS_HOT_INDEX
+  );
 
   const onClickSkill = useCallback(
     (event) => {
@@ -37,7 +40,7 @@ const GigList = () => {
   return (
     <div styleName="container">
       {pageNumber == 1 &&
-        gigsFeatured?.map((gig, gigIndex) =>
+        filteredGigsFeatured?.map((gig, gigIndex) =>
           gigIndex === gigsHotIndex ? (
             <React.Fragment key={"gig-hotlist-fragment"}>
               {gig && (
@@ -49,7 +52,7 @@ const GigList = () => {
                 />
               )}
               <div key={"gig-hotlist"} styleName="gig-hotlist">
-                {gigsHot?.map((gig, gigHotIndex) => (
+                {filteredGigsHot?.map((gig, gigHotIndex) => (
                   <div styleName="gig-hot">
                     <GigHotItem
                       key={gig.id}

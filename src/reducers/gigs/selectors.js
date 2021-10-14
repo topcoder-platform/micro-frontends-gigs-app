@@ -6,6 +6,11 @@ export const getGigs = (state) => state.gigs.gigs;
 
 export const getGigsError = (state) => state.gigs.gigsError;
 
+export const getFilteredGigsFeatured = (state) =>
+  state.gigs.filteredGigsFeatured;
+
+export const getFilteredGigsHot = (state) => state.gigs.filteredGigsHot;
+
 export const getGigsFeatured = (state) => state.gigs.gigsFeatured;
 
 export const getGigsHot = (state) => state.gigs.gigsHot;

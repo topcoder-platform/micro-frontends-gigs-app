@@ -51,6 +51,7 @@ export const loadGigsPage = async ({ dispatch, getState }) => {
     return;
   }
   dispatch(actions.loadPageSuccess({ gigs, pageCount, totalCount }));
+  dispatch(actions.updateFilteredSpecialGigs());
 };
 
 /**
