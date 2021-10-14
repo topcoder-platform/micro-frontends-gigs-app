@@ -79,7 +79,7 @@ const Gigs = () => {
         ) : (
           <div styleName="message">No Gigs found.</div>
         )}
-        {!isLoadingPage && <GigsPagination />}
+        <GigsPagination />
       </div>
     </div>
   );
