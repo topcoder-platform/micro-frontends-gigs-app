@@ -212,6 +212,8 @@ async function getJobs(criteria = {}) {
       hotListExcerpt: job.hotListExcerpt,
       jobTag: job.jobTag,
       jobExternalId: job.externalId,
+      rcrmStatus: job.rcrmStatus,
+      rcrmReason: job.rcrmReason,
     };
   });
   // Filter the special jobs
@@ -264,6 +266,13 @@ getJobs.schema = Joi.object()
         featured: Joi.boolean(),
         bodySkills: Joi.array().items(Joi.string().uuid()),
         isApplicationPageActive: Joi.boolean(),
+        rcrmStatus: Joi.string().valid(
+          "Open",
+          "On Hold",
+          "Canceled",
+          "Draft",
+          "Closed"
+        ),
       })
       .required(),
   })
