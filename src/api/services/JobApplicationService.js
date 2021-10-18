@@ -152,13 +152,31 @@ async function getJob(currentUser, criteria) {
   // get job based on the jobExternalId
   const { result: jobs } = await helper.getJobs(criteria);
   if (jobs && jobs.length) {
-    const candidates = jobs[0].candidates || [];
-    const newJob = candidates.find((item) => item.userId == userId);
-    if (newJob) {
-      return {
-        synced: true,
-      };
+    const job = jobs[0];
+    const jobInfo = {
+      id: job.id,
+      title: job.title,
+      payment: {
+        min: job.minSalary,
+        max: job.maxSalary,
+        frequency: job.rateType,
+        // currency: job.currency,
+        currency: "$",
+      },
+      skills: job.skills,
+      location: job.jobLocation,
+      duration: job.duration,
+      jobExternalId: job.externalId,
+      jobTimezone: job.jobTimezone,
+      description: job.description,
+      synced: false,
+    };
+    const candidates = job.candidates || [];
+    const candExists = candidates.find((item) => item.userId == userId);
+    if (candExists) {
+      jobInfo.synced = true;
     }
+    return jobInfo;
   }
   return {
     synced: false,
@@ -214,6 +232,8 @@ async function getJobs(criteria = {}) {
       jobExternalId: job.externalId,
       rcrmStatus: job.rcrmStatus,
       rcrmReason: job.rcrmReason,
+      jobTimezone: job.jobTimezone,
+      description: job.description,
     };
   });
   // Filter the special jobs

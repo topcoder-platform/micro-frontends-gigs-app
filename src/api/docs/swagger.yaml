@@ -437,6 +437,43 @@ components:
           type: boolean
           description: "Whether the job application has been synced"
           example: true
+        id:
+          type: string
+          format: uuid
+          description: "The job uuid"
+        title:
+          type: string
+          example: "Dummy title"
+          description: "The title."
+          maxLength: 64
+        payment:
+          $ref: "#/components/schemas/Payment"
+        skills:
+          type: array
+          description: "The skills to filter the jobs"
+          items:
+            type: string
+            format: uuid
+        location:
+          type: string
+          example: "Any location"
+          description: "the location of job"
+        duration:
+          type: integer
+          example: 1
+          description: "The duration in weeks"
+        jobExternalId:
+          type: string
+          example: "51313517"
+          description: "The corresponding gig ID on rcrm"
+        jobTimezone:
+          type: string
+          default: ''
+          description: "the job timezone"
+        description:
+          type: string
+          default: ''
+          description: "The job detail description"
     Job:
       required:
         - id
@@ -508,7 +545,7 @@ components:
         jobExternalId:
           type: string
           example: "51313517"
-          description: "The corresponding gig ID on community app"
+          description: "The corresponding gig ID on rcrm"
         rcrmStatus:
           type: string
           default: null
@@ -518,6 +555,14 @@ components:
           type: string
           default: null
           description: "the possible rcrm reason for current status"
+        jobTimezone:
+          type: string
+          default: ''
+          description: "the job timezone"
+        description:
+          type: string
+          default: ''
+          description: "The job detail description"
     JobApplication:
       required:
         - title
