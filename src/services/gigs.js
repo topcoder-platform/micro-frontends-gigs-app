@@ -19,7 +19,9 @@ export const fetchGigs = (params, controller) => {
     params.pageSize = 10;
   }
   const promise = fetch(
-    `${GIGS_API_URL}?${convertToApiQuery(params)}&isApplicationPageActive=true`,
+    `${GIGS_API_URL}?${convertToApiQuery(
+      params
+    )}&isApplicationPageActive=true&rcrmStatus=Open`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
