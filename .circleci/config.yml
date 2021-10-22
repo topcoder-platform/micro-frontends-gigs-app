@@ -77,7 +77,7 @@ workflows:
             branches:
               only:
                 - dev
-                - gigs-detail-integration
+                - gigs-app-heap
 
       # Production builds are exectuted only on tagged commits to the
       # master branch.
