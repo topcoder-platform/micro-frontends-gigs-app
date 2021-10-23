@@ -132,23 +132,16 @@ getMyJobApplications.schema = Joi.object()
   })
   .required();
 
-async function getJob(currentUser, criteria) {
-  const emptyResult = {
-    synced: false,
-  };
-  // we expect logged-in users
-  if (currentUser.isMachine) {
-    return emptyResult;
-  }
+async function getJob(jwtToken = "", criteria) {
   // get user id by calling taas-api with current user's token
-  const { id: userId } = await helper.getCurrentUserDetails(
-    currentUser.jwtToken
-  );
-  if (!userId) {
-    throw new errors.NotFoundError(
-      `Id for user: ${currentUser.userId} not found`
-    );
+  let userId = "";
+  if (jwtToken) {
+    const res = await helper.getCurrentUserDetails(jwtToken);
+    if (res) {
+      userId = res.id;
+    }
   }
+
   // get job based on the jobExternalId
   const { result: jobs } = await helper.getJobs(criteria);
   if (jobs && jobs.length) {
@@ -171,21 +164,23 @@ async function getJob(currentUser, criteria) {
       description: job.description,
       synced: false,
     };
-    const candidates = job.candidates || [];
-    const candExists = candidates.find((item) => item.userId == userId);
-    if (candExists) {
-      jobInfo.synced = true;
+    if (userId) {
+      const candidates = job.candidates || [];
+      const candExists = candidates.find((item) => item.userId == userId);
+      if (candExists) {
+        jobInfo.synced = true;
+      }
     }
     return jobInfo;
   }
-  return {
-    synced: false,
-  };
+  throw new errors.NotFoundError(
+    `Job with externalId: ${criteria.externalId} not found`
+  );
 }
 
 getJob.schema = Joi.object()
   .keys({
-    currentUser: Joi.object().required(),
+    jwtToken: Joi.string().allow("").allow(null).default(""),
     criteria: Joi.object()
       .keys({
         externalId: Joi.string(),

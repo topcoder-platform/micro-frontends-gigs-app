@@ -99,11 +99,7 @@ paths:
       tags:
         - Job
       description: |
-        Check whether the Job Application info has been synced.
-        
-        **Authorization** All topcoder members are allowed.
-      security:
-        - bearerAuth: []
+        Get the corresponding job detail information and check whether the Job Application info has been synced.
       parameters:
         - in: query
           name: externalId
