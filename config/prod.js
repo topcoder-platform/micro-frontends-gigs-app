@@ -10,4 +10,5 @@ module.exports = {
     PLATFORM_WEBSITE_URL: "https://platform.topcoder.com",
   },
   RECRUIT_API: "https://www.topcoder.com",
+  HEAP_ANALYTICS_KEY: "",
 };

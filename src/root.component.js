@@ -8,7 +8,9 @@ import ReactHeap from "reactjs-heap";
 
 // History for location provider
 const history = createHistory(window);
-ReactHeap.initialize(process.env.HEAP_ID);
+if (process.env.HEAP_ANALYTICS_KEY) {
+  ReactHeap.initialize(process.env.HEAP_ANALYTICS_KEY);
+}
 
 export default function Root({ view = "gigs" }) {
   return (
