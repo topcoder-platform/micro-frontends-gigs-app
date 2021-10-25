@@ -157,6 +157,7 @@ async function getJob(jwtToken = "", criteria) {
         currency: "$",
       },
       skills: job.skills,
+      hoursPerWeek: job.hoursPerWeek,
       location: job.jobLocation,
       duration: job.duration,
       jobExternalId: job.externalId,
