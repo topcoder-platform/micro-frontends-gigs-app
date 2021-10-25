@@ -7,8 +7,38 @@ import {
   SORT_ORDER_DEFAULT,
 } from "constants/gigs";
 import { updateStateFromQuery } from "./urlQuery";
-import { integerFormatter } from "utils/gigs/formatting";
-import { sortLocations } from "utils/gigs/misc";
+import {
+  integerFormatter,
+  convertNumberStringToNumber,
+} from "utils/gigs/formatting";
+import {
+  sortLocations,
+  filterString,
+  filterElement,
+  filterRange,
+} from "utils/gigs/misc";
+
+const clientSideFilters = (state, slice) => {
+  let gigsRes = state[slice];
+  if (state.filters.title !== "") {
+    gigsRes = filterString(gigsRes, "title", state.filters.title);
+  }
+  if (state.filters && state.filters.location !== "All") {
+    gigsRes = filterString(gigsRes, "location", state.filters.location);
+  }
+  if (state.filters && state.filters.skills.length > 0) {
+    gigsRes = filterElement(gigsRes, "skills", state.filters.skills);
+  }
+  const { paymentMax, paymentMin } = state.values;
+  gigsRes = filterRange(
+    gigsRes,
+    "min",
+    "max",
+    convertNumberStringToNumber(paymentMin),
+    convertNumberStringToNumber(paymentMax)
+  );
+  return gigsRes;
+};
 
 const abortControllerDummy = { abort() {} };
 
@@ -45,6 +75,8 @@ const initialState = {
   filters: initFilters(),
   gigs: [],
   gigsError: null,
+  filteredGigsFeatured: null,
+  filteredGigsHot: null,
   gigsFeatured: null,
   gigsHot: null,
   gigsSpecial: null,
@@ -108,11 +140,25 @@ const onLoadGigsSpecialSuccess = (state, { payload: gigsSpecial }) => {
   const skillsById = state.skillsById || {};
   const gigsFeatured = [];
   const gigsHot = [];
+  let locations = state.locations;
+  const locationSet = state.locationSet;
+  const oldLocationCount = locationSet.size;
   for (let gig of gigsSpecial) {
-    if (!gig.location) {
+    // if (!gig.location) {
+    //   gig.location = LOCATION.ANYWHERE;
+    // }
+    // gig.isGlobal = GLOBAL_LOCATION_SET.has(gig.location.toLowerCase());
+    // Aggregate speical gig location, too
+    if (gig.location) {
+      let lcLocation = gig.location.toLowerCase();
+      if (!IGNORED_LOCATION_SET.has(lcLocation)) {
+        locationSet.add(gig.location);
+      }
+      gig.isGlobal = GLOBAL_LOCATION_SET.has(lcLocation);
+    } else {
       gig.location = LOCATION.ANYWHERE;
+      gig.isGlobal = true;
     }
-    gig.isGlobal = GLOBAL_LOCATION_SET.has(gig.location.toLowerCase());
     if (gig.featured) {
       gigsFeatured.push(gig);
     }
@@ -129,10 +175,16 @@ const onLoadGigsSpecialSuccess = (state, { payload: gigsSpecial }) => {
       }
       gig.skills = skills;
     }
+    if (oldLocationCount !== locationSet.size) {
+      locations = [...locationSet].sort(sortLocations);
+    }
   }
   return {
     ...state,
+    filteredGigsFeatured: gigsFeatured,
+    filteredGigsHot: gigsHot.slice(0, GIGS_HOT_COUNT),
     gigsFeatured,
+    locations,
     gigsHot: gigsHot.slice(0, GIGS_HOT_COUNT),
     gigsSpecial,
   };
@@ -340,6 +392,16 @@ const onSetTitle = (state, { payload: title }) =>
 const onUpdateStateFromQuery = (state, { payload: query }) =>
   updateStateFromQuery(state, query);
 
+const onUpdateFilteredSpecialGigs = (state) => {
+  const filteredGigsFeatured = clientSideFilters(state, "gigsFeatured");
+  const filteredGigsHot = clientSideFilters(state, "gigsHot");
+  return {
+    ...state,
+    filteredGigsFeatured,
+    filteredGigsHot,
+  };
+};
+
 export default handleActions(
   {
     [ACTION_TYPE.ADD_SKILL]: onAddSkill,
@@ -362,6 +424,7 @@ export default handleActions(
     [ACTION_TYPE.SET_SORTING]: onSetSorting,
     [ACTION_TYPE.SET_TITLE]: onSetTitle,
     [ACTION_TYPE.UPDATE_STATE_FROM_QUERY]: onUpdateStateFromQuery,
+    [ACTION_TYPE.UPDATE_FILTERED_SPECIAL_GIGS]: onUpdateFilteredSpecialGigs,
   },
   initialState,
   { prefix: "GIGS", namespace: "--" }

@@ -212,10 +212,12 @@ async function getJobs(criteria = {}) {
       hotListExcerpt: job.hotListExcerpt,
       jobTag: job.jobTag,
       jobExternalId: job.externalId,
+      rcrmStatus: job.rcrmStatus,
+      rcrmReason: job.rcrmReason,
     };
   });
   // Filter the special jobs
-  if (criteria.specialJob) {
+  if (criteria.specialJob === true) {
     let count = 0;
     const hotlistJobs = res.filter((item) => {
       if (count < 3 && item.showInHotList === true) {
@@ -234,6 +236,9 @@ async function getJobs(criteria = {}) {
       return false;
     });
     res = [...hotlistJobs, ...featuredJobs];
+  }
+  if (criteria.specialJob === false) {
+    res = res.filter((item) => !item.featured && !item.showInHotList);
   }
   return {
     total: jobsRes.total,
@@ -258,8 +263,16 @@ getJobs.schema = Joi.object()
         maxSalary: Joi.number().integer(),
         title: Joi.string(),
         specialJob: Joi.boolean(),
+        featured: Joi.boolean(),
         bodySkills: Joi.array().items(Joi.string().uuid()),
         isApplicationPageActive: Joi.boolean(),
+        rcrmStatus: Joi.string().valid(
+          "Open",
+          "On Hold",
+          "Canceled",
+          "Draft",
+          "Closed"
+        ),
       })
       .required(),
   })
