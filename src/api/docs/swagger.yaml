@@ -454,6 +454,10 @@ components:
           type: string
           example: "Any location"
           description: "the location of job"
+        hoursPerWeek:
+          type: integer
+          example: 20
+          description: "the amount working hours per week"
         duration:
           type: integer
           example: 1
