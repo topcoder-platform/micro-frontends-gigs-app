@@ -8,11 +8,11 @@ import App from "./App";
 // History for location provider
 const history = createHistory(window);
 
-export default function Root({ view = "gigs" }) {
+export default function Root({ externalId, view = "gigs" }) {
   return (
     <LocationProvider history={history}>
       <Provider store={store}>
-        <App view={view} />
+        <App externalId={externalId} view={view} />
       </Provider>
     </LocationProvider>
   );

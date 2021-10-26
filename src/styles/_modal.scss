@@ -7,9 +7,14 @@
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  width: 600px;
-  height: 410px;
+  margin: 20px !important;
+  padding: 100px 40px !important;
+  width: auto !important;
   background-color: #fff !important;
+
+  @include tablet {
+    width: 600px !important;
+  }
 }
 
 .modalOverlay {
@@ -31,8 +36,14 @@
 
 .message {
   margin: 20px 0 0;
-  font-size: 24px;
-  line-height: 36px;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+
+  @include tablet {
+    font-size: 24px;
+    line-height: 36px;
+  }
 }
 
 .controls {
@@ -42,19 +53,9 @@
 }
 
 .button {
-  margin: 0 5px;
-}
+  margin-right: 10px;
 
-.hint {
-  margin: 10px 0 0;
-  @include roboto-regular;
-  font-size: 14px;
-  line-height: 26px;
-
-  a {
-    font-size: 16px;
-    line-height: 24px;
-    color: #0d61bf;
-    text-decoration: underline;
+  &:last-child {
+    margin-right: 0;
   }
 }

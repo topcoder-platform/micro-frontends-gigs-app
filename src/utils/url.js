@@ -1,5 +1,12 @@
 import _ from "lodash";
 import qs from "qs";
+import { GIG_LIST_ROUTE } from "constants/routes";
+import {
+  FACEBOOK_URL,
+  GIG_LIST_URL,
+  LINKEDIN_URL,
+  TWITTER_URL,
+} from "constants/urls";
 
 /**
  * Return the query string of `params`:
@@ -40,13 +47,46 @@ export function updateQuery(params) {
 }
 
 /**
+ * Creates a URL that can be used to apply for specific gig.
+ *
+ * @param {string} externalId gig external id
+ * @returns {string}
+ */
+export function makeGigApplyUrl(externalId) {
+  return `${GIG_LIST_URL}/${externalId}/apply`;
+}
+
+/**
+ * Creates a path for a gig for local navigation.
+ *
+ * @param {string} externalId gig external id
+ * @returns {string}
+ */
+export function makeGigPath(externalId) {
+  return `${GIG_LIST_ROUTE}/${externalId}`;
+}
+
+/**
  * Creates an external URL for a gig.
  *
  * @param {string} externalId gig external id
  * @returns {string}
  */
-export function makeGigExternalUrl(externalId) {
-  return externalId ? `${process.env.URL.BASE}/gigs/${externalId}` : "";
+export function makeGigUrl(externalId) {
+  return externalId ? `${GIG_LIST_URL}/${externalId}` : "";
+}
+
+/**
+ * Creates an external URL for a gig with referral id parameter.
+ *
+ * @param {string} externalId gig external id
+ * @param {string} referralId user's referral id
+ * @returns {string}
+ */
+export function makeGigReferralUrl(externalId, referralId) {
+  return `${GIG_LIST_URL}/${externalId}?referralId=${encodeURIComponent(
+    referralId
+  )}`;
 }
 
 /**
@@ -59,7 +99,7 @@ export function makeLoginUrl(retUrl) {
   let [path, query = ""] = retUrl.split("?");
   // If query parameters are not encoded twice all parameters except the first
   // are getting lost after returning from authentication flow.
-  retUrl = `${path}?${encodeURIComponent(query)}`;
+  retUrl = `${path}${query ? `?${encodeURIComponent(query)}` : ""}`;
   return `${process.env.URL.AUTH}?retUrl=${encodeURIComponent(retUrl)}`;
 }
 
@@ -70,22 +110,33 @@ export function makeLoginUrl(retUrl) {
  * @returns {string}
  */
 export function makeReferralUrl(referralId) {
-  return `${process.env.URL.BASE}/gigs?referralId=${encodeURIComponent(
-    referralId
-  )}`;
+  return `${GIG_LIST_URL}?referralId=${encodeURIComponent(referralId)}`;
 }
 
 /**
  * Creates a registration URl.
  *
  * @param {string} retUrl return URL
+ * @param {string} [utmSource] utm_source
  * @returns {string}
  */
-export function makeRegisterUrl(retUrl) {
+export function makeRegisterUrl(retUrl, utmSource = "gig_listing") {
   let [path, query = ""] = retUrl.split("?");
-  retUrl = `${path}?${encodeURIComponent(query)}`;
+  retUrl = `${path}${query ? `?${encodeURIComponent(query)}` : ""}`;
   return (
     `${process.env.URL.AUTH}?retUrl=${encodeURIComponent(retUrl)}` +
-    "&mode=signUp&utm_source=gig_listing"
+    `&mode=signUp&utm_source=${utmSource}`
   );
+}
+
+export function makeFacebookUrl(shareUrl) {
+  return `${FACEBOOK_URL}${encodeURIComponent(shareUrl)}`;
+}
+
+export function makeLinkedInUrl(shareUrl) {
+  return `${LINKEDIN_URL}${encodeURIComponent(shareUrl)}`;
+}
+
+export function makeTwitterUrl(shareUrl) {
+  return `${TWITTER_URL}${encodeURIComponent(shareUrl)}`;
 }
