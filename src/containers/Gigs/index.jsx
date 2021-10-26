@@ -11,12 +11,14 @@ import ReferralBanner from "./components/ReferralBanner";
 import * as selectors from "reducers/gigs/selectors";
 import * as effectors from "actions/gigs/effectors";
 import { useUpdateEffect } from "utils/hooks";
+import { setReferralCookie } from "utils/referral";
 
 /**
  * Loads featured and hotlist gigs and skills, updates state from query and
  * normalizes query. Then depending on if state has changed loads gigs page.
  */
 const onMount = async () => {
+  setReferralCookie();
   const hasInitialData = selectors.getHasInitialData(store.getState());
   if (!hasInitialData) {
     await effectors.loadInitialData(store);

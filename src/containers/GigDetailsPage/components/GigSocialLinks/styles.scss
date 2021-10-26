@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  align-items: center;
+  line-height: 30px;
+}
+
+.social-link {
+  flex: 0 0 auto;
+  margin-left: 5px;
+  width: 35px;
+}
+
+.socialIcon {
+  display: block;
+  width: 100%;
+  height: auto;
+}

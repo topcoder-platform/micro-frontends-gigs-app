@@ -5,7 +5,7 @@ import PT from "prop-types";
 import store from "store";
 import LoadingCircles from "components/LoadingCircles";
 import Button from "components/Button";
-import ReferralAuthModal from "../ReferralAuthModal";
+import ReferralAuthModal from "components/ReferralAuthModal";
 import * as userSelectors from "reducers/user/selectors";
 import * as userEffectors from "actions/user/effectors";
 import { makeReferralUrl } from "utils/url";
@@ -19,7 +19,9 @@ import { REFERRAL_PROGRAM_URL } from "constants/urls";
  * @returns {JSX.Element}
  */
 const ReferralBanner = ({ className }) => {
-  const isLoadingRefId = useSelector(userSelectors.getIsLoadingRefId);
+  const isLoadingReferralData = useSelector(
+    userSelectors.getIsLoadingReferralData
+  );
   const isLoggedIn = useSelector(userSelectors.getIsLoggedIn);
   const referralId = useSelector(userSelectors.getReferralId);
   const [hasCopiedLink, setHasCopiedLink] = useState(false);
@@ -53,7 +55,7 @@ const ReferralBanner = ({ className }) => {
 
   useEffect(() => {
     if (isLoggedIn && !referralId) {
-      userEffectors.getReferralId(store);
+      userEffectors.loadReferralData(store);
     }
   }, [isLoggedIn, referralId]);
 
@@ -89,7 +91,7 @@ const ReferralBanner = ({ className }) => {
             Topcoder Referral Program:
           </a>
           <span styleName="referral-link-label">Your referral link:</span>
-          {isLoadingRefId ? (
+          {isLoadingReferralData ? (
             <LoadingCircles styleName="loading-indicator" />
           ) : referralId ? (
             <span styleName="referral-field">
