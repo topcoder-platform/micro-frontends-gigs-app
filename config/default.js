@@ -51,4 +51,5 @@ module.exports = {
     "txt",
   ],
   MAX_ALLOWED_FILE_SIZE_MB: process.env.MAX_ALLOWED_FILE_SIZE_MB || 10,
+  HEAP_ANALYTICS_KEY: process.env.HEAP_ANALYTICS_KEY || "428520820",
 };
