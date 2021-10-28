@@ -1,7 +1,10 @@
+@import "styles/variables";
+
 .container {
   display: flex;
   align-items: center;
   line-height: 30px;
+  margin: 20px 0 12px;
 }
 
 .social-link {
@@ -14,4 +17,7 @@
   display: block;
   width: 100%;
   height: auto;
+  path {
+    fill: $tc-white;
+  }
 }

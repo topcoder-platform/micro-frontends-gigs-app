@@ -19,7 +19,7 @@ import {
 } from "utils/misc";
 import { REFERRAL_PROGRAM_URL } from "constants/urls";
 
-const GigReferral = ({ className }) => {
+const GigReferral = ({ className, jobExternalId }) => {
   const externalId = useSelector(detailsSelectors.getGigExternalId);
   const isLoggedIn = useSelector(userSelectors.getIsLoggedIn);
   const profile = useSelector(userSelectors.getProfile);
@@ -121,13 +121,18 @@ const GigReferral = ({ className }) => {
     <div className={cn(styles.container, className)}>
       <div className={styles.header}>
         <div className={styles.label}>Refer this gig</div>
-        <a target="_blank" href={REFERRAL_PROGRAM_URL}>
-          How it works
-        </a>
       </div>
-      <GigReferralLink className={styles.referralLink} />
+      <GigReferralLink jobExternalId={jobExternalId} />
+      <div className={styles.sepWrap}>
+        <div className={styles.sepLine} />
+        <span>or</span>
+        <div className={styles.sepLine} />
+      </div>
       <div className={styles.incentive}>
-        Refer someone to this gig and earn $500. Just add their email below.
+        Refer someone to this gig and earn $500. Just add their email below. See
+        <a target="_blank" href={REFERRAL_PROGRAM_URL}>
+          how it works
+        </a>
       </div>
       <form className={styles.emailForm} action="#" onSubmit={preventDefault}>
         <input

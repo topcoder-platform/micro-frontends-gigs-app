@@ -38,11 +38,14 @@ module.exports = {
   AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
   // Proxy Auth0 URL, used to get TC M2M token
   AUTH0_PROXY_SERVER_URL: process.env.AUTH0_PROXY_SERVER_URL,
-  CHALLENGE_LIST_PATH: process.env.CHALLENGE_LIST_PATH || "/challenges",
-  GIG_LIST_PATH: process.env.GIG_LIST_PATH || "/gigs",
+  // Subpath to reach the challenge url
+  CHALLENGE_LIST_PATH: process.env.CHALLENGE_LIST_PATH || "/earn/find/challenges",
+  // Subpath to reach the gigs listing url
+  GIG_LIST_PATH: process.env.GIG_LIST_PATH || "/earn/gigs",
+  // referral key
   GROWSURF_COOKIE: "_tc_gigs_ref",
+  // referral cookie setting
   GROWSURF_COOKIE_SETTINGS: {
-    secure: true,
     domain: "",
     expires: 30, // days
   },

@@ -10,6 +10,13 @@
   align-items: center;
 }
 
+.referral-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 input.link-input {
   flex: 1 1 0;
   margin: 0;
@@ -28,11 +35,6 @@ input.link-input {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-
-  @include desktop {
-    flex: 0 0 auto;
-    width: 265px;
-  }
 }
 
 .copy-button {

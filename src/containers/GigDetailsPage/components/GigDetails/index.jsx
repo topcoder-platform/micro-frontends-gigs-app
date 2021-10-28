@@ -176,7 +176,7 @@ const GigDetails = () => {
             </Button>
           </div>
         </div>
-        <GigWidgets className={styles.widgets} />
+        <GigWidgets className={styles.widgets} jobExternalId={jobExternalId} />
       </div>
       <LoginModal onClose={onCloseLoginModal} open={isOpenLoginModal} />
     </div>

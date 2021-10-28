@@ -9,6 +9,7 @@ import { makeFacebookUrl, makeLinkedInUrl, makeTwitterUrl } from "utils/url";
 
 const GigSocialLinks = ({ className }) => {
   const referralId = useSelector(userSelectors.getReferralId);
+  const isLoggedIn = useSelector(userSelectors.getIsLoggedIn);
 
   const shareUrl = referralId
     ? `${location.origin}${location.pathname}?referralId=${referralId}`
@@ -16,7 +17,8 @@ const GigSocialLinks = ({ className }) => {
 
   return (
     <div styleName="container" className={className}>
-      Share this job on:&nbsp;
+      Share&nbsp;
+      {isLoggedIn ? "" : "this job"} on:&nbsp;
       <a
         styleName="social-link"
         href={makeLinkedInUrl(shareUrl)}
