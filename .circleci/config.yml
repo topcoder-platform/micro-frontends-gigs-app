@@ -77,7 +77,6 @@ workflows:
             branches:
               only:
                 - dev
-                - gigs-solo-heap
 
       # Production builds are exectuted only on tagged commits to the
       # master branch.
