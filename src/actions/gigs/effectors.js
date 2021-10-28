@@ -109,7 +109,11 @@ export const loadInitialData = async (store) => {
  * @param {Object} store redux store
  * @returns {Promise}
  */
-export const loadSkills = async ({ dispatch }) => {
+export const loadSkills = async ({ dispatch, getState }) => {
+  const hasSkills = selectors.getHasSkills(getState());
+  if (hasSkills) {
+    return;
+  }
   const pageSize = 1e3;
   let skills = null;
   try {

@@ -184,7 +184,7 @@ getJob.schema = Joi.object()
     jwtToken: Joi.string().allow("").allow(null).default(""),
     criteria: Joi.object()
       .keys({
-        externalId: Joi.string(),
+        externalId: Joi.string().required(),
       })
       .required(),
   })

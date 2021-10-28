@@ -1,5 +1,6 @@
 import styles from "./styles.scss";
 import React, { useCallback } from "react";
+import { Link } from "@reach/router";
 import PT from "prop-types";
 import cn from "classnames";
 import TagList from "components/TagList";
@@ -8,7 +9,7 @@ import IconFlagHot from "components/icons/FlagHot";
 import IconFlagNew from "components/icons/FlagNew";
 import { formatPaymentAmount } from "utils/gigs/formatting";
 import { formatPlural } from "utils/formatting";
-import { makeGigExternalUrl } from "utils/url";
+import { makeGigPath } from "utils/url";
 
 /**
  * Displays gigs list item.
@@ -30,10 +31,10 @@ const GigItem = ({ className, gig, onClickSkill }) => {
   } = gig;
 
   return (
-    <a
+    <Link
       className={className}
       styleName="container"
-      href={makeGigExternalUrl(jobExternalId)}
+      to={makeGigPath(jobExternalId)}
     >
       {jobTag === "$$$" && (
         <IconFlagDollars className={styles.flagIcon} id={id} />
@@ -68,7 +69,7 @@ const GigItem = ({ className, gig, onClickSkill }) => {
         </div>
         <div styleName="duration-label">Duration</div>
       </div>
-    </a>
+    </Link>
   );
 };
 
