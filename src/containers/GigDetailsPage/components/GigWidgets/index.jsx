@@ -1,7 +1,6 @@
 import styles from "./styles.scss";
 import React from "react";
 import PT from "prop-types";
-import GigSocialLinks from "../GigSocialLinks";
 import GigReferral from "../GigReferral";
 import GigsSubscription from "../GigsSubscription";
 import GigTips from "../GigTips";
@@ -14,7 +13,6 @@ import GigTips from "../GigTips";
  */
 const GigWidgets = ({ className }) => (
   <div className={className}>
-    <GigSocialLinks className={styles.gigSocialLinks} />
     <GigReferral className={styles.gigReferral} />
     <GigsSubscription className={styles.gigSubscription} />
     <GigTips className={styles.gigTips} />

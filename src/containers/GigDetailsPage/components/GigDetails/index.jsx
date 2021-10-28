@@ -133,7 +133,7 @@ const GigDetails = () => {
             />
           </div>
           <div styleName="condition-data">
-            <div styleName="condition-label">Timezone</div>
+            <div styleName="condition-label">Working Hours</div>
             <div styleName="condition-value">
               {jobTimezone ? jobTimezone : "n/a"}
             </div>
@@ -143,7 +143,7 @@ const GigDetails = () => {
       <div styleName="contents">
         <div styleName="text">
           <div styleName="skills">
-            <div styleName="section-label">Skills</div>
+            <div styleName="section-label">Required Skills</div>
             <div styleName="section-contents">
               {skillsError ? (
                 <span styleName="skills-error">{skillsError}</span>

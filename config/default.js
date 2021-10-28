@@ -19,6 +19,7 @@ module.exports = {
       process.env.URL_PLATFORM_WEBSITE_URL ||
       "https://platform.topcoder-dev.com",
   },
+  PROXY_API: process.env.PROXY_API || "https://platform.topcoder-dev.com",
   RECRUIT_API: process.env.RECRUIT_API || "https://www.topcoder-dev.com",
   // the server api base path
   API_BASE_PATH: process.env.API_BASE_PATH || "/gigs-app/api/my-gigs",
@@ -38,8 +39,9 @@ module.exports = {
   AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
   // Proxy Auth0 URL, used to get TC M2M token
   AUTH0_PROXY_SERVER_URL: process.env.AUTH0_PROXY_SERVER_URL,
-  CHALLENGE_LIST_PATH: process.env.CHALLENGE_LIST_PATH || "/challenges",
-  GIG_LIST_PATH: process.env.GIG_LIST_PATH || "/gigs",
+  CHALLENGE_LIST_PATH:
+    process.env.CHALLENGE_LIST_PATH || "/earn/find/challenges",
+  GIG_LIST_PATH: process.env.GIG_LIST_PATH || "/earn/gigs",
   GROWSURF_COOKIE: "_tc_gigs_ref",
   GROWSURF_COOKIE_SETTINGS: {
     secure: true,

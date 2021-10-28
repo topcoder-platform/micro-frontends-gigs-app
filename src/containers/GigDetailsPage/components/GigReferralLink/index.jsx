@@ -3,11 +3,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Button from "components/Button";
 import LoadingCircles from "components/LoadingCircles";
+import GigSocialLinks from "../GigSocialLinks";
 import * as userSelectors from "reducers/user/selectors";
-import { makeReferralUrl } from "utils/url";
+import * as detailsSelectors from "reducers/gigDetails/selectors";
+import { makeGigReferralUrl } from "utils/url";
 import { preventDefault } from "utils/misc";
 
 const GigReferralLink = ({ className }) => {
+  const externalId = useSelector(detailsSelectors.getGigExternalId);
   const isLoadingReferralData = useSelector(
     userSelectors.getIsLoadingReferralData
   );
@@ -25,13 +28,13 @@ const GigReferralLink = ({ className }) => {
     const body = document.body;
     const input = document.createElement("input");
     input.className = styles.hiddenInput;
-    input.value = makeReferralUrl(referralId);
+    input.value = makeGigReferralUrl(externalId, referralId);
     body.appendChild(input);
     input.select();
     document.execCommand("copy");
     body.removeChild(input);
     setHasCopiedLink(true);
-  }, [referralId]);
+  }, [externalId, referralId]);
 
   useEffect(() => {
     if (!hasCopiedLink) {
@@ -64,21 +67,33 @@ const GigReferralLink = ({ className }) => {
               readOnly
               styleName="link-input"
               type="text"
-              value={makeReferralUrl(referralId)}
+              value={makeGigReferralUrl(externalId, referralId)}
             />
-            <Button
-              isPrimary
-              isInverted
-              size="lg"
-              styleName="copy-button"
-              onClick={onClickBtnCopy}
-            >
-              {copyBtnLabel}
-            </Button>
+            <div styleName="buttons">
+              <Button
+                isPrimary
+                isInverted
+                size="lg"
+                styleName="copy-button"
+                onClick={onClickBtnCopy}
+              >
+                {copyBtnLabel}
+              </Button>
+              <GigSocialLinks
+                className={styles.socialLinks}
+                label="Share on:"
+              />
+            </div>
           </div>
         </>
       ) : (
-        <div styleName="error">Failed to load referral data.</div>
+        <>
+          <div styleName="error">Failed to load referral data.</div>
+          <GigSocialLinks
+            className={styles.socialLinks}
+            label="Share this job on:"
+          />
+        </>
       )}
     </form>
   );

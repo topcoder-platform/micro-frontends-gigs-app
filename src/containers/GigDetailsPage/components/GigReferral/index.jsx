@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import cn from "classnames";
 import Button from "components/Button";
 import GigReferralLink from "../GigReferralLink";
+import GigSocialLinks from "../GigSocialLinks";
 import ReferralAuthModal from "components/ReferralAuthModal";
 import ReferralEmailModal from "components/ReferralEmailModal";
 import store from "store";
@@ -121,13 +122,24 @@ const GigReferral = ({ className }) => {
     <div className={cn(styles.container, className)}>
       <div className={styles.header}>
         <div className={styles.label}>Refer this gig</div>
-        <a target="_blank" href={REFERRAL_PROGRAM_URL}>
-          How it works
-        </a>
       </div>
-      <GigReferralLink className={styles.referralLink} />
+      {isLoggedIn ? (
+        <GigReferralLink className={styles.referralLink} />
+      ) : (
+        <GigSocialLinks
+          className={styles.socialLinks}
+          label="Share this job on:"
+        />
+      )}
+      <div className={styles.or}>
+        <span>or</span>
+      </div>
       <div className={styles.incentive}>
-        Refer someone to this gig and earn $500. Just add their email below.
+        Refer someone to this gig and earn $500. Just add their email below. See{" "}
+        <a target="_blank" href={REFERRAL_PROGRAM_URL}>
+          how it works
+        </a>
+        .
       </div>
       <form className={styles.emailForm} action="#" onSubmit={preventDefault}>
         <input
@@ -243,9 +255,6 @@ async function sendReferralEmail(
       metadata: {
         ...referralData.metadata,
         emailInvitesSent: (+emailInvitesSent || 0) + 1,
-        // In community app's code emails are joined without using a comma.
-        // Is this a bug in community app?
-        // See: https://github.com/topcoder-platform/community-app/blob/b44919e6e819b4ad953eefa4dca67e6229bcf773/src/shared/containers/Gigs/RecruitCRMJobDetails.jsx#L153
         emailInvitesLog: invitedEmails.join(","),
         emailInvitesStatus,
       },

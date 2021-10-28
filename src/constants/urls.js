@@ -1,11 +1,14 @@
-export const LOCAL_API_BASE_URL = `http://localhost:8010${process.env.API_BASE_PATH}`;
-export const GIG_DETAILS_API_URL = `${LOCAL_API_BASE_URL}/job`;
+export const PROXY_API_BASE_URL =
+  process.env.PROXY_API + process.env.API_BASE_PATH;
+export const GIG_DETAILS_API_URL = `${PROXY_API_BASE_URL}/job`;
 
 export const REFERRAL_API_URL = `${process.env.URL.COMMUNITY_APP}/api`;
 export const REFERRAL_PROGRAM_URL = `${process.env.URL.BASE}/community/gig-referral`;
 
-export const CHALLENGE_LIST_URL = `${process.env.URL.BASE}${process.env.CHALLENGE_LIST_PATH}`;
-export const GIG_LIST_URL = `${process.env.URL.BASE}${process.env.GIG_LIST_PATH}`;
+export const CHALLENGE_LIST_URL =
+  process.env.URL.PLATFORM_WEBSITE_URL + process.env.CHALLENGE_LIST_PATH;
+export const GIG_LIST_URL =
+  process.env.URL.PLATFORM_WEBSITE_URL + process.env.GIG_LIST_PATH;
 
 export const PROFILE_URL = `${process.env.URL.BASE}/settings/profile`;
 export const GIGS_FORUM_URL = `${process.env.URL.DISCUSSIONS}/categories/gig-work-discusssions`;

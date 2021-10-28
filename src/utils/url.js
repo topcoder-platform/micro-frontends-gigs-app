@@ -73,7 +73,7 @@ export function makeGigPath(externalId) {
  * @returns {string}
  */
 export function makeGigUrl(externalId) {
-  return externalId ? `${GIG_LIST_URL}/${externalId}` : "";
+  return externalId ? `${location.origin}${GIG_LIST_ROUTE}/${externalId}` : "";
 }
 
 /**
@@ -84,7 +84,9 @@ export function makeGigUrl(externalId) {
  * @returns {string}
  */
 export function makeGigReferralUrl(externalId, referralId) {
-  return `${GIG_LIST_URL}/${externalId}?referralId=${encodeURIComponent(
+  return `${
+    location.origin
+  }${GIG_LIST_ROUTE}/${externalId}?referralId=${encodeURIComponent(
     referralId
   )}`;
 }
@@ -110,7 +112,9 @@ export function makeLoginUrl(retUrl) {
  * @returns {string}
  */
 export function makeReferralUrl(referralId) {
-  return `${GIG_LIST_URL}?referralId=${encodeURIComponent(referralId)}`;
+  return `${location.origin}${GIG_LIST_ROUTE}?referralId=${encodeURIComponent(
+    referralId
+  )}`;
 }
 
 /**
