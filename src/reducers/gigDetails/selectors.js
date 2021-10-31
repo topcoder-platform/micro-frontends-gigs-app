@@ -9,3 +9,5 @@ export const getGigExternalId = (state) =>
 
 export const getIsLoadingDetails = (state) =>
   !!state.gigDetails.abortController;
+
+export const getStateSlice = (state) => state.gigDetails;

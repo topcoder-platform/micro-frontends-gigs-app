@@ -2,6 +2,7 @@
  * Main App component
  */
 import React from "react";
+import GigApplyPage from "./containers/GigApplyPage";
 import GigDetailsPage from "./containers/GigDetailsPage";
 import GigsPage from "./containers/GigsPage";
 import MyGigsPage from "./containers/MyGigsPage";
@@ -16,6 +17,7 @@ import "./styles/main.scss";
 const App = ({ externalId, view }) => {
   return (
     <div className="layout-wrapper">
+      {view === "gig-apply" && <GigApplyPage externalId={externalId} />}
       {view === "gig-details" && <GigDetailsPage externalId={externalId} />}
       {view === "gigs" && <GigsPage />}
       {view === "my-gigs" && <MyGigsPage />}

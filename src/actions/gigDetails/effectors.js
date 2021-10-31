@@ -45,7 +45,10 @@ export const loadDetails = async (store, externalId) => {
 };
 
 export const resetDetails = ({ dispatch, getState }) => {
-  const controller = selectors.getAbortController(getState());
-  controller?.abort();
+  const { abortController, cancelReset } = selectors.getStateSlice(getState());
+  if (cancelReset) {
+    return;
+  }
+  abortController?.abort();
   dispatch(actions.resetDetails());
 };

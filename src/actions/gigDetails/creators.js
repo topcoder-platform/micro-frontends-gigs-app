@@ -7,6 +7,7 @@ const actions = createActions(
   ACTION_TYPE.LOAD_DETAILS_PENDING,
   ACTION_TYPE.LOAD_DETAILS_SUCCESS,
   ACTION_TYPE.RESET_DETAILS,
+  ACTION_TYPE.SET_CANCEL_RESET,
   { prefix: "GIG-DETAILS", namespace: "--" }
 );
 

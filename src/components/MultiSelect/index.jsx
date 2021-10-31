@@ -4,6 +4,11 @@ import React from "react";
 import PT from "prop-types";
 import cn from "classnames";
 import Select from "react-select";
+import iconDown from "assets/icons/dropdown-arrow.png";
+
+const Arrow = () => (
+  <img className={styles.arrow} src={iconDown} alt="icon down" />
+);
 
 /**
  * Displays a multi-select field.
@@ -13,31 +18,48 @@ import Select from "react-select";
  */
 const MultiSelect = ({
   className,
+  clearable,
   label,
   onChange,
+  onFocus,
   options,
   optLabelKey,
   optValueKey,
   placeholder,
+  showArrow = false,
+  size,
   value,
+  error,
 }) => {
   return (
-    <div className={cn(styles.container, className)}>
-      {label && <span className={styles.label}>{label}</span>}
-      <Select
-        arrowRenderer={null}
-        className={cn(styles.select, {
-          [styles.hasValues]: value && value.length,
-        })}
-        labelKey={optLabelKey}
-        valueKey={optValueKey}
-        multi={true}
-        onChange={onChange}
-        options={options}
-        placeholder={placeholder}
-        value={value}
-      />
-    </div>
+    <>
+      <div
+        className={cn(
+          styles.container,
+          { [styles.hasError]: !!error },
+          styles[size],
+          className
+        )}
+      >
+        {label && <span className={styles.label}>{label}</span>}
+        <Select
+          arrowRenderer={showArrow ? Arrow : null}
+          className={cn(styles.select, {
+            [styles.hasValues]: value && value.length,
+          })}
+          clearable={clearable}
+          labelKey={optLabelKey}
+          valueKey={optValueKey}
+          multi={true}
+          onChange={onChange}
+          onFocus={onFocus}
+          options={options}
+          placeholder={placeholder}
+          value={value}
+        />
+      </div>
+      {error && <div className={styles.error}>{error}</div>}
+    </>
   );
 };
 

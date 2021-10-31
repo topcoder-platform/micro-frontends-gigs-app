@@ -50,6 +50,8 @@ export const getSkillsAll = (state) => state.gigs.skillsAll;
 
 export const getSkillsById = (state) => state.gigs.skillsById;
 
+export const getSkillsByName = (state) => state.gigs.skillsByName;
+
 export const getSkillsError = (state) => state.gigs.skillsError;
 
 export const getSorting = (state) => state.gigs.sorting;

@@ -37,6 +37,18 @@ export function isEmailValid(email) {
   return rxEmail.test(email);
 }
 
+const rxInteger = /^[1-9]\d*$/;
+
+/**
+ * Checks whether the provided string can be converted to an integer value.
+ *
+ * @param {string} str
+ * @returns {boolean}
+ */
+export function isValidIntegerString(str) {
+  return rxInteger.test(str);
+}
+
 /**
  * Prevents default action for event.
  *

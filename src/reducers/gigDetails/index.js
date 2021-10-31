@@ -6,9 +6,9 @@ const abortControllerDummy = { abort() {} };
 
 const initState = () => ({
   abortController: abortControllerDummy,
+  cancelReset: false,
   details: null,
   detailsError: null,
-  skillsError: null,
 });
 
 const initialState = initState();
@@ -37,12 +37,18 @@ const onLoadDetailsSuccess = (state, { payload: details }) => {
 
 const onResetDetails = () => initState();
 
+const onSetCancelReset = (state, { payload: cancelReset }) => ({
+  ...state,
+  cancelReset,
+});
+
 export default handleActions(
   {
     [ACTION_TYPE.LOAD_DETAILS_ERROR]: onLoadDetailsError,
     [ACTION_TYPE.LOAD_DETAILS_PENDING]: onLoadDetailsPending,
     [ACTION_TYPE.LOAD_DETAILS_SUCCESS]: onLoadDetailsSuccess,
     [ACTION_TYPE.RESET_DETAILS]: onResetDetails,
+    [ACTION_TYPE.SET_CANCEL_RESET]: onSetCancelReset,
   },
   initialState,
   { prefix: "GIG-DETAILS", namespace: "--" }

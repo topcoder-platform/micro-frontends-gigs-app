@@ -30,7 +30,7 @@ const defaultState = {
     total: 0,
   },
   profile: {},
-  loadingProfile: false,
+  loadingProfile: true,
   loadingProfileError: null,
   updatingProfile: false,
   updatingProfileError: null,

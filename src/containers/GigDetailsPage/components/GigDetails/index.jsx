@@ -18,7 +18,7 @@ import * as gigsSelectors from "reducers/gigs/selectors";
 import * as userSelectors from "reducers/user/selectors";
 import { formatPaymentAmount } from "utils/gigs/formatting";
 import { formatPlural } from "utils/formatting";
-import { makeGigApplyUrl } from "utils/url";
+import { makeGigApplyPath } from "utils/url";
 import { FREQUENCY_TO_PERIOD } from "constants/gigs";
 import { GIG_LIST_ROUTE } from "constants/routes";
 
@@ -56,7 +56,7 @@ const GigDetails = () => {
     if (!isLoggedIn) {
       setIsOpenLoginModal(true);
     } else if (jobExternalId) {
-      window.location = makeGigApplyUrl(jobExternalId);
+      navigate(makeGigApplyPath(jobExternalId));
     }
   }, [isLoggedIn, jobExternalId]);
 

@@ -1,6 +1,6 @@
 import _ from "lodash";
 import qs from "qs";
-import { GIG_LIST_ROUTE } from "constants/routes";
+import { GIG_LIST_ROUTE, MY_GIGS_LIST_ROUTE } from "constants/routes";
 import {
   FACEBOOK_URL,
   GIG_LIST_URL,
@@ -46,6 +46,10 @@ export function updateQuery(params) {
   }
 }
 
+export function makeGigApplicationStatusPath(externalId) {
+  return `${MY_GIGS_LIST_ROUTE}?externalId=${externalId}`;
+}
+
 /**
  * Creates a URL that can be used to apply for specific gig.
  *
@@ -54,6 +58,16 @@ export function updateQuery(params) {
  */
 export function makeGigApplyUrl(externalId) {
   return `${GIG_LIST_URL}/${externalId}/apply`;
+}
+
+/**
+ * Creates a gig application path.
+ *
+ * @param {string} externalId gig external id
+ * @returns {string}
+ */
+export function makeGigApplyPath(externalId) {
+  return `${GIG_LIST_ROUTE}/${externalId}/apply`;
 }
 
 /**
@@ -103,6 +117,16 @@ export function makeLoginUrl(retUrl) {
   // are getting lost after returning from authentication flow.
   retUrl = `${path}${query ? `?${encodeURIComponent(query)}` : ""}`;
   return `${process.env.URL.AUTH}?retUrl=${encodeURIComponent(retUrl)}`;
+}
+
+/**
+ * Creates a URL for user's profile
+ *
+ * @param {string} handle Topcoder user handle
+ * @returns {string}
+ */
+export function makeProfileUrl(handle) {
+  return `${process.env.URL.BASE}/members/${handle}`;
 }
 
 /**
