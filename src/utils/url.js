@@ -126,7 +126,7 @@ export function makeLoginUrl(retUrl) {
  * @returns {string}
  */
 export function makeProfileUrl(handle) {
-  return `${process.env.URL.BASE}/members/${handle}`;
+  return `${process.env.URL.PLATFORM_WEBSITE_URL}/profile/${handle}`;
 }
 
 /**
