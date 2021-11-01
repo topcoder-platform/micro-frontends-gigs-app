@@ -32,10 +32,12 @@ export const loadInitialData = async (externalId) => {
   const country = countryByCode[profile.country]?.name || "";
   const skillsByName = gigsSelectors.getSkillsByName(state);
   const skillNames = profile.skill?.split(",") || [];
-  const skills = [];
+  let skills = null;
   for (let name of skillNames) {
     let skill = skillsByName[name];
     if (skill) {
+      // initialize it with empty array as long as we have at least one skill
+      if (!skills) skills = [];
       skills.push(skill);
     }
   }
@@ -46,6 +48,11 @@ export const sendApplication = async () => {
   const { dispatch, getState } = store;
   const state = getState();
   dispatch(applyActions.validateUntouched());
+  const isFormValid = applySelectors.getIsFormValid(state);
+  if (!isFormValid) {
+    // stop the application by return directly
+    return;
+  }
   const { jobExternalId } = detailsSelectors.getDetails(state);
   const formData = composeApplication(state);
   dispatch(applyActions.sendApplicationPending());

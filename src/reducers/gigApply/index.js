@@ -50,25 +50,25 @@ const initState = () => ({
     isRequired: true,
     isTouched: false,
     error: null,
-    value: "",
+    value: null,
   },
   country: {
     isRequired: true,
     isTouched: false,
     error: null,
-    value: "",
+    value: null,
   },
   payment: {
     isRequired: true,
     isTouched: false,
     error: null,
-    value: "",
+    value: 0,
   },
   phone: {
     isRequired: true,
     isTouched: false,
     error: null,
-    value: "",
+    value: null,
   },
   referral: {
     isRequired: true,
@@ -84,19 +84,19 @@ const initState = () => ({
     isRequired: true,
     isTouched: false,
     error: null,
-    value: [],
+    value: null,
   },
 });
 
 const onInitProfileData = (
   state,
-  { payload: { country, profile, skills = [] } }
+  { payload: { country, profile, skills } }
 ) => {
   const {
-    city = "",
+    city = null,
     existingResume = null,
-    phone = "",
-    salaryExpectation = "",
+    phone = null,
+    salaryExpectation = 0,
   } = profile;
   return {
     ...state,
@@ -428,7 +428,7 @@ const onValidateSkills = (state) => {
   const skills = state.skills;
   const skillsValue = skills.value;
   let error = null;
-  if (!skillsValue.length) {
+  if (!skillsValue || !skillsValue.length) {
     error = "Please, add technical skills";
   } else {
     let names = [];

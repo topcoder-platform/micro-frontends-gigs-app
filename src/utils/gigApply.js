@@ -45,7 +45,9 @@ export function composeApplication(state) {
     city: city.value,
     locality: country.value,
     salary_expectation: payment.value,
-    skill: skills.value.map((skill) => skill.name).join(","),
+    skill:
+      (skills.value && skills.value.map((skill) => skill.name).join(",")) ||
+      null,
     custom_fields: [
       { field_id: 1, value: handle ? makeProfileUrl(handle) : "" },
       { field_id: 2, value: handle || "" },

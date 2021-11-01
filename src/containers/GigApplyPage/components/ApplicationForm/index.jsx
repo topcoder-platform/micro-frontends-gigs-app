@@ -21,7 +21,6 @@ import { makeGigPath } from "utils/url";
 import { preventDefault } from "utils/misc";
 
 const SubmissionForm = () => {
-  const isFormValid = useSelector(applySelectors.getIsFormValid);
   const hasProfile = useSelector(myGigsSelectors.getHasProfile);
 
   const onClickBtnApply = useCallback(() => {
@@ -49,12 +48,7 @@ const SubmissionForm = () => {
       <FinalQuestions />
       <TermsAndPolicies className={styles.termsAndPolicies} />
       <div styleName="controls">
-        <Button
-          isPrimary
-          size="lg"
-          disabled={!isFormValid}
-          onClick={onClickBtnApply}
-        >
+        <Button isPrimary size="lg" onClick={onClickBtnApply}>
           APPLY TO THIS JOB
         </Button>
       </div>
