@@ -38,7 +38,7 @@ async function getMyProfile(currentUser) {
     country: _.get(member, "competitionCountryCode", null),
     hasProfile: _.get(recruitProfile, "hasProfile", false),
     salaryExpectation: salaryExpectation,
-    skill: _.get(recruitProfile, "skill", ""),
+    skill: _.get(recruitProfile, "skill", null),
     phone: _.get(recruitProfile, "phone", null),
     resume: _.get(recruitProfile, "resume", null),
     availability: _.get(recruitProfile, "availability", true),
