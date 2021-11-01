@@ -34,6 +34,13 @@
     &:last-child {
       margin-top: 0;
     }
+    a {
+      color: #0d61bf;
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
 }
 

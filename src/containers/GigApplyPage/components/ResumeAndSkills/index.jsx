@@ -95,7 +95,8 @@ const ResumeAndSkills = () => {
       <MultiSelect
         className={styles.skillsField}
         showArrow
-        label="Tech Skills *"
+        isRequired
+        label="Tech Skills"
         optLabelKey="name"
         optValueKey="id"
         placeholder="Tech Skills *"

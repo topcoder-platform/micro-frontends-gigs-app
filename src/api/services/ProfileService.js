@@ -23,6 +23,11 @@ async function getMyProfile(currentUser) {
     `fields=photoURL,firstName,lastName,handle,email,addresses,competitionCountryCode`
   );
   const recruitProfile = await helper.getRCRMProfile(currentUser);
+  let salaryExpectation = _.get(recruitProfile, "salaryExpectation");
+  if (!salaryExpectation) {
+    salaryExpectation = null;
+  }
+
   return {
     profilePhoto: _.get(member, "photoURL", null),
     firstName: _.get(member, "firstName", null),
@@ -32,7 +37,7 @@ async function getMyProfile(currentUser) {
     city: _.get(member, "addresses[0].city", null),
     country: _.get(member, "competitionCountryCode", null),
     hasProfile: _.get(recruitProfile, "hasProfile", false),
-    salaryExpectation: _.get(recruitProfile, "salaryExpectation", 0),
+    salaryExpectation: salaryExpectation,
     skill: _.get(recruitProfile, "skill", ""),
     phone: _.get(recruitProfile, "phone", null),
     resume: _.get(recruitProfile, "resume", null),

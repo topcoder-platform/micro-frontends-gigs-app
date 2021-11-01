@@ -148,7 +148,7 @@ const PersonalInfo = () => {
             name="contact_number"
             size="large"
             placeholder="Phone Including Country Code *"
-            isRequired={phone.isRequired}
+            isRequired
             onChange={onChangePhone}
             value={phone.value}
             error={phone.error}
@@ -157,11 +157,11 @@ const PersonalInfo = () => {
         <div className={formStyles.fieldRow}>
           <TextField
             className={formStyles.field}
-            label={city.isTouched ? "City *" : ""}
+            label="City"
             name="city"
             placeholder="City *"
             size="large"
-            isRequired={city.isRequired}
+            isRequired
             onChange={onChangeCity}
             onFocus={touchCity}
             value={city.value}

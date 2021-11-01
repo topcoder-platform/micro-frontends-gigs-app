@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import PT from "prop-types";
 import cn from "classnames";
 import styles from "./styles.module.scss";
@@ -14,6 +14,7 @@ const TextField = ({
   id,
   isDisabled = false,
   isReadonly = false,
+  isRequired = false,
   label,
   name,
   onBlur,
@@ -33,12 +34,17 @@ const TextField = ({
     [onChange]
   );
 
+  const [focused, setFocused] = useState(false);
+
   return (
     <div
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={() => setFocused(false)}
       className={cn(
         styles.container,
         styles[size],
         {
+          [styles.focused]: focused,
           [styles.hasLabel]: !!label,
           [styles.disabled]: isDisabled,
           [styles.invalid]: !!error,
@@ -47,7 +53,7 @@ const TextField = ({
         className
       )}
     >
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && <label htmlFor={id}>{label + (isRequired ? " *" : "")}</label>}
       <input
         className={styles.input}
         disabled={isDisabled}

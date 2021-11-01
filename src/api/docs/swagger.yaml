@@ -831,7 +831,7 @@ components:
         salaryExpectation:
           type: integer
           description: "The candidate expected salary"
-          default: 0
+          default: null
         hasProfile:
           type: boolean
           description: "Whether has profile for the user"

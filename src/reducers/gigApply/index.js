@@ -62,7 +62,7 @@ const initState = () => ({
     isRequired: true,
     isTouched: false,
     error: null,
-    value: 0,
+    value: null,
   },
   phone: {
     isRequired: true,
@@ -96,7 +96,7 @@ const onInitProfileData = (
     city = null,
     existingResume = null,
     phone = null,
-    salaryExpectation = 0,
+    salaryExpectation = null,
   } = profile;
   return {
     ...state,

@@ -23,7 +23,10 @@
     background-color: transparent;
     outline: none !important;
     box-shadow: none !important;
-    color: blue;
+    color: #0d61bf;
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 

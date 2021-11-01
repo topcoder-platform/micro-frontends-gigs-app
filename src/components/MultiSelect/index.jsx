@@ -1,6 +1,6 @@
 import "react-select/dist/react-select.css";
 import styles from "./styles.scss";
-import React from "react";
+import React, { useState } from "react";
 import PT from "prop-types";
 import cn from "classnames";
 import Select from "react-select";
@@ -20,6 +20,7 @@ const MultiSelect = ({
   className,
   clearable,
   label,
+  isRequired = false,
   onChange,
   onFocus,
   options,
@@ -31,9 +32,13 @@ const MultiSelect = ({
   value,
   error,
 }) => {
+  const [focused, setFocused] = useState(false);
+
   return (
     <>
       <div
+        onFocusCapture={() => setFocused(true)}
+        onBlurCapture={() => setFocused(false)}
         className={cn(
           styles.container,
           { [styles.hasError]: !!error },
@@ -41,7 +46,11 @@ const MultiSelect = ({
           className
         )}
       >
-        {label && <span className={styles.label}>{label}</span>}
+        {label && (
+          <span className={cn(styles.label, { [styles.focused]: focused })}>
+            {label + (isRequired ? " *" : "")}
+          </span>
+        )}
         <Select
           arrowRenderer={showArrow ? Arrow : null}
           className={cn(styles.select, {
