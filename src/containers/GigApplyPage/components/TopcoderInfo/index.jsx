@@ -19,7 +19,6 @@ const TopcoderInfo = () => {
             name="handle"
             size="large"
             isReadonly
-            isRequired
             value={handle}
           />
           <TextField
