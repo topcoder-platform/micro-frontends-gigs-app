@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 // import { useLocation } from "@reach/router";
 import PT from "prop-types";
 import { connect } from "react-redux";
+import { navigate } from "@reach/router";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
@@ -128,7 +129,7 @@ const MyGigs = ({
             <Button
               size="lg"
               onClick={() => {
-                window.location.href = `${process.env.URL.BASE}/gigs`;
+                navigate("/earn/gigs");
               }}
             >
               VIEW GIGS
