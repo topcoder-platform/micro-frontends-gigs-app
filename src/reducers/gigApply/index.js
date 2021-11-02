@@ -102,11 +102,11 @@ const onInitProfileData = (
     ...state,
     city: {
       ...state.city,
-      value: city,
+      value: city ? city : null,
     },
     country: {
       ...state.country,
-      value: country,
+      value: country ? country : null,
     },
     payment: {
       ...state.payment,
