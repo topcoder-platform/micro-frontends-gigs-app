@@ -38,7 +38,10 @@ const GigApplyPage = ({ externalId }) => {
         {isLoading ? (
           <LoadingCircles className={styles.loadingIndicator} />
         ) : getProfileError ? (
-          <div styleName="error">{getProfileError?.message}</div>
+          <div styleName="error">
+            Something bad happened. Please try again after some time or contact
+            support if issue persists.
+          </div>
         ) : isLoggedIn ? (
           <ApplicationForm />
         ) : (
