@@ -1,6 +1,6 @@
 import styles from "./styles.scss";
 import React, { useCallback } from "react";
-import { Link } from "@reach/router";
+import { Link, useLocation } from "@reach/router";
 import PT from "prop-types";
 import cn from "classnames";
 import TagList from "components/TagList";
@@ -30,11 +30,14 @@ const GigItem = ({ className, gig, onClickSkill }) => {
     title,
   } = gig;
 
+  const browserLocation = useLocation();
+
   return (
     <Link
       className={className}
       styleName="container"
       to={makeGigPath(jobExternalId)}
+      state={{ from: browserLocation.pathname + browserLocation.search }}
     >
       {jobTag === "$$$" && (
         <IconFlagDollars className={styles.flagIcon} id={id} />

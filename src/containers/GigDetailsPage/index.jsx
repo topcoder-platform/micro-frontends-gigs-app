@@ -43,7 +43,11 @@ const GigDetailsPage = ({ externalId }) => {
         ) : (
           <>
             <Link
-              to={location.state.mygigs ? MY_GIGS_LIST_ROUTE : GIG_LIST_ROUTE}
+              to={
+                location.state && location.state.from
+                  ? location.state.from
+                  : GIG_LIST_ROUTE
+              }
               className={styles.gigsLink}
             >
               <IconArrowPrev className={styles.iconArrowPrev} />
