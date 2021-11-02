@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
+import { Link } from "@reach/router";
 import PT from "prop-types";
+import { makeGigPath } from "utils/url";
 import ProgressBar from "./ProgressBar";
 import Ribbon from "../../../../components/Ribbon";
 import Button from "../../../../components/Button";
@@ -68,7 +70,7 @@ const JobCard = ({ job }) => {
           : ""
       }`}
     >
-      <a href={`${process.env.URL.BASE}/gigs/${job.jobExternalId}`}>
+      <Link to={makeGigPath(job.jobExternalId)} state={{ mygigs: true }}>
         <div styleName="card-header job-card-header">
           <div styleName="ribbon">
             <Ribbon
@@ -162,7 +164,7 @@ const JobCard = ({ job }) => {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
       <div styleName="card-footer job-card-footer" ref={footerRef}>
         <div styleName="note-container">
           {(job.remark ||

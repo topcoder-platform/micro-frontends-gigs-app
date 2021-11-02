@@ -1,7 +1,7 @@
 import styles from "./styles.scss";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "@reach/router";
+import { Link, useLocation } from "@reach/router";
 import IconArrowPrev from "assets/icons/arrow-prev.svg";
 import LoadingCircles from "components/LoadingCircles";
 import GigDetails from "./components/GigDetails";
@@ -10,13 +10,15 @@ import * as selectors from "reducers/gigDetails/selectors";
 import * as effectors from "actions/gigDetails/effectors";
 import * as userSelectors from "reducers/user/selectors";
 import * as userEffectors from "actions/user/effectors";
-import { GIG_LIST_ROUTE } from "constants/routes";
+import { GIG_LIST_ROUTE, MY_GIGS_LIST_ROUTE } from "constants/routes";
 import { setReferralCookie } from "utils/referral";
 
 const GigDetailsPage = ({ externalId }) => {
   const isLoading = useSelector(selectors.getIsLoadingDetails);
   const isLoggedIn = useSelector(userSelectors.getIsLoggedIn);
   const error = useSelector(selectors.getDetailsError);
+
+  const location = useLocation();
 
   useEffect(() => {
     effectors.loadDetails(store, externalId);
@@ -40,7 +42,10 @@ const GigDetailsPage = ({ externalId }) => {
           <LoadingCircles className={styles.loadingIndicator} />
         ) : (
           <>
-            <Link to={GIG_LIST_ROUTE} className={styles.gigsLink}>
+            <Link
+              to={location.state.mygigs ? MY_GIGS_LIST_ROUTE : GIG_LIST_ROUTE}
+              className={styles.gigsLink}
+            >
               <IconArrowPrev className={styles.iconArrowPrev} />
             </Link>
             {error ? <div styleName="error">{error}</div> : <GigDetails />}

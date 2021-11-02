@@ -47,7 +47,11 @@ const MultiSelect = ({
         )}
       >
         {label && (
-          <span className={cn(styles.label, { [styles.focused]: focused && !error })}>
+          <span
+            className={cn(styles.label, {
+              [styles.focused]: focused && !error,
+            })}
+          >
             {label + (isRequired ? " *" : "")}
           </span>
         )}
