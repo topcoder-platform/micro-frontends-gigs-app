@@ -13,6 +13,7 @@ import * as applyEffectors from "actions/gigApply/effectors";
 const GigApplyPage = ({ externalId }) => {
   const isLoggingIn = useSelector(myGigsSelectors.getIsLoggingIn);
   const isLoggedIn = useSelector(myGigsSelectors.getIsLoggedIn);
+  const getProfileError = useSelector(myGigsSelectors.getProfileError);
   const isLoadingCountries = useSelector(lookupSelectors.getIsLoadingCountries);
   const isLoadingDetails = useSelector(detailsSelectors.getIsLoadingDetails);
 
@@ -36,6 +37,8 @@ const GigApplyPage = ({ externalId }) => {
       <div styleName="page">
         {isLoading ? (
           <LoadingCircles className={styles.loadingIndicator} />
+        ) : getProfileError ? (
+          <div styleName="error">{getProfileError?.message}</div>
         ) : isLoggedIn ? (
           <ApplicationForm />
         ) : (
