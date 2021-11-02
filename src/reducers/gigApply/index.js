@@ -72,8 +72,9 @@ const initState = () => ({
   },
   referral: {
     isRequired: true,
+    isTouched: false,
     error: null,
-    value: "",
+    value: null,
   },
   resume: {
     isRequired: true,
@@ -322,6 +323,8 @@ const onTouchResume = (state) => touchField(state, "resume");
 
 const onTouchSkills = (state) => touchField(state, "skills");
 
+const onTouchReferral = (state) => touchField(state, "referral");
+
 const onValidateAgreedDuration = (state) => {
   const agreedDuration = state.agreedDuration;
   let error = null;
@@ -442,6 +445,15 @@ const onValidateSkills = (state) => {
   return checkField("skills", { ...state, skills: { ...skills, error } });
 };
 
+const onValidateReferral = (state) => {
+  const referral = state.referral;
+  let error = null;
+  if (!referral.value) {
+    error = "Required field";
+  }
+  return checkField("referral", { ...state, referral: { ...referral, error } });
+};
+
 const onValidateUntouched = (state) => {
   for (let name in FIELD_VALIDATORS) {
     let field = state[name];
@@ -463,6 +475,7 @@ const FIELD_VALIDATORS = {
   phone: onValidatePhone,
   resume: onValidateResume,
   skills: onValidateSkills,
+  referral: onValidateReferral,
 };
 
 const initialState = initState();
@@ -493,12 +506,14 @@ export default handleActions(
     [ACTION_TYPE.TOUCH_PHONE]: onTouchPhone,
     [ACTION_TYPE.TOUCH_RESUME]: onTouchResume,
     [ACTION_TYPE.TOUCH_SKILLS]: onTouchSkills,
+    [ACTION_TYPE.TOUCH_REFERRAL]: onTouchReferral,
     [ACTION_TYPE.VALIDATE_CITY]: onValidateCity,
     [ACTION_TYPE.VALIDATE_COUNTRY]: onValidateCountry,
     [ACTION_TYPE.VALIDATE_PAYMENT]: onValidatePayment,
     [ACTION_TYPE.VALIDATE_PHONE]: onValidatePhone,
     [ACTION_TYPE.VALIDATE_RESUME]: onValidateResume,
     [ACTION_TYPE.VALIDATE_SKILLS]: onValidateSkills,
+    [ACTION_TYPE.VALIDATE_REFERRAL]: onValidateReferral,
     [ACTION_TYPE.VALIDATE_UNTOUCHED]: onValidateUntouched,
   },
   initialState,

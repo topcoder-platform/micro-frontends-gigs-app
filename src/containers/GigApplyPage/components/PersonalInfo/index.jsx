@@ -171,7 +171,7 @@ const PersonalInfo = () => {
             className={cn(formStyles.field, styles.countryDropdown)}
             label="Country"
             name="locality"
-            placeholder="Country"
+            placeholder="Country *"
             required
             onChange={onChangeCountry}
             options={countryOptions}

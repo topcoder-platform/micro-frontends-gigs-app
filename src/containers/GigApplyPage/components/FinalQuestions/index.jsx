@@ -1,6 +1,6 @@
 import styles from "./styles.scss";
 import formStyles from "../ApplicationForm/styles.scss";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import cn from "classnames";
 import Dropdown from "components/Dropdown";
@@ -56,6 +56,12 @@ const FinalQuestions = ({ className }) => {
     },
     [dispatch]
   );
+
+  useEffect(() => {
+    if (hasProfile) {
+      dispatch(applyActions.touchReferral());
+    }
+  }, [hasProfile, dispatch]);
 
   return (
     <div className={cn(formStyles.section, className)}>
