@@ -76,7 +76,7 @@ const FinalQuestions = ({ className }) => {
         <div className={styles.question}>
           <p>
             Are you able to work during the specified timezone? (
-            <strong>{jobTimezone}</strong>) *
+            <strong>{jobTimezone || "n/a"}</strong>) *
           </p>
           <RadioButton
             className={styles.options}
