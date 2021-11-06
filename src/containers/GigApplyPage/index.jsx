@@ -14,6 +14,7 @@ const GigApplyPage = ({ externalId }) => {
   const isLoggingIn = useSelector(myGigsSelectors.getIsLoggingIn);
   const isLoggedIn = useSelector(myGigsSelectors.getIsLoggedIn);
   const getProfileError = useSelector(myGigsSelectors.getProfileError);
+  const isEmptyProfile = useSelector(myGigsSelectors.isEmptyProfile);
   const isLoadingCountries = useSelector(lookupSelectors.getIsLoadingCountries);
   const isLoadingDetails = useSelector(detailsSelectors.getIsLoadingDetails);
 
@@ -23,8 +24,10 @@ const GigApplyPage = ({ externalId }) => {
     isLoggingIn || (isLoggedIn && (isLoadingDetails || isLoadingCountries));
 
   useEffect(() => {
-    dispatch(myGigsActions.getProfile());
-  }, [dispatch]);
+    if (isEmptyProfile) {
+      dispatch(myGigsActions.getProfile());
+    }
+  }, [isEmptyProfile, dispatch]);
 
   useEffect(() => {
     if (isLoggedIn) {

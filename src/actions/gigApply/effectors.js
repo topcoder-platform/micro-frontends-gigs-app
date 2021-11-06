@@ -16,7 +16,11 @@ import { composeApplication } from "utils/gigApply";
  */
 export const loadInitialData = async (externalId) => {
   const { dispatch, getState } = store;
-  const promises = [detailsEffectors.loadDetails(store, externalId)];
+  const promises = [];
+  let details = detailsSelectors.getDetails(getState());
+  if (!details) {
+    promises.push(detailsEffectors.loadDetails(store, externalId));
+  }
   let countryByCode = lookupSelectors.getCountryByCode(getState());
   if (!countryByCode) {
     promises.push(dispatch(lookupActions.getAllCountries()));

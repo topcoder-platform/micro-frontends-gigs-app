@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 // import { useLocation } from "@reach/router";
 import PT from "prop-types";
 import { connect } from "react-redux";
+import store from "store";
+import * as lookupSelectors from "reducers/lookupSelectors";
+import * as myGigsSelectors from "reducers/myGigsSelectors";
 import { navigate } from "@reach/router";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
@@ -44,8 +47,15 @@ const MyGigs = ({
   };
 
   useEffect(() => {
-    propsRef.current.getProfile();
-    propsRef.current.getAllCountries();
+    const { getState } = store;
+    let countryByCode = lookupSelectors.getCountryByCode(getState());
+    if (!countryByCode) {
+      propsRef.current.getAllCountries();
+    }
+    let isEmptyProfile = myGigsSelectors.isEmptyProfile(getState());
+    if (isEmptyProfile) {
+      propsRef.current.getProfile();
+    }
   }, []);
 
   const isInitialMount = useRef(true);
