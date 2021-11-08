@@ -44,7 +44,9 @@ function onGetMyActiveGigsInit(state) {
 
 function onGetMyActiveGigsDone(state, { payload }) {
   const currentGigs =
-    state[constants.GIGS_FILTER_STATUSES.ACTIVE_JOBS].myGigs || [];
+    payload.page == 1
+      ? []
+      : state[constants.GIGS_FILTER_STATUSES.ACTIVE_JOBS].myGigs || [];
   return {
     ...state,
     [constants.GIGS_FILTER_STATUSES.ACTIVE_JOBS]: {
@@ -64,7 +66,9 @@ function onGetMyOpenGigsInit(state) {
 
 function onGetMyOpenGigsDone(state, { payload }) {
   const currentGigs =
-    state[constants.GIGS_FILTER_STATUSES.OPEN_JOBS].myGigs || [];
+    payload.page == 1
+      ? []
+      : state[constants.GIGS_FILTER_STATUSES.OPEN_JOBS].myGigs || [];
   return {
     ...state,
     [constants.GIGS_FILTER_STATUSES.OPEN_JOBS]: {
@@ -84,7 +88,9 @@ function onGetMyCompletedGigsInit(state) {
 
 function onGetMyCompletedGigsDone(state, { payload }) {
   const currentGigs =
-    state[constants.GIGS_FILTER_STATUSES.COMPLETED_JOBS].myGigs || [];
+    payload.page == 1
+      ? []
+      : state[constants.GIGS_FILTER_STATUSES.COMPLETED_JOBS].myGigs || [];
   return {
     ...state,
     [constants.GIGS_FILTER_STATUSES.COMPLETED_JOBS]: {
@@ -104,7 +110,9 @@ function onGetMyArchivedGigsInit(state) {
 
 function onGetMyArchivedGigsDone(state, { payload }) {
   const currentGigs =
-    state[constants.GIGS_FILTER_STATUSES.ARCHIVED_JOBS].myGigs || [];
+    payload.page == 1
+      ? []
+      : state[constants.GIGS_FILTER_STATUSES.ARCHIVED_JOBS].myGigs || [];
   return {
     ...state,
     [constants.GIGS_FILTER_STATUSES.ARCHIVED_JOBS]: {
