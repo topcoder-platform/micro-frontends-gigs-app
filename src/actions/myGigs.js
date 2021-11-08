@@ -1,4 +1,5 @@
 import { createActions } from "redux-actions";
+import _ from "lodash";
 import {
   PER_PAGE,
   CHECKING_GIG_TIMES,
@@ -72,5 +73,6 @@ export default createActions({
   GET_MY_ARCHIVED_GIGS: getMyArchivedGigsDone,
   GET_PROFILE: getProfile,
   UPDATE_PROFILE: updateProfile,
+  UPDATE_PROFILE_RESET: _.noop,
   START_CHECKING_GIGS: startCheckingGigs,
 });

@@ -28,6 +28,7 @@ const MyGigs = ({
   getProfile,
   updateProfile,
   updateProfileSuccess,
+  updateProfileReset,
   getAllCountries,
   checkingGigs,
   startCheckingGigs,
@@ -182,6 +183,7 @@ const MyGigs = ({
         <UpdateSuccess
           onClose={() => {
             setOpenUpdateSuccess(false);
+            updateProfileReset();
           }}
         />
       </Modal>
@@ -218,7 +220,7 @@ const mapStateToProps = (state) => ({
   myCompletedGigs: state.myGigs[constants.GIGS_FILTER_STATUSES.COMPLETED_JOBS],
   myArchivedGigs: state.myGigs[constants.GIGS_FILTER_STATUSES.ARCHIVED_JOBS],
   profile: state.myGigs.profile,
-  updateProfileSuccess: state.myGigs.updatingProfileSucess,
+  updateProfileSuccess: state.myGigs.updatingProfileSuccess,
 });
 
 const mapDispatchToProps = {
@@ -228,6 +230,7 @@ const mapDispatchToProps = {
   getMyArchivedGigs: actions.myGigs.getMyArchivedGigs,
   getProfile: actions.myGigs.getProfile,
   updateProfile: actions.myGigs.updateProfile,
+  updateProfileReset: actions.myGigs.updateProfileReset,
   getAllCountries: actions.lookup.getAllCountries,
   startCheckingGigs: actions.myGigs.startCheckingGigs,
 };

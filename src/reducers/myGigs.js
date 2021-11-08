@@ -34,7 +34,7 @@ const defaultState = {
   loadingProfileError: null,
   updatingProfile: false,
   updatingProfileError: null,
-  updatingProfileSucess: null,
+  updatingProfileSuccess: null,
   checkingGigs: false,
 };
 
@@ -153,7 +153,7 @@ function onUpdateProfileInit(state) {
     ...state,
     updatingProfile: true,
     updatingProfileError: null,
-    updatingProfileSucess: null,
+    updatingProfileSuccess: null,
   };
 }
 
@@ -161,18 +161,27 @@ function onUpdateProfileDone(state, { payload }) {
   return {
     ...state,
     profile: { ...payload },
-    loadingProfile: false,
+    updatingProfile: false,
     updatingProfileError: null,
-    updatingProfileSucess: true,
+    updatingProfileSuccess: true,
   };
 }
 
 function onUpdateProfileFailure(state, { payload }) {
   return {
     ...state,
-    loadingProfile: false,
+    updatingProfile: false,
     updatingProfileError: payload,
-    updatingProfileSucess: false,
+    updatingProfileSuccess: false,
+  };
+}
+
+function onUpdateProfileReset(state) {
+  return {
+    ...state,
+    updatingProfile: false,
+    updatingProfileError: null,
+    updatingProfileSuccess: null,
   };
 }
 
@@ -207,6 +216,7 @@ export default handleActions(
     UPDATE_PROFILE_INIT: onUpdateProfileInit,
     UPDATE_PROFILE_DONE: onUpdateProfileDone,
     UPDATE_PROFILE_FAILURE: onUpdateProfileFailure,
+    UPDATE_PROFILE_RESET: onUpdateProfileReset,
     START_CHECKING_GIGS_INIT: onCheckingGigsInit,
     START_CHECKING_GIGS_DONE: onCheckingGigsDone,
   },
