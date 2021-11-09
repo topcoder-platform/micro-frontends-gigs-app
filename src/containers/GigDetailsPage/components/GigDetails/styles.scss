@@ -143,6 +143,29 @@
   margin-top: 10px;
   margin-bottom: 35px;
   line-height: 30px;
+  & > p {
+    color: $tc-black;
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 20px;
+    margin-top: 0px;
+    & > h3 {
+      font-weight: 400px;
+      font-size: 40px;
+      line-height: 50px;
+      text-transform: uppercase;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+    & > ul {
+      list-style-type: disc;
+      color: #151516;
+      margin-bottom: 20px;
+      margin-left: 20px;
+      line-height: 25px;
+      font-size: 15px;
+    }
+  }
 }
 
 .skills {

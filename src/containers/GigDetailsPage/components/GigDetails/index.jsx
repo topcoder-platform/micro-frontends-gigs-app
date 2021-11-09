@@ -3,6 +3,7 @@ import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { navigate } from "@reach/router";
 import cn from "classnames";
+import ReactHtmlParser from "react-html-parser";
 import Button from "components/Button";
 import IconLocation from "assets/icons/icon-location-crimson.svg";
 import IconPayment from "assets/icons/icon-payment.svg";
@@ -21,6 +22,17 @@ import { formatPlural } from "utils/formatting";
 import { makeGigApplyPath } from "utils/url";
 import { FREQUENCY_TO_PERIOD } from "constants/gigs";
 import { GIG_LIST_ROUTE } from "constants/routes";
+
+// Cleanup HTML from style tags
+// so it won't affect other parts of the UI
+const ReactHtmlParserOptions = {
+  // eslint-disable-next-line consistent-return
+  transform: (node) => {
+    if (node.type === "style" && node.name === "style") {
+      return null;
+    }
+  },
+};
 
 const GigDetails = () => {
   const details = useSelector(selectors.getDetails);
@@ -159,10 +171,9 @@ const GigDetails = () => {
           </div>
           <div styleName="description">
             <div styleName="section-label">Description</div>
-            <div
-              styleName="section-contents"
-              dangerouslySetInnerHTML={{ __html: description }}
-            />
+            <div styleName="section-contents">
+              <p>{ReactHtmlParser(description, ReactHtmlParserOptions)}</p>
+            </div>
           </div>
           <GigNotes />
           <div styleName="controls">
