@@ -5,7 +5,6 @@ export const sendApplication = async (externalId, formData) => {
   const { tokenV3 } = await getAuthUserTokens();
   const response = await fetch(`${RECRUIT_API_URL}/${externalId}/apply`, {
     method: "POST",
-    credentials: "include",
     headers: { Authorization: `Bearer ${tokenV3}` },
     body: formData,
   });
