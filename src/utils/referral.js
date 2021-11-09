@@ -54,3 +54,13 @@ export const setReferralCookie = () => {
     );
   }
 };
+
+/**
+ * Clear the cookie
+ */
+export const clearReferralCookie = () => {
+  cookies.set(process.env.GROWSURF_COOKIE, "", {
+    maxAge: 0,
+    overwrite: true,
+  });
+};

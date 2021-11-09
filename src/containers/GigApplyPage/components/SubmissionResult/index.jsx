@@ -10,9 +10,10 @@ import * as detailsSelectors from "reducers/gigDetails/selectors";
 import applyActions from "actions/gigApply/creators";
 import { GIG_LIST_ROUTE } from "constants/routes";
 import { makeGigApplicationStatusPath } from "utils/url";
+import { clearReferralCookie } from "utils/referral";
 
 const SubmissionResult = () => {
-  const { error } = useSelector(applySelectors.getApplication);
+  const { data, error } = useSelector(applySelectors.getApplication);
   const { jobExternalId } = useSelector(detailsSelectors.getDetails);
 
   const dispatch = useDispatch();
@@ -34,6 +35,12 @@ const SubmissionResult = () => {
       dispatch(applyActions.resetApplication());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (data) {
+      clearReferralCookie();
+    }
+  }, [data]);
 
   return (
     <div className={styles.container}>
