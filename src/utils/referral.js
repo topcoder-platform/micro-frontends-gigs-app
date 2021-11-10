@@ -66,33 +66,33 @@ export const clearReferralCookie = () => {
 };
 
 /**
- * Set applied cookie
+ * Set applied Storage
  */
-export const setAppliedCookie = (externalId) => {
-  let ids = cookies.get(process.env.APPLIED_GIGS_COOKIE) || "";
+export const setAppliedStorage = (externalId) => {
+  let ids = localStorage.getItem(process.env.APPLIED_GIGS) || "";
   let index = ids.indexOf(externalId);
   // Already cached the gig ID
   if (index >= 0) return;
   ids += (ids === "" ? "" : ",") + `${externalId}`;
-  cookies.set(process.env.APPLIED_GIGS_COOKIE, ids);
+  localStorage.setItem(process.env.APPLIED_GIGS, ids);
 };
 
 /**
- * Remove cached gig Id from cookie
+ * Remove cached gig Id from Storage
  */
-export const removeAppliedCookie = (externalId) => {
-  let ids = cookies.get(process.env.APPLIED_GIGS_COOKIE) || "";
+export const removeAppliedStorage = (externalId) => {
+  let ids = localStorage.getItem(process.env.APPLIED_GIGS) || "";
   ids = ids.split(",");
   let index = ids.indexOf(externalId);
   // the gig ID doesn't exist in local cache
   if (index < 0) return;
   ids.splice(index, 1);
-  cookies.set(process.env.APPLIED_GIGS_COOKIE, ids.join(","));
+  localStorage.setItem(process.env.APPLIED_GIGS, ids.join(","));
 };
 
 /**
  * Get applied Cookie
  */
-export const getAppliedCookie = () => {
-  return cookies.get(process.env.APPLIED_GIGS_COOKIE) || "";
+export const getAppliedStorage = () => {
+  return localStorage.getItem(process.env.APPLIED_GIGS) || "";
 };

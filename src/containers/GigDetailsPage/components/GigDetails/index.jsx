@@ -22,7 +22,7 @@ import { formatPlural } from "utils/formatting";
 import { makeGigApplyPath } from "utils/url";
 import { FREQUENCY_TO_PERIOD } from "constants/gigs";
 import { GIG_LIST_ROUTE } from "constants/routes";
-import { getAppliedCookie, removeAppliedCookie } from "utils/referral";
+import { getAppliedStorage, removeAppliedStorage } from "utils/referral";
 
 // Cleanup HTML from style tags
 // so it won't affect other parts of the UI
@@ -65,11 +65,11 @@ const GigDetails = () => {
     currency
   );
 
-  const appliedGig = getAppliedCookie().indexOf(jobExternalId) >= 0;
+  const appliedGig = getAppliedStorage().indexOf(jobExternalId) >= 0;
 
   useEffect(() => {
     if (synced) {
-      removeAppliedCookie(jobExternalId);
+      removeAppliedStorage(jobExternalId);
     }
   }, [synced, jobExternalId]);
 

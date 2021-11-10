@@ -48,7 +48,7 @@ module.exports = {
     domain: "",
     expires: 30, // days
   },
-  APPLIED_GIGS_COOKIE: "_applied_gigs",
+  APPLIED_GIGS: "_applied_gigs",
   m2m: {
     M2M_AUDIT_USER_ID: process.env.M2M_AUDIT_USER_ID,
     M2M_AUDIT_HANDLE: process.env.M2M_AUDIT_HANDLE,
