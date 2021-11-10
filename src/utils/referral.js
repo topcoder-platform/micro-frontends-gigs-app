@@ -74,7 +74,7 @@ export const setAppliedCookie = (externalId) => {
   let index = ids.indexOf(externalId);
   // Already cached the gig ID
   if (index >= 0) return;
-  ids += (ids === "" ? "," : "") + `${externalId}`;
+  ids += (ids === "" ? "" : ",") + `${externalId}`;
   cookies.set(process.env.APPLIED_GIGS_COOKIE, ids);
 };
 
