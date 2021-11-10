@@ -68,22 +68,22 @@ export const clearReferralCookie = () => {
 /**
  * Set applied Storage
  */
-export const setAppliedStorage = (externalId) => {
+export const setAppliedStorage = (id) => {
   let ids = localStorage.getItem(process.env.APPLIED_GIGS) || "";
-  let index = ids.indexOf(externalId);
+  let index = ids.indexOf(id);
   // Already cached the gig ID
   if (index >= 0) return;
-  ids += (ids === "" ? "" : ",") + `${externalId}`;
+  ids += (ids === "" ? "" : ",") + `${id}`;
   localStorage.setItem(process.env.APPLIED_GIGS, ids);
 };
 
 /**
  * Remove cached gig Id from Storage
  */
-export const removeAppliedStorage = (externalId) => {
+export const removeAppliedStorage = (id) => {
   let ids = localStorage.getItem(process.env.APPLIED_GIGS) || "";
   ids = ids.split(",");
-  let index = ids.indexOf(externalId);
+  let index = ids.indexOf(id);
   // the gig ID doesn't exist in local cache
   if (index < 0) return;
   ids.splice(index, 1);

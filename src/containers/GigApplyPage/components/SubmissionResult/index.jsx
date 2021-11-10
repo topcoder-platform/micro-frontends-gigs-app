@@ -7,6 +7,7 @@ import iconTick from "assets/images/tick-big.png";
 import IconSadFace from "assets/icons/icon-sad-face.svg";
 import * as applySelectors from "reducers/gigApply/selectors";
 import * as detailsSelectors from "reducers/gigDetails/selectors";
+import * as userSelectors from "reducers/user/selectors";
 import applyActions from "actions/gigApply/creators";
 import { GIG_LIST_ROUTE } from "constants/routes";
 import { makeGigApplicationStatusPath } from "utils/url";
@@ -15,6 +16,7 @@ import { clearReferralCookie, setAppliedStorage } from "utils/referral";
 const SubmissionResult = () => {
   const { data, error } = useSelector(applySelectors.getApplication);
   const { jobExternalId } = useSelector(detailsSelectors.getDetails);
+  const profile = useSelector(userSelectors.getProfile);
 
   const dispatch = useDispatch();
 
@@ -39,9 +41,11 @@ const SubmissionResult = () => {
   useEffect(() => {
     if (data) {
       clearReferralCookie();
-      setAppliedStorage(jobExternalId);
     }
-  }, [data, jobExternalId]);
+    if (data && profile) {
+      setAppliedStorage(`${jobExternalId}${profile.userId}`);
+    }
+  }, [data, jobExternalId, profile]);
 
   return (
     <div className={styles.container}>

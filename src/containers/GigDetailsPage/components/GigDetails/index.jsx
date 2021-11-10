@@ -39,6 +39,7 @@ const GigDetails = () => {
   const details = useSelector(selectors.getDetails);
   const skillsError = useSelector(gigsSelectors.getSkillsError);
   const isLoggedIn = useSelector(userSelectors.getIsLoggedIn);
+  const profile = useSelector(userSelectors.getProfile);
 
   const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
 
@@ -65,13 +66,15 @@ const GigDetails = () => {
     currency
   );
 
-  const appliedGig = getAppliedStorage().indexOf(jobExternalId) >= 0;
+  const appliedGig = profile
+    ? getAppliedStorage().indexOf(`${jobExternalId}${profile.userId}`) >= 0
+    : false;
 
   useEffect(() => {
-    if (synced) {
-      removeAppliedStorage(jobExternalId);
+    if (synced && profile) {
+      removeAppliedStorage(`${jobExternalId}${profile.userId}`);
     }
-  }, [synced, jobExternalId]);
+  }, [synced, jobExternalId, profile]);
 
   const onClickBtnApply = useCallback(() => {
     if (!isLoggedIn) {
