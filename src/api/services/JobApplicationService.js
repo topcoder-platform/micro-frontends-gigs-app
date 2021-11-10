@@ -132,45 +132,59 @@ getMyJobApplications.schema = Joi.object()
   })
   .required();
 
-async function getJob(currentUser, criteria) {
-  const emptyResult = {
-    synced: false,
-  };
-  // we expect logged-in users
-  if (currentUser.isMachine) {
-    return emptyResult;
-  }
+async function getJob(jwtToken = "", criteria) {
   // get user id by calling taas-api with current user's token
-  const { id: userId } = await helper.getCurrentUserDetails(
-    currentUser.jwtToken
-  );
-  if (!userId) {
-    throw new errors.NotFoundError(
-      `Id for user: ${currentUser.userId} not found`
-    );
+  let userId = "";
+  if (jwtToken) {
+    const res = await helper.getCurrentUserDetails(jwtToken);
+    if (res) {
+      userId = res.id;
+    }
   }
+
   // get job based on the jobExternalId
   const { result: jobs } = await helper.getJobs(criteria);
   if (jobs && jobs.length) {
-    const candidates = jobs[0].candidates || [];
-    const newJob = candidates.find((item) => item.userId == userId);
-    if (newJob) {
-      return {
-        synced: true,
-      };
+    const job = jobs[0];
+    const jobInfo = {
+      id: job.id,
+      title: job.title,
+      payment: {
+        min: job.minSalary,
+        max: job.maxSalary,
+        frequency: job.rateType,
+        // currency: job.currency,
+        currency: "$",
+      },
+      skills: job.skills,
+      hoursPerWeek: job.hoursPerWeek,
+      location: job.jobLocation,
+      duration: job.duration,
+      jobExternalId: job.externalId,
+      jobTimezone: job.jobTimezone,
+      description: job.description,
+      synced: false,
+    };
+    if (userId) {
+      const candidates = job.candidates || [];
+      const candExists = candidates.find((item) => item.userId == userId);
+      if (candExists) {
+        jobInfo.synced = true;
+      }
     }
+    return jobInfo;
   }
-  return {
-    synced: false,
-  };
+  throw new errors.NotFoundError(
+    `Job with externalId: ${criteria.externalId} not found`
+  );
 }
 
 getJob.schema = Joi.object()
   .keys({
-    currentUser: Joi.object().required(),
+    jwtToken: Joi.string().allow("").allow(null).default(""),
     criteria: Joi.object()
       .keys({
-        externalId: Joi.string(),
+        externalId: Joi.string().required(),
       })
       .required(),
   })
@@ -212,6 +226,8 @@ async function getJobs(criteria = {}) {
       hotListExcerpt: job.hotListExcerpt,
       jobTag: job.jobTag,
       jobExternalId: job.externalId,
+      jobTimezone: job.jobTimezone,
+      description: job.description,
       rcrmStatus: job.rcrmStatus,
       rcrmReason: job.rcrmReason,
     };

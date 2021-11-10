@@ -17,7 +17,10 @@ async function getMyJobApplications(req, res) {
 }
 
 async function getJob(req, res) {
-  const result = await service.getJob(req.authUser, req.query);
+  const result = await service.getJob(
+    req.headers.authorization || "",
+    req.query
+  );
   res.send(result);
 }
 

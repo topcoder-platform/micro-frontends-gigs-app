@@ -3,10 +3,18 @@
  */
 import React, { useEffect, useRef, useState } from "react";
 import PT from "prop-types";
+import cn from "classnames";
 import _ from "lodash";
-import "./styles.scss";
+import styles from "./styles.scss";
 
-function RadioButton({ options, onChange, size, errorMsg }) {
+function RadioButton({
+  className,
+  layout = "",
+  options,
+  onChange,
+  size,
+  errorMsg,
+}) {
   const [internalOptions, setInternalOptions] = useState(options);
   const optionsWithKey = internalOptions.map((o, oIndex) => ({
     ...o,
@@ -27,7 +35,7 @@ function RadioButton({ options, onChange, size, errorMsg }) {
   return (
     <React.Fragment>
       <div
-        className="radioButtonContainer"
+        className={cn("radioButtonContainer", styles[layout], className)}
         styleName={`radioButtonContainer ${sizeStyle}`}
       >
         {optionsWithKey.map((o) => (

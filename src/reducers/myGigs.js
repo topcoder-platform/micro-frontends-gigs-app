@@ -30,11 +30,11 @@ const defaultState = {
     total: 0,
   },
   profile: {},
-  loadingProfile: false,
+  loadingProfile: true,
   loadingProfileError: null,
   updatingProfile: false,
   updatingProfileError: null,
-  updatingProfileSucess: null,
+  updatingProfileSuccess: null,
   checkingGigs: false,
 };
 
@@ -44,7 +44,9 @@ function onGetMyActiveGigsInit(state) {
 
 function onGetMyActiveGigsDone(state, { payload }) {
   const currentGigs =
-    state[constants.GIGS_FILTER_STATUSES.ACTIVE_JOBS].myGigs || [];
+    payload.page == 1
+      ? []
+      : state[constants.GIGS_FILTER_STATUSES.ACTIVE_JOBS].myGigs || [];
   return {
     ...state,
     [constants.GIGS_FILTER_STATUSES.ACTIVE_JOBS]: {
@@ -64,7 +66,9 @@ function onGetMyOpenGigsInit(state) {
 
 function onGetMyOpenGigsDone(state, { payload }) {
   const currentGigs =
-    state[constants.GIGS_FILTER_STATUSES.OPEN_JOBS].myGigs || [];
+    payload.page == 1
+      ? []
+      : state[constants.GIGS_FILTER_STATUSES.OPEN_JOBS].myGigs || [];
   return {
     ...state,
     [constants.GIGS_FILTER_STATUSES.OPEN_JOBS]: {
@@ -84,7 +88,9 @@ function onGetMyCompletedGigsInit(state) {
 
 function onGetMyCompletedGigsDone(state, { payload }) {
   const currentGigs =
-    state[constants.GIGS_FILTER_STATUSES.COMPLETED_JOBS].myGigs || [];
+    payload.page == 1
+      ? []
+      : state[constants.GIGS_FILTER_STATUSES.COMPLETED_JOBS].myGigs || [];
   return {
     ...state,
     [constants.GIGS_FILTER_STATUSES.COMPLETED_JOBS]: {
@@ -104,7 +110,9 @@ function onGetMyArchivedGigsInit(state) {
 
 function onGetMyArchivedGigsDone(state, { payload }) {
   const currentGigs =
-    state[constants.GIGS_FILTER_STATUSES.ARCHIVED_JOBS].myGigs || [];
+    payload.page == 1
+      ? []
+      : state[constants.GIGS_FILTER_STATUSES.ARCHIVED_JOBS].myGigs || [];
   return {
     ...state,
     [constants.GIGS_FILTER_STATUSES.ARCHIVED_JOBS]: {
@@ -145,7 +153,7 @@ function onUpdateProfileInit(state) {
     ...state,
     updatingProfile: true,
     updatingProfileError: null,
-    updatingProfileSucess: null,
+    updatingProfileSuccess: null,
   };
 }
 
@@ -153,18 +161,27 @@ function onUpdateProfileDone(state, { payload }) {
   return {
     ...state,
     profile: { ...payload },
-    loadingProfile: false,
+    updatingProfile: false,
     updatingProfileError: null,
-    updatingProfileSucess: true,
+    updatingProfileSuccess: true,
   };
 }
 
 function onUpdateProfileFailure(state, { payload }) {
   return {
     ...state,
-    loadingProfile: false,
+    updatingProfile: false,
     updatingProfileError: payload,
-    updatingProfileSucess: false,
+    updatingProfileSuccess: false,
+  };
+}
+
+function onUpdateProfileReset(state) {
+  return {
+    ...state,
+    updatingProfile: false,
+    updatingProfileError: null,
+    updatingProfileSuccess: null,
   };
 }
 
@@ -199,6 +216,7 @@ export default handleActions(
     UPDATE_PROFILE_INIT: onUpdateProfileInit,
     UPDATE_PROFILE_DONE: onUpdateProfileDone,
     UPDATE_PROFILE_FAILURE: onUpdateProfileFailure,
+    UPDATE_PROFILE_RESET: onUpdateProfileReset,
     START_CHECKING_GIGS_INIT: onCheckingGigsInit,
     START_CHECKING_GIGS_DONE: onCheckingGigsDone,
   },

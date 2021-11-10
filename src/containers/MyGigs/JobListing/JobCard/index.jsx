@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
+import { Link, useLocation } from "@reach/router";
 import PT from "prop-types";
+import { makeGigPath } from "utils/url";
 import ProgressBar from "./ProgressBar";
 import Ribbon from "../../../../components/Ribbon";
 import Button from "../../../../components/Button";
@@ -25,6 +27,7 @@ const JobCard = ({ job }) => {
   const [expanded, setExpanded] = useState(false);
   const [footerHeight, setFooterHeight] = useState(0);
   const footerRef = useRef({});
+  const location = useLocation();
 
   useEffect(() => {
     setFooterHeight(footerRef.current.offsetHeight);
@@ -68,7 +71,10 @@ const JobCard = ({ job }) => {
           : ""
       }`}
     >
-      <a href={`${process.env.URL.BASE}/gigs/${job.jobExternalId}`}>
+      <Link
+        to={makeGigPath(job.jobExternalId)}
+        state={{ from: location.pathname + location.search }}
+      >
         <div styleName="card-header job-card-header">
           <div styleName="ribbon">
             <Ribbon
@@ -162,7 +168,7 @@ const JobCard = ({ job }) => {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
       <div styleName="card-footer job-card-footer" ref={footerRef}>
         <div styleName="note-container">
           {(job.remark ||

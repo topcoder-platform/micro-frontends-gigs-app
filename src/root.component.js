@@ -12,11 +12,11 @@ if (process.env.HEAP_ANALYTICS_KEY) {
   ReactHeap.initialize(process.env.HEAP_ANALYTICS_KEY);
 }
 
-export default function Root({ view = "gigs" }) {
+export default function Root({ externalId, view = "gigs" }) {
   return (
     <LocationProvider history={history}>
       <Provider store={store}>
-        <App view={view} />
+        <App externalId={externalId} view={view} />
       </Provider>
     </LocationProvider>
   );

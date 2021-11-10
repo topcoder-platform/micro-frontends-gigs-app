@@ -5,13 +5,22 @@ import { fetchReferralData } from "services/referral";
 import { delay } from "utils/misc";
 
 /**
- * Loads referral id.
+ * Loads user's referral data.
  *
  * @param {Object} store redux store object
+ * @param {boolean} [forceReload] force data reload even if it is already present
  * @returns {Promise}
  */
-export const getReferralId = async ({ dispatch, getState }) => {
-  const profile = selectors.getProfile(getState());
+export const loadReferralData = async (
+  { dispatch, getState },
+  forceReload = false
+) => {
+  const state = getState();
+  const referralData = selectors.getReferralData(state);
+  if (referralData && !forceReload) {
+    return;
+  }
+  const profile = selectors.getProfile(state);
   if (!profile) {
     console.error(
       "No profile data provided when trying to fetch referral data."
@@ -22,24 +31,28 @@ export const getReferralId = async ({ dispatch, getState }) => {
   try {
     data = await fetchReferralData(profile);
   } catch (error) {
-    dispatch(actions.getReferralIdError(error.toString()));
+    dispatch(actions.loadReferralDataError(error.toString()));
     return;
   }
-  dispatch(actions.getReferralIdSuccess(data.id));
+  dispatch(actions.loadReferralDataSuccess(data));
 };
 
 /**
  * Tries to load user's profile.
  *
  * @param {Object} store redux store object
+ * @param {boolean} [forceReload] force data reload even if it is already present
  * @returns {Promise}
  */
-export const loadProfile = async ({ dispatch, getState }) => {
-  let error = null;
+export const loadProfile = async (
+  { dispatch, getState },
+  forceReload = false
+) => {
   let profile = selectors.getProfile(getState());
-  if (profile) {
+  if (profile && !forceReload) {
     return;
   }
+  let error = null;
   dispatch(actions.loadProfilePending());
   for (let i = 0; i < 3; i++) {
     try {

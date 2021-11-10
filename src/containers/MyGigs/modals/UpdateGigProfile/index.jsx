@@ -15,6 +15,7 @@ import _, { size, values } from "lodash";
 
 import { GIG_STATUS } from "../../../../constants";
 import * as utils from "utils";
+import { makeProfileUrl } from "utils/url";
 
 import "./styles.scss";
 
@@ -194,11 +195,7 @@ const UpdateGigProfile = ({
             <UserPhoto handle={profile.handle} photoURL={profile.photoURL} />
           </div>
           <div styleName="handle">
-            <a
-              href={`${process.env.URL.COMMUNITY_APP}/members/${profile.handle}`}
-            >
-              {profile.handle}
-            </a>
+            <a href={`${makeProfileUrl(profile.handle)}`}>{profile.handle}</a>
           </div>
           <div styleName="name">
             {profile.firstName} {profile.lastName}

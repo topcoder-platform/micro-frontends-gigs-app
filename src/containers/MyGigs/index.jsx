@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 // import { useLocation } from "@reach/router";
 import PT from "prop-types";
 import { connect } from "react-redux";
+import store from "store";
+import * as lookupSelectors from "reducers/lookupSelectors";
+import * as myGigsSelectors from "reducers/myGigsSelectors";
+import { navigate } from "@reach/router";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
@@ -24,6 +28,7 @@ const MyGigs = ({
   getProfile,
   updateProfile,
   updateProfileSuccess,
+  updateProfileReset,
   getAllCountries,
   checkingGigs,
   startCheckingGigs,
@@ -43,8 +48,15 @@ const MyGigs = ({
   };
 
   useEffect(() => {
-    propsRef.current.getProfile();
-    propsRef.current.getAllCountries();
+    const { getState } = store;
+    let countryByCode = lookupSelectors.getCountryByCode(getState());
+    if (!countryByCode) {
+      propsRef.current.getAllCountries();
+    }
+    let isEmptyProfile = myGigsSelectors.isEmptyProfile(getState());
+    if (isEmptyProfile) {
+      propsRef.current.getProfile();
+    }
   }, []);
 
   const isInitialMount = useRef(true);
@@ -128,7 +140,7 @@ const MyGigs = ({
             <Button
               size="lg"
               onClick={() => {
-                window.location.href = `${process.env.URL.BASE}/gigs`;
+                navigate("/earn/gigs");
               }}
             >
               VIEW GIGS
@@ -171,6 +183,7 @@ const MyGigs = ({
         <UpdateSuccess
           onClose={() => {
             setOpenUpdateSuccess(false);
+            updateProfileReset();
           }}
         />
       </Modal>
@@ -207,7 +220,7 @@ const mapStateToProps = (state) => ({
   myCompletedGigs: state.myGigs[constants.GIGS_FILTER_STATUSES.COMPLETED_JOBS],
   myArchivedGigs: state.myGigs[constants.GIGS_FILTER_STATUSES.ARCHIVED_JOBS],
   profile: state.myGigs.profile,
-  updateProfileSuccess: state.myGigs.updatingProfileSucess,
+  updateProfileSuccess: state.myGigs.updatingProfileSuccess,
 });
 
 const mapDispatchToProps = {
@@ -217,6 +230,7 @@ const mapDispatchToProps = {
   getMyArchivedGigs: actions.myGigs.getMyArchivedGigs,
   getProfile: actions.myGigs.getProfile,
   updateProfile: actions.myGigs.updateProfile,
+  updateProfileReset: actions.myGigs.updateProfileReset,
   getAllCountries: actions.lookup.getAllCountries,
   startCheckingGigs: actions.myGigs.startCheckingGigs,
 };

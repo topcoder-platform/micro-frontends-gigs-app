@@ -99,11 +99,7 @@ paths:
       tags:
         - Job
       description: |
-        Check whether the Job Application info has been synced.
-        
-        **Authorization** All topcoder members are allowed.
-      security:
-        - bearerAuth: []
+        Get the corresponding job detail information and check whether the Job Application info has been synced.
       parameters:
         - in: query
           name: externalId
@@ -437,6 +433,47 @@ components:
           type: boolean
           description: "Whether the job application has been synced"
           example: true
+        id:
+          type: string
+          format: uuid
+          description: "The job uuid"
+        title:
+          type: string
+          example: "Dummy title"
+          description: "The title."
+          maxLength: 64
+        payment:
+          $ref: "#/components/schemas/Payment"
+        skills:
+          type: array
+          description: "The skills to filter the jobs"
+          items:
+            type: string
+            format: uuid
+        location:
+          type: string
+          example: "Any location"
+          description: "the location of job"
+        hoursPerWeek:
+          type: integer
+          example: 20
+          description: "the amount working hours per week"
+        duration:
+          type: integer
+          example: 1
+          description: "The duration in weeks"
+        jobExternalId:
+          type: string
+          example: "51313517"
+          description: "The corresponding gig ID on rcrm"
+        jobTimezone:
+          type: string
+          default: ''
+          description: "the job timezone"
+        description:
+          type: string
+          default: ''
+          description: "The job detail description"
     Job:
       required:
         - id
@@ -508,7 +545,15 @@ components:
         jobExternalId:
           type: string
           example: "51313517"
-          description: "The corresponding gig ID on community app"
+          description: "The corresponding gig ID on rcrm"
+        jobTimezone:
+          type: string
+          default: ''
+          description: "the job timezone"
+        description:
+          type: string
+          default: ''
+          description: "The job detail description"
         rcrmStatus:
           type: string
           default: null
@@ -778,6 +823,18 @@ components:
           description: "The availability of the user"
           default: true
           example: true
+        skill:
+          type: string
+          description: "The candidate's skills separated via ,"
+          example: "Java,Angular,SQL Server,JavaScript"
+          default: ""
+        salaryExpectation:
+          type: integer
+          description: "The candidate expected salary"
+          default: null
+        hasProfile:
+          type: boolean
+          description: "Whether has profile for the user"
     ProfileUpdate:
       required:
         - city

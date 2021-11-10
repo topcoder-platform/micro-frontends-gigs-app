@@ -3,14 +3,17 @@
  */
 import React, { useState, useRef, useEffect } from "react";
 import PT from "prop-types";
+import cn from "classnames";
 import _ from "lodash";
 import "./styles.scss";
 
 function TextInput({
+  className,
   placeholder,
   label,
   errorMsg,
   value,
+  name,
   onChange,
   required,
   size,
@@ -32,7 +35,7 @@ function TextInput({
 
   return (
     <div
-      className="textInputContainer"
+      className={cn("textInputContainer", className)}
       styleName={`container ${sizeStyle}${readonly ? " readonly" : ""}`}
     >
       <input
@@ -40,6 +43,7 @@ function TextInput({
         readOnly={readonly}
         defaultValue={value}
         type={type}
+        name={name}
         placeholder={`${placeholder}${placeholder && required ? " *" : ""}`}
         styleName={`${value || val ? "haveValue" : ""} ${
           errorMsg ? "haveError" : ""

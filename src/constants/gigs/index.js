@@ -33,3 +33,9 @@ export const URL_QUERY_PARAMS_MAP = new Map([
   ["pageSize", "perpage"],
   ["pageNumber", "page"],
 ]);
+
+export const FREQUENCY_TO_PERIOD = {
+  daily: "day",
+  hourly: "hour",
+  weekly: "week",
+};
