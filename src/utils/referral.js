@@ -70,7 +70,6 @@ export const clearReferralCookie = () => {
  */
 export const setAppliedCookie = (externalId) => {
   let ids = cookies.get(process.env.APPLIED_GIGS_COOKIE) || "";
-  ids = ids.split(",");
   let index = ids.indexOf(externalId);
   // Already cached the gig ID
   if (index >= 0) return;
