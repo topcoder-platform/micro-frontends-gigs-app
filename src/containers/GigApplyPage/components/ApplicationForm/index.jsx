@@ -5,6 +5,7 @@ import { Link } from "@reach/router";
 import IconCornerLeft from "assets/icons/icon-corner-left-green.svg";
 import IconTickCircled from "assets/icons/icon-tick-circled.svg";
 import Button from "components/Button";
+import LoadingCircles from "components/LoadingCircles";
 import PersonalInfo from "../PersonalInfo";
 import TopcoderInfo from "../TopcoderInfo";
 import PayExpectations from "../PayExpectations";
@@ -75,7 +76,10 @@ const ApplicationForm = () => {
         <IconCornerLeft /> Gig Details
       </Link>
       {isSending ? (
-        <div className={styles.message}>Processing your application...</div>
+        <>
+          <LoadingCircles className={styles.loadingIndicator} />
+          <div className={styles.message}>Processing your application...</div>
+        </>
       ) : data || error ? (
         <SubmissionResult />
       ) : (
