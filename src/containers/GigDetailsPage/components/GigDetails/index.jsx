@@ -1,5 +1,5 @@
 import styles from "./styles.scss";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { navigate } from "@reach/router";
 import cn from "classnames";
@@ -22,6 +22,7 @@ import { formatPlural } from "utils/formatting";
 import { makeGigApplyPath } from "utils/url";
 import { FREQUENCY_TO_PERIOD } from "constants/gigs";
 import { GIG_LIST_ROUTE } from "constants/routes";
+import { getAppliedCookie, removeAppliedCookie } from "utils/referral";
 
 // Cleanup HTML from style tags
 // so it won't affect other parts of the UI
@@ -63,6 +64,14 @@ const GigDetails = () => {
     currency,
     currency
   );
+
+  const appliedGig = getAppliedCookie().indexOf(jobExternalId) >= 0;
+
+  useEffect(() => {
+    if (synced) {
+      removeAppliedCookie(jobExternalId);
+    }
+  }, [synced, jobExternalId]);
 
   const onClickBtnApply = useCallback(() => {
     if (!isLoggedIn) {
@@ -177,7 +186,7 @@ const GigDetails = () => {
           </div>
           <GigNotes />
           <div styleName="controls">
-            {!synced && (
+            {!synced && !appliedGig && (
               <Button isPrimary size="lg" onClick={onClickBtnApply}>
                 APPLY TO THIS JOB
               </Button>

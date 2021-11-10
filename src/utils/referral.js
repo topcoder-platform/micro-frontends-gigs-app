@@ -64,3 +64,36 @@ export const clearReferralCookie = () => {
     overwrite: true,
   });
 };
+
+/**
+ * Set applied cookie
+ */
+export const setAppliedCookie = (externalId) => {
+  let ids = cookies.get(process.env.APPLIED_GIGS_COOKIE) || "";
+  ids = ids.split(",");
+  let index = ids.indexOf(externalId);
+  // Already cached the gig ID
+  if (index >= 0) return;
+  ids += (ids === "" ? "," : "") + `${externalId}`;
+  cookies.set(process.env.APPLIED_GIGS_COOKIE, ids);
+};
+
+/**
+ * Remove cached gig Id from cookie
+ */
+export const removeAppliedCookie = (externalId) => {
+  let ids = cookies.get(process.env.APPLIED_GIGS_COOKIE) || "";
+  ids = ids.split(",");
+  let index = ids.indexOf(externalId);
+  // the gig ID doesn't exist in local cache
+  if (index < 0) return;
+  ids.splice(index, 1);
+  cookies.set(process.env.APPLIED_GIGS_COOKIE, ids.join(","));
+};
+
+/**
+ * Get applied Cookie
+ */
+export const getAppliedCookie = () => {
+  return cookies.get(process.env.APPLIED_GIGS_COOKIE) || "";
+};
