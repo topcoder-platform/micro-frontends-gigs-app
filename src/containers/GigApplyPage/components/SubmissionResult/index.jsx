@@ -105,7 +105,7 @@ const SubmissionResult = () => {
               GO TO GIGS LIST
             </Button>
             <Button isPrimary size="lg" onClick={onClickBtnViewStatus}>
-              CHECK GIG APPLIACTION STATUS
+              CHECK GIG APPLICATION STATUS
             </Button>
           </>
         )}
