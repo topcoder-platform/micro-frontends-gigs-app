@@ -88,6 +88,7 @@ const initialState = {
   pagination: initPagination(),
   skillsAll: [],
   skillsById: null,
+  skillsByName: null,
   skillsError: null,
   sorting: initSorting(),
   values: initValues(),
@@ -256,18 +257,22 @@ const onLoadPageSuccess = (
 const onLoadSkillsError = (state, { payload: skillsError }) => ({
   ...state,
   skillsById: {},
+  skillsByName: {},
   skillsError,
 });
 
 const onLoadSkillsSuccess = (state, { payload: skillsAll }) => {
   const skillsById = {};
+  const skillsByName = {};
   for (let skill of skillsAll) {
     skillsById[skill.id] = skill;
+    skillsByName[skill.name] = skill;
   }
   return {
     ...state,
     skillsAll,
     skillsById,
+    skillsByName,
   };
 };
 

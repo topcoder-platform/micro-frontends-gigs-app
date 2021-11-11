@@ -16,8 +16,6 @@ module.exports = {
     get: {
       controller: "JobApplicationController",
       method: "getJob",
-      auth: "jwt",
-      scopes: [constants.Scopes.READ_JOB],
     },
   },
   "/jobs": {

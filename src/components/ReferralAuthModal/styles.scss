@@ -6,10 +6,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 20px !important;
   border-radius: 10px;
-  width: 600px;
-  height: 410px;
+  padding: 100px 40px !important;
+  width: auto !important;
   background-color: #fff !important;
+
+  @include tablet {
+    width: 600px !important;
+  }
 }
 
 .modalOverlay {
@@ -31,8 +36,14 @@
 
 .message {
   margin: 20px 0 0;
-  font-size: 24px;
-  line-height: 36px;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+
+  @include tablet {
+    font-size: 24px;
+    line-height: 36px;
+  }
 }
 
 .controls {

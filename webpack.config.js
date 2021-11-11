@@ -37,9 +37,11 @@ module.exports = (webpackConfigEnv) => {
     // we have to list here all the microapps which we would like to use in imports
     // so webpack doesn't tries to import them
     externals: {
-      "@topcoder/micro-frontends-navbar-app": "@topcoder/micro-frontends-navbar-app",
-      "@topcoder/micro-frontends-earn-app": "@topcoder/micro-frontends-earn-app",
-      "react": "react",
+      "@topcoder/micro-frontends-navbar-app":
+        "@topcoder/micro-frontends-navbar-app",
+      "@topcoder/micro-frontends-earn-app":
+        "@topcoder/micro-frontends-earn-app",
+      react: "react",
       "react-dom": "react-dom",
     },
     output: {

@@ -27,6 +27,8 @@ export const getHasGigs = (state) =>
 export const getHasInitialData = (state) =>
   !!state.gigs.gigsSpecial && !!state.gigs.skillsById;
 
+export const getHasSkills = (state) => !!state.gigs.skillsById;
+
 export const getIsLoadingPage = (state) =>
   !!state.gigs.abortController ||
   !state.gigs.gigsSpecial ||
@@ -45,6 +47,12 @@ export const getPageSize = (state) => state.gigs.pagination.pageSize;
 export const getPagination = (state) => state.gigs.pagination;
 
 export const getSkillsAll = (state) => state.gigs.skillsAll;
+
+export const getSkillsById = (state) => state.gigs.skillsById;
+
+export const getSkillsByName = (state) => state.gigs.skillsByName;
+
+export const getSkillsError = (state) => state.gigs.skillsError;
 
 export const getSorting = (state) => state.gigs.sorting;
 

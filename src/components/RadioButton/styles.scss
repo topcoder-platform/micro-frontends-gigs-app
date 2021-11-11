@@ -76,6 +76,18 @@
   display: flex;
   flex-direction: column;
 
+  &.horizontal {
+    flex-direction: row;
+
+    .radioButton {
+      margin-right: 28px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
   .label {
     color: $gui-kit-gray-90;
   }

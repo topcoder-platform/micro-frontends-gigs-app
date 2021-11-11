@@ -313,3 +313,5 @@ export const DELAY_CHECK_GIG_TIME = 2000;
 
 export const DEBOUNCE_ON_CHANGE_TIME =
   +process?.env?.GUIKIT?.DEBOUNCE_ON_CHANGE_TIME || 300;
+
+export const MAX_RESUME_FILE_SIZE_MB = 8;

@@ -6,6 +6,47 @@
   position: relative;
   border: 1px solid $control-border-color;
   border-radius: $control-border-radius;
+
+  &.hasError {
+    border-width: 2px;
+    border-color: #ef476f;
+
+    .label {
+      color: #ef476f;
+    }
+
+    &.large {
+      .select:global(.Select) {
+        :global(.Select-input) {
+          height: 48px;
+        }
+
+        :global(.Select-placeholder) {
+          line-height: 48px;
+        }
+
+        :global(.Select-input) {
+          height: 48px;
+
+          input {
+            margin-top: 6px;
+          }
+        }
+
+        :global(.Select-arrow-zone) {
+          padding-right: 14px;
+        }
+
+        &.hasValues {
+          :global(.Select-input) {
+            input {
+              margin-top: 0;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .label {
@@ -19,6 +60,55 @@
   transform: translateY(-50%);
   color: $control-border-color;
   background-color: #fff;
+  &.focused {
+    color: $gui-kit-level-2;
+  }
+}
+
+.error {
+  margin: 15px 0 0 12px;
+  font-size: 14px;
+  color: #2A2A2A;
+}
+
+.arrow {
+  width: auto;
+}
+
+.large {
+  .error {
+    margin: 20px 0 0 15px;
+  }
+
+  .select:global(.Select) {
+    :global(.Select-input) {
+      height: 50px;
+    }
+
+    :global(.Select-placeholder) {
+      line-height: 50px;
+    }
+
+    :global(.Select-input) {
+      height: 50px;
+
+      input {
+        margin-top: 7px;
+      }
+    }
+
+    :global(.Select-arrow-zone) {
+      padding-right: 15px;
+    }
+
+    &.hasValues {
+      :global(.Select-input) {
+        input {
+          margin-top: 0;
+        }
+      }
+    }
+  }
 }
 
 .select:global(.Select) {
@@ -31,6 +121,12 @@
 
     :global(.Select-input) {
       height: 25px;
+    }
+  }
+
+  &:global(.is-open) {
+    :global(.Select-arrow-zone) {
+      transform: scale(1, -1);
     }
   }
 

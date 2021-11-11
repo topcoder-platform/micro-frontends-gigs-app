@@ -123,6 +123,8 @@ async function getProfile() {
     file: null,
     existingResume: profile.resume,
     hasProfile: profile.hasProfile,
+    salaryExpectation: profile.salaryExpectation,
+    skill: profile.skill,
     status: profile.availability
       ? GIG_STATUS.AVAILABLE
       : GIG_STATUS.UNAVAILABLE,
