@@ -40,6 +40,18 @@ ${makeGigReferralUrl(externalId, referralId)}`,
   ],
 });
 
+export const getHostDomain = () => {
+  let hostDomain = "";
+  if (location.hostname !== "localhost") {
+    hostDomain =
+      "." +
+      location.hostname.split(".").reverse()[1] +
+      "." +
+      location.hostname.split(".").reverse()[0];
+  }
+  return hostDomain;
+};
+
 /**
  * Sets the cookie with referral id.
  */
@@ -47,11 +59,10 @@ export const setReferralCookie = () => {
   const params = new URLSearchParams(location.search);
   const referralId = params.get("referralId");
   if (referralId) {
-    cookies.set(
-      process.env.GROWSURF_COOKIE,
-      JSON.stringify({ referralId }),
-      process.env.GROWSURF_COOKIE_SETTINGS
-    );
+    cookies.set(process.env.GROWSURF_COOKIE, JSON.stringify({ referralId }), {
+      ...process.env.GROWSURF_COOKIE_SETTINGS,
+      domain: getHostDomain(),
+    });
   }
 };
 
@@ -61,6 +72,7 @@ export const setReferralCookie = () => {
 export const clearReferralCookie = () => {
   cookies.set(process.env.GROWSURF_COOKIE, "", {
     maxAge: 0,
+    domain: getHostDomain(),
     overwrite: true,
   });
 };
