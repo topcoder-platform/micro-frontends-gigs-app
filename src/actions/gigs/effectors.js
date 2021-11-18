@@ -137,11 +137,18 @@ export const loadSkills = async ({ dispatch, getState }) => {
  * URL query by replacing URL in history.
  *
  * @param {Object} store redux store object
+ * @param {Object} options.mountLocation location object
  */
-export const updateStateAndQuery = ({ dispatch, getState }) => {
+export const updateStateAndQuery = ({ dispatch, getState }, options) => {
+  const location = options ? options.mountLocation : window.location;
+  const isGigsLocation = location.pathname === window.location.pathname;
+
   dispatch(actions.updateStateFromQuery(location.search));
   const query = makeQueryFromState(selectors.getStateSlice(getState()));
-  window.history.replaceState(null, "", `${location.pathname}?${query}`);
+
+  if (isGigsLocation) {
+    window.history.replaceState(null, "", `${location.pathname}?${query}`);
+  }
 };
 
 /**

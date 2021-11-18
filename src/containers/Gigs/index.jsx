@@ -18,13 +18,18 @@ import { setReferralCookie } from "utils/referral";
  * normalizes query. Then depending on if state has changed loads gigs page.
  */
 const onMount = async () => {
+  const mountLocation = {
+    search: window.location.search,
+    pathname: window.location.pathname,
+  };
   setReferralCookie();
   const hasInitialData = selectors.getHasInitialData(store.getState());
   if (!hasInitialData) {
     await effectors.loadInitialData(store);
   }
   const stateOld = store.getState();
-  effectors.updateStateAndQuery(store);
+  const options = { mountLocation };
+  effectors.updateStateAndQuery(store, options);
   if (stateOld === store.getState() && !hasInitialData) {
     // If after updating state from query the state stays the same we need to
     // manually load gigs. In other case gigs will be loaded by useUpdateEffect
