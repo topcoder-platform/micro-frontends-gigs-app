@@ -148,12 +148,16 @@ export function makeReferralUrl(referralId) {
  * @param {string} [utmSource] utm_source
  * @returns {string}
  */
-export function makeRegisterUrl(retUrl, utmSource = "gig_listing") {
+export function makeRegisterUrl(
+  retUrl,
+  utmSource = "gig_listing",
+  regSource = "gigs"
+) {
   let [path, query = ""] = retUrl.split("?");
   retUrl = `${path}${query ? `?${encodeURIComponent(query)}` : ""}`;
   return (
     `${process.env.URL.AUTH}?retUrl=${encodeURIComponent(retUrl)}` +
-    `&mode=signUp&utm_source=${utmSource}`
+    `&mode=signUp&utm_source=${utmSource}&regSource=${regSource}`
   );
 }
 
