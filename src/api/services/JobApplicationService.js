@@ -146,6 +146,11 @@ async function getJob(jwtToken = "", criteria) {
   const { result: jobs } = await helper.getJobs(criteria);
   if (jobs && jobs.length) {
     const job = jobs[0];
+    if (job.rcrmStatus != "Open" || !job.isApplicationPageActive) {
+      return {
+        jobClosed: true,
+      };
+    }
     const jobInfo = {
       id: job.id,
       title: job.title,
