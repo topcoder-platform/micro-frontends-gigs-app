@@ -1,4 +1,5 @@
 import { getAuthUserTokens } from "@topcoder/micro-frontends-navbar-app";
+import { configureConnector, getFreshToken, isTokenExpired } from "tc-auth-lib";
 import actions from "actions/gigDetails/creators";
 import * as gigsSelectors from "reducers/gigs/selectors";
 import * as selectors from "reducers/gigDetails/selectors";
@@ -6,12 +7,21 @@ import * as services from "services/gigDetails";
 import { loadSkills } from "actions/gigs/effectors";
 import { isAbort } from "utils/fetch";
 
+configureConnector({
+  connectorUrl: `${process.env.URL.AUTH}`,
+  frameId: "tc-accounts-iframe",
+  frameTitle: "Accounts authentication window",
+});
+
 export const loadDetails = async (store, externalId) => {
   const { dispatch, getState } = store;
   const skillsPromise = loadSkills(store);
   let tokens = null;
   try {
     tokens = await getAuthUserTokens();
+    if (tokens && isTokenExpired(tokens.tokenV3)) {
+      tokens.tokenV3 = await getFreshToken();
+    }
   } catch (error) {}
   const [promise, controller] = services.fetchGig(externalId, tokens?.tokenV3);
   dispatch(actions.loadDetailsPending(controller));
