@@ -20,9 +20,13 @@ export const fetchGig = (externalId, tokenV3, controller) => {
   const promise = fetch(`${GIG_DETAILS_API_URL}?externalId=${externalId}`, {
     headers,
     signal: controller.signal,
-  }).then((response) => {
+  }).then(async (response) => {
     if (response.status !== 200) {
-      throw new Error("Failed to fetch gig details");
+      const res = await response.json();
+      const message = res.message || "";
+      throw new Error(
+        `Failed to fetch gig details with status code: ${response.status} ${message}`
+      );
     }
     return response.json();
   });
