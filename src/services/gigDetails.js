@@ -22,7 +22,10 @@ export const fetchGig = (externalId, tokenV3, controller) => {
     signal: controller.signal,
   }).then((response) => {
     if (response.status !== 200) {
-      throw new Error(`Failed to fetch gig details ${response.message}`);
+      const message = response.message || "";
+      throw new Error(
+        `Failed to fetch gig details with status code: ${response.status} ${message}`
+      );
     }
     return response.json();
   });
