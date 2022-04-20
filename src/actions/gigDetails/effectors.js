@@ -1,4 +1,4 @@
-import { getAuthUserTokens } from "@topcoder/micro-frontends-navbar-app";
+import { getAuthUserTokens } from "@topcoder/mfe-header";
 import actions from "actions/gigDetails/creators";
 import * as gigsSelectors from "reducers/gigs/selectors";
 import * as selectors from "reducers/gigDetails/selectors";

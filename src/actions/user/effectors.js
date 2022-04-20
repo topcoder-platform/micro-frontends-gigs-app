@@ -1,4 +1,4 @@
-import { getAuthUserProfile } from "@topcoder/micro-frontends-navbar-app";
+import { getAuthUserProfile } from "@topcoder/mfe-header";
 import actions from "./creators";
 import * as selectors from "reducers/user/selectors";
 import { fetchReferralData } from "services/referral";

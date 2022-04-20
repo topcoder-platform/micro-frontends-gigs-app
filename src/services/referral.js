@@ -1,4 +1,4 @@
-import { getAuthUserTokens } from "@topcoder/micro-frontends-navbar-app";
+import { getAuthUserTokens } from "@topcoder/mfe-header";
 import { composeReferralEmail } from "utils/referral";
 import { REFERRAL_API_URL } from "constants/urls";
 

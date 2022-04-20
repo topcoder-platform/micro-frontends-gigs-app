@@ -1,4 +1,4 @@
-import { getAuthUserTokens } from "@topcoder/micro-frontends-navbar-app";
+import { getAuthUserTokens } from "@topcoder/mfe-header";
 import { RECRUIT_API_URL } from "constants/urls";
 
 export const sendApplication = async (externalId, formData) => {
