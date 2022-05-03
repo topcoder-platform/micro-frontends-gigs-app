@@ -3,7 +3,7 @@ import {
   getAuthUserProfile,
   getAuthUserTokens,
   login,
-} from "@topcoder/micro-frontends-navbar-app";
+} from "@topcoder/mfe-header";
 
 export async function getUserId() {
   const profile = await getAuthUserProfile();

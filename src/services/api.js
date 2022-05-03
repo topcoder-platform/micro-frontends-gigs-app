@@ -1,5 +1,5 @@
 /* global process */
-import { getAuthUserTokens } from "@topcoder/micro-frontends-navbar-app";
+import { getAuthUserTokens } from "@topcoder/mfe-header";
 import { keys } from "lodash";
 import * as utils from "../utils";
 
