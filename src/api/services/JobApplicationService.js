@@ -6,6 +6,7 @@ const _ = require("lodash");
 const Joi = require("joi");
 const helper = require("../common/helper");
 const errors = require("../common/errors");
+const logger = require("../common/logger");
 
 /**
  * Get Job Applications of current user
@@ -136,9 +137,14 @@ async function getJob(jwtToken = "", criteria) {
   // get user id by calling taas-api with current user's token
   let userId = "";
   if (jwtToken) {
-    const res = await helper.getCurrentUserDetails(jwtToken);
-    if (res) {
-      userId = res.id;
+    try {
+      const res = await helper.getCurrentUserDetails(jwtToken);
+      if (res) {
+        userId = res.id;
+      }
+    } catch (err) {
+      // capture the error but don't prevent the remain logic from continuing to execute
+      logger.error("Error happened when retrieving user details ->", err);
     }
   }
 
