@@ -5,6 +5,7 @@
     "dev-server": "nodemon --max-http-header-size 16384 server.js",
     "dev": "cross-env APPENV=dev NODE_OPTIONS='--max-http-header-size=16384' webpack-dev-server",
     "dev-https": "cross-env APPENV=dev NODE_OPTIONS='--max-http-header-size=16384' webpack-dev-server --https",
+    "qa": "cross-env APPENV=qa NODE_OPTIONS='--max-http-header-size=16384' webpack-dev-server",    
     "prod": "cross-env APPENV=prod NODE_OPTIONS='--max-http-header-size=16384' webpack-dev-server",
     "build": "cross-env APPENV=${APPENV:-dev} APPMODE=${APPMODE:-development} webpack --mode=${APPMODE:-development}",
     "analyze": "cross-env APPMODE=production webpack --mode=production --env.analyze=true",
