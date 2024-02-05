@@ -14,6 +14,9 @@ module.exports = (webpackConfigEnv) => {
     projectName: "micro-frontends-gigs-app",
     webpackConfigEnv,
     disableHtmlGeneration: true,
+    node: {
+      fs: "empty"
+    }
   });
 
   const unusedFilesWebpackPlugin = defaultConfig.plugins.find(
