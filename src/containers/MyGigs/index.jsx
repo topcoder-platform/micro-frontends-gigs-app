@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import store from "store";
 import * as lookupSelectors from "reducers/lookupSelectors";
 import * as myGigsSelectors from "reducers/myGigsSelectors";
-import { navigate } from "@reach/router";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
@@ -18,6 +17,8 @@ import UpdateGigProfile from "./modals/UpdateGigProfile";
 import UpdateSuccess from "./modals/UpdateSuccess";
 
 import "./styles.scss";
+
+const config = require("config");
 
 const MyGigs = ({
   myActiveGigs,
@@ -128,19 +129,9 @@ const MyGigs = ({
           <span styleName="text">MY GIGS</span>
           <div styleName="operation">
             <Button
-              isPrimary
-              size="lg"
-              disabled={!(profile && profile.hasProfile)}
-              onClick={() => {
-                setOpenUpdateProfile(true);
-              }}
-            >
-              UPDATE GIG WORK PROFILE
-            </Button>
-            <Button
               size="lg"
               onClick={() => {
-                navigate("/earn/gigs");
+                window.location.href = `${config.URL.BASE}/gigs`;
               }}
             >
               VIEW GIGS

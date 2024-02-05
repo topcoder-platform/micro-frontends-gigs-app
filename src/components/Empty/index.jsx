@@ -1,12 +1,13 @@
 import React from "react";
 import PT from "prop-types";
-import { navigate } from "@reach/router";
 import {
   MY_GIGS_STATUS_EMPTY_TEXT,
   GIGS_FILTER_STATUSES,
 } from "../../constants";
 import Button from "../Button";
 import "./styles.scss";
+
+const config = require("config");
 
 const Empty = ({ gigStatus }) => {
   return (
@@ -21,7 +22,7 @@ const Empty = ({ gigStatus }) => {
             isPrimary
             size="lg"
             onClick={() => {
-              navigate("/earn/gigs");
+              window.location.href = `${config.URL.BASE}/gigs`;
             }}
           >
             VIEW GIGS
