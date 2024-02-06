@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
-import { Link, useLocation } from "@reach/router";
 import PT from "prop-types";
 import { makeGigPath } from "utils/url";
 import ProgressBar from "./ProgressBar";
@@ -11,7 +10,6 @@ import NoteTooltip from "./tooltips/NoteTooltip";
 import EarnTooltip from "./tooltips/EarnTooltip";
 import {
   MY_GIG_PHASE_LABEL,
-  MY_GIG_PHASE_ACTION,
   MY_GIGS_JOB_STATUS,
   PHASES_FOR_JOB_STATUS,
   MY_GIGS_STATUS_REMARK_TEXT,
@@ -27,7 +25,6 @@ const JobCard = ({ job }) => {
   const [expanded, setExpanded] = useState(false);
   const [footerHeight, setFooterHeight] = useState(0);
   const footerRef = useRef({});
-  const location = useLocation();
 
   useEffect(() => {
     setFooterHeight(footerRef.current.offsetHeight);
@@ -71,9 +68,10 @@ const JobCard = ({ job }) => {
           : ""
       }`}
     >
-      <Link
-        to={`/${makeGigPath(job.jobExternalId)}`}
-        state={{ from: location.pathname + location.search }}
+      <a
+        href={`${makeGigPath(job.jobExternalId)}`}
+        target="_blank"
+        rel="noreferrer"
       >
         <div styleName="card-header job-card-header">
           <div styleName="ribbon">
@@ -168,7 +166,7 @@ const JobCard = ({ job }) => {
             </div>
           </div>
         </div>
-      </Link>
+      </a>
       <div styleName="card-footer job-card-footer" ref={footerRef}>
         <div styleName="note-container">
           {(job.remark ||
