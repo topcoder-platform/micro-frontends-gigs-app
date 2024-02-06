@@ -138,8 +138,5 @@ module.exports = (webpackConfigEnv) => {
       port: 8010,
       host: "0.0.0.0",
     },
-    node: {
-      fs: "empty"
-    }
   });
 };

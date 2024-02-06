@@ -18,8 +18,6 @@ import UpdateSuccess from "./modals/UpdateSuccess";
 
 import "./styles.scss";
 
-const config = require("config");
-
 const MyGigs = ({
   myActiveGigs,
   myOpenGigs,
@@ -131,7 +129,7 @@ const MyGigs = ({
             <Button
               size="lg"
               onClick={() => {
-                window.location.href = `${config.URL.BASE}/gigs`;
+                window.location.href = TC_GIGS_URL;
               }}
             >
               VIEW GIGS

@@ -3,6 +3,7 @@ export const PROXY_API_BASE_URL =
 export const GIG_DETAILS_API_URL = `${PROXY_API_BASE_URL}/job`;
 
 export const RECRUIT_API_URL = `${process.env.URL.BASE}/api/recruit/jobs`;
+export const TC_GIGS_URL = `${process.env.URL.BASE}/gigs`;
 
 export const REFERRAL_API_URL = `${process.env.URL.COMMUNITY_APP}/api`;
 export const REFERRAL_PROGRAM_URL = `${process.env.URL.BASE}/community/gig-referral`;

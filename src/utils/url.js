@@ -6,9 +6,8 @@ import {
   GIG_LIST_URL,
   LINKEDIN_URL,
   TWITTER_URL,
+  TC_GIGS_URL,
 } from "constants/urls";
-
-const config = require("config");
 
 /**
  * Return the query string of `params`:
@@ -69,7 +68,7 @@ export function makeGigApplyUrl(externalId) {
  * @returns {string}
  */
 export function makeGigApplyPath(externalId) {
-  return `${config.URL.BASE}/gigs/${externalId}/apply`;
+  return `${TC_GIGS_URL}/${externalId}/apply`;
 }
 
 /**
@@ -79,7 +78,7 @@ export function makeGigApplyPath(externalId) {
  * @returns {string}
  */
 export function makeGigPath(externalId) {
-  return `${config.URL.BASE}/gigs/${externalId}`;
+  return `${TC_GIGS_URL}/${externalId}`;
 }
 
 /**
@@ -89,7 +88,7 @@ export function makeGigPath(externalId) {
  * @returns {string}
  */
 export function makeGigUrl(externalId) {
-  return externalId ? `${config.URL.BASE}/gigs/${externalId}` : "";
+  return externalId ? `${TC_GIGS_URL}/${externalId}` : "";
 }
 
 /**

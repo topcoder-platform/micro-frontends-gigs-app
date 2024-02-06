@@ -3,11 +3,11 @@ import PT from "prop-types";
 import {
   MY_GIGS_STATUS_EMPTY_TEXT,
   GIGS_FILTER_STATUSES,
+
 } from "../../constants";
+import { TC_GIGS_URL } from "../../constants/urls"
 import Button from "../Button";
 import "./styles.scss";
-
-const config = require("config");
 
 const Empty = ({ gigStatus }) => {
   return (
@@ -22,7 +22,7 @@ const Empty = ({ gigStatus }) => {
             isPrimary
             size="lg"
             onClick={() => {
-              window.location.href = `${config.URL.BASE}/gigs`;
+              window.location.href = TC_GIGS_URL;
             }}
           >
             VIEW GIGS
