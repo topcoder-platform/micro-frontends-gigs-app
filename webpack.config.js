@@ -13,10 +13,7 @@ module.exports = (webpackConfigEnv) => {
     orgName: "topcoder",
     projectName: "micro-frontends-gigs-app",
     webpackConfigEnv,
-    disableHtmlGeneration: true,
-    node: {
-      fs: "empty"
-    }
+    disableHtmlGeneration: true
   });
 
   const unusedFilesWebpackPlugin = defaultConfig.plugins.find(
@@ -129,6 +126,10 @@ module.exports = (webpackConfigEnv) => {
         assets: path.resolve(__dirname, "src/assets"),
       },
       modules: [path.resolve(__dirname, "src"), "node_modules"],
+      fallback: {
+        ...defaultConfig.resolve,
+        "fs": false
+      }
     },
     devServer: {
       clientLogLevel: config.LOG_LEVEL,
@@ -141,5 +142,8 @@ module.exports = (webpackConfigEnv) => {
       port: 8010,
       host: "0.0.0.0",
     },
+    node: {
+      fs: "empty"
+    }
   });
 };
