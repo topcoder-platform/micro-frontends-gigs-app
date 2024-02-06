@@ -22,7 +22,7 @@ const Empty = ({ gigStatus }) => {
             isPrimary
             size="lg"
             onClick={() => {
-              window.location.href = TC_GIGS_URL;
+              window.open(TC_GIGS_URL, '_blank');
             }}
           >
             VIEW GIGS

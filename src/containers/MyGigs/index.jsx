@@ -12,6 +12,7 @@ import Empty from "../../components/Empty";
 import JobListing from "./JobListing";
 import actions from "../../actions";
 import * as constants from "../../constants";
+import { TC_GIGS_URL } from "../../constants/urls";
 
 import UpdateGigProfile from "./modals/UpdateGigProfile";
 import UpdateSuccess from "./modals/UpdateSuccess";
@@ -129,7 +130,7 @@ const MyGigs = ({
             <Button
               size="lg"
               onClick={() => {
-                window.location.href = TC_GIGS_URL;
+                window.open(TC_GIGS_URL, '_blank');
               }}
             >
               VIEW GIGS

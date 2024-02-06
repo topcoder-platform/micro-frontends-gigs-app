@@ -72,7 +72,7 @@ const JobCard = ({ job }) => {
       }`}
     >
       <Link
-        to={makeGigPath(job.jobExternalId)}
+        to={`/${makeGigPath(job.jobExternalId)}`}
         state={{ from: location.pathname + location.search }}
       >
         <div styleName="card-header job-card-header">
