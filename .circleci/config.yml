@@ -87,7 +87,6 @@ workflows:
             branches:
               only:
                 - dev
-                - CORE-287
 
       # Development builds are executed on "develop" branch only.
       - "build-qa":
