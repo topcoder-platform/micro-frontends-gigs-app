@@ -1,10 +1,11 @@
 import React from "react";
 import PT from "prop-types";
-import { navigate } from "@reach/router";
 import {
   MY_GIGS_STATUS_EMPTY_TEXT,
   GIGS_FILTER_STATUSES,
+
 } from "../../constants";
+import { TC_GIGS_URL } from "../../constants/urls"
 import Button from "../Button";
 import "./styles.scss";
 
@@ -21,7 +22,7 @@ const Empty = ({ gigStatus }) => {
             isPrimary
             size="lg"
             onClick={() => {
-              navigate("/earn/gigs");
+              window.open(TC_GIGS_URL, '_blank');
             }}
           >
             VIEW GIGS

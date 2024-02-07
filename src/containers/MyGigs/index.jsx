@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import store from "store";
 import * as lookupSelectors from "reducers/lookupSelectors";
 import * as myGigsSelectors from "reducers/myGigsSelectors";
-import { navigate } from "@reach/router";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
@@ -13,6 +12,7 @@ import Empty from "../../components/Empty";
 import JobListing from "./JobListing";
 import actions from "../../actions";
 import * as constants from "../../constants";
+import { TC_GIGS_URL } from "../../constants/urls";
 
 import UpdateGigProfile from "./modals/UpdateGigProfile";
 import UpdateSuccess from "./modals/UpdateSuccess";
@@ -128,19 +128,9 @@ const MyGigs = ({
           <span styleName="text">MY GIGS</span>
           <div styleName="operation">
             <Button
-              isPrimary
-              size="lg"
-              disabled={!(profile && profile.hasProfile)}
-              onClick={() => {
-                setOpenUpdateProfile(true);
-              }}
-            >
-              UPDATE GIG WORK PROFILE
-            </Button>
-            <Button
               size="lg"
               onClick={() => {
-                navigate("/earn/gigs");
+                window.open(TC_GIGS_URL, '_blank');
               }}
             >
               VIEW GIGS

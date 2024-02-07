@@ -6,6 +6,7 @@ import {
   GIG_LIST_URL,
   LINKEDIN_URL,
   TWITTER_URL,
+  TC_GIGS_URL,
 } from "constants/urls";
 
 /**
@@ -67,7 +68,7 @@ export function makeGigApplyUrl(externalId) {
  * @returns {string}
  */
 export function makeGigApplyPath(externalId) {
-  return `${GIG_LIST_ROUTE}/${externalId}/apply`;
+  return `${TC_GIGS_URL}/${externalId}/apply`;
 }
 
 /**
@@ -77,7 +78,7 @@ export function makeGigApplyPath(externalId) {
  * @returns {string}
  */
 export function makeGigPath(externalId) {
-  return `${GIG_LIST_ROUTE}/${externalId}`;
+  return `${TC_GIGS_URL}/${externalId}`;
 }
 
 /**
@@ -87,7 +88,7 @@ export function makeGigPath(externalId) {
  * @returns {string}
  */
 export function makeGigUrl(externalId) {
-  return externalId ? `${location.origin}${GIG_LIST_ROUTE}/${externalId}` : "";
+  return externalId ? `${TC_GIGS_URL}/${externalId}` : "";
 }
 
 /**
