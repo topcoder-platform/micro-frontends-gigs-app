@@ -58,7 +58,7 @@
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4",
     "webpack-config-single-spa-react": "^4.0.5",
-    "webpack-dev-server": "^3.9.0",
+    "webpack-dev-server": "^5.0.2",
     "webpack-merge": "^4.2.2",
     "nodemon": "^2.0.4",
     "unused-files-webpack-plugin": "^3.4.0"
@@ -73,7 +73,7 @@
     "country-calling-code": "0.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-fileupload": "^1.2.1",
+    "express-fileupload": "^1.4.3",
     "express-interceptor": "^1.2.0",
     "get-parameter-names": "^0.3.0",
     "http-status": "^1.5.0",
@@ -100,7 +100,7 @@
     "redux-logger": "^3.0.6",
     "redux-promise-middleware": "^6.1.2",
     "superagent": "^6.1.0",
-    "tc-core-library-js": "github:appirio-tech/tc-core-library-js#v2.6",
-    "winston": "^3.3.3"
+    "tc-core-library-js": "github:appirio-tech/tc-core-library-js#v2.6.4",
+    "winston": "^3.11.0"
   }
 }
