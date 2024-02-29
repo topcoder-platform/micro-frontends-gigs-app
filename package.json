@@ -100,7 +100,7 @@
     "redux-logger": "^3.0.6",
     "redux-promise-middleware": "^6.1.2",
     "superagent": "^6.1.0",
-    "tc-core-library-js": "github:appirio-tech/tc-core-library-js#v2.6",
+    "tc-core-library-js": "github:appirio-tech/tc-core-library-js#v2.6.4",
     "winston": "^3.11.0"
   }
 }
