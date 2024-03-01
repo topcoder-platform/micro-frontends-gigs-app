@@ -88,6 +88,7 @@ workflows:
             branches:
               only:
                 - dev
+                - CORE-325-security-fix
 
       # Development builds are executed on "develop" branch only.
       - "build-qa":
