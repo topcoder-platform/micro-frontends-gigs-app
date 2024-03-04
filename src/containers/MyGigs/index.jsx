@@ -18,7 +18,7 @@ import UpdateGigProfile from "./modals/UpdateGigProfile";
 import UpdateSuccess from "./modals/UpdateSuccess";
 
 import "./styles.scss";
-import styles from "./score-widget.component.scss";
+import styles from "./styles.scss";
 
 
 
