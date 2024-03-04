@@ -17,7 +17,7 @@ import { TC_GIGS_URL } from "../../constants/urls";
 import UpdateGigProfile from "./modals/UpdateGigProfile";
 import UpdateSuccess from "./modals/UpdateSuccess";
 
-import "./styles.scss";
+//import "./styles.scss";
 import styles from "./styles.scss";
 
 
