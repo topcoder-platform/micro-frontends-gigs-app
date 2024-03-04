@@ -91,11 +91,7 @@ module.exports = (webpackConfigEnv) => {
           /* Loads scss stylesheets. */
           test: /\.scss$/,
           use: [
-            //"style-loader",
-            {
-              loader: "style-loader",
-              options: { injectType: "singletonStyleTag" },
-            },            
+            "style-loader",            
             {
               loader: "css-loader",
               options: {
