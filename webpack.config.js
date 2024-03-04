@@ -100,7 +100,6 @@ module.exports = (webpackConfigEnv) => {
                   mode: "local",
                 },
               },
-              type: 'javascript/auto',
             },
             {
               loader: "postcss-loader",
@@ -109,7 +108,6 @@ module.exports = (webpackConfigEnv) => {
                   plugins: [autoprefixer],
                 },
               },
-              type: 'javascript/auto',
             },
             "resolve-url-loader",
             {
@@ -119,6 +117,7 @@ module.exports = (webpackConfigEnv) => {
               },
             },
           ],
+          type: 'javascript/auto',
         },
       ],
     },
