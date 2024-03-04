@@ -17,9 +17,7 @@ import { TC_GIGS_URL } from "../../constants/urls";
 import UpdateGigProfile from "./modals/UpdateGigProfile";
 import UpdateSuccess from "./modals/UpdateSuccess";
 
-//import "./styles.scss";
-import styles from "./styles.scss";
-
+import "./styles.scss";
 
 
 const MyGigs = ({
@@ -123,10 +121,9 @@ const MyGigs = ({
       getMyArchivedGigs,
     ]
   );
-  const css = styles;  //storing styles in const
+
   return (
     <>
-      <style>{css}</style>
       <div styleName="page">
         <h1 styleName="title">
           <span styleName="text">MY GIGS</span>
