@@ -114,6 +114,10 @@ module.exports = (webpackConfigEnv) => {
               loader: "sass-loader",
               options: {
                 sourceMap: true,
+                implementation: require("sass"),
+                sassOptions: {
+                  outputStyle: "compressed",
+                },
               },
             },
           ],
