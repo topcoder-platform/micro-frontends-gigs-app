@@ -44,7 +44,7 @@ const config = {
       },
     ],
     [
-      "react-css-modules",
+      "@dr.pogodin/babel-plugin-react-css-modules",
       {
         filetypes: {
           ".scss": {
